@@ -1,0 +1,68 @@
+body{
+font-family: 'DM Sans', sans-serif;
+color: #901c1c;
+}
+
+header{
+display: flex;
+}
+
+img.logo{
+width: 90%;
+}
+
+nav{
+align-self: center;
+}
+
+ul{
+display: flex;
+list-style-type: none;
+}
+
+li, span{
+margin: 0 5px 0 5px;
+padding: 1%;
+border: 1px solid #ccc;
+border-radius: 20px;
+}
+
+h1{
+position: absolute;
+top: 0;
+right: 0;
+}
+
+section{
+display: flex;
+}
+
+article{
+text-align: center;
+width: 33%;
+}
+
+img.photographer{
+width: 200px;
+height: 200px;
+border-radius: 50%;
+-webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+-moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+h2{
+color: #d3573c;
+}
+
+p.citation{
+color: black;
+font-size: 90%;
+line-height: 0.3;
+}
+
+p.priceperday{
+color: #979797;
+font-size: 90%;
+}
+
