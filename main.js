@@ -1,28 +1,18 @@
-const json = "https://s3-eu-west-1.amazonaws.com/course.oc-static.com/projects/Front-End+V2/P5+Javascript+%26+Accessibility/FishEyeDataFR.json";
 let idPhotographer = "";
 
-function getPhotographers(){
-    return new Promise((resolve) => {
-        let request = new XMLHttpRequest();
-        request.onreadystatechange = function () {
-          if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            resolve(JSON.parse(this.responseText));
-            console.log("Administration : connection ok");
-            // Supprimer le message d'erreur si l'appel est réussi
-            error = document.getElementById("error");
-            // Supprimer le message d'erreur s'il existe
-            if (error) {
-              error.remove();
-            }
-          } else {
-            console.log("Administration : ERROR connection API");
-          }
-        };
-        request.open("GET", json);
-        request.send();
-      });    
+// récupération du tableau de tags
+let tags = document.querySelectorAll("li");
+console.log(tags);
+
+for(let i = 0; i < tags.length; i++){
+  console.log(tags[i].textContent);
 }
 
+/* au clic sur un tag appliquer un filter avec le textContent de l'élément
+li cliqué
+*/
+
+/*
 async function allPhotographersList(){
     const photographers = await getPhotographers();
 
@@ -63,3 +53,4 @@ async function allPhotographersList(){
 
     });
 }
+*/
