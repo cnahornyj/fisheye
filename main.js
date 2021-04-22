@@ -1,3 +1,12 @@
+// Ouvrir index.html avec liveServer pour récupération de la data
+fetch("photographers.json")
+.then(function(resp) {
+return resp.json();
+})
+.then (function(data) {
+console.log(data);
+});
+
 let idPhotographer = "";
 
 // récupération du tableau de tags
