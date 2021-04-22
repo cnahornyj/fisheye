@@ -8,7 +8,7 @@ display: flex;
 }
 
 img.logo{
-width: 90%;
+width: 250px;
 }
 
 nav{
@@ -20,21 +20,54 @@ display: flex;
 list-style-type: none;
 }
 
+/* Responsive header, nav + h1 */
+
+@media screen and (max-width:1339px){
+    header{
+    flex-direction: column;
+    }
+    li{
+    margin: 5px !important;
+    }
+    ul{
+    width: 400px;
+    flex-flow: wrap;
+    justify-content: center;
+    padding-inline-start: 0;
+    }
+}
+
+@media screen and (max-width:560px){
+    img.logo {
+        width: 200px;
+    }
+    h1{
+        font-size: 1.1em;
+        top: 2% !important;
+    }
+}
+
 li, span{
 margin: 0 5px 0 5px;
-padding: 1%;
+padding: 0 1.5% 0 1.5%;
 border: 1px solid #ccc;
 border-radius: 20px;
 }
 
+li:hover, li:focus{
+    background-color: #901c1c;
+    color: white;
+}
+
 h1{
 position: absolute;
-top: 0;
-right: 0;
+top: 1%;
+right: 2%;
 }
 
 section{
 display: flex;
+margin-top: 5%;
 }
 
 article{
@@ -51,7 +84,7 @@ border-radius: 50%;
 box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
-h2{
+.name{
 color: #d3573c;
 }
 
@@ -62,7 +95,7 @@ line-height: 0.3;
 }
 
 p.priceperday{
-color: #979797;
+color: #525252;
 font-size: 90%;
 }
 
