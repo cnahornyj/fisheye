@@ -15,30 +15,50 @@ async function renderPhotographers() {
   // Récupération de la data
   let data = await getPhotographers();
   let list = document.querySelector('#list-photographers');
-  //console.log(data.photographers);
   let html = '';
   data.photographers.forEach(photographer => {
-      let htmlSegment = 
-      `
-      <article>
-      <a href="">
-          <img src="assets/Sample Photos/Photographers ID Photos/${photographer.portrait}" class="photographer">
-          <h2>${photographer.name}</h2>
-      </a>
-      <p>${photographer.city}, ${photographer.country}</p>
-      <p class="citation">${photographer.tagline}</p>
-      <p class="priceperday">${photographer.price}€/jour</p>
-      <span>${photographer.tags}</span>
-      </article>`;
+    // Création des balises HTML
+    let item = document.createElement("article");
+    let link = document.createElement("a");
+    let photo = document.createElement("img");
+    let name = document.createElement("h2");
+    let location = document.createElement("p");
+    let tagline = document.createElement("p");
+    let price = document.createElement("p");
 
-      html += htmlSegment;
+    list.appendChild(item);
+    item.appendChild(link);
+    link.appendChild(photo);
+    link.appendChild(name);
+    item.appendChild(location);
+    item.appendChild(tagline);
+    item.appendChild(price);
+
+    for(let i = 0; i < photographer.tags.length; i++){
+      let tag = document.createElement("span");
+      tag.innerText = photographer.tags[i];
+      item.appendChild(tag);
+    }
+
+    photo.src = "assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
+    name.innerText = photographer.name;
+    location.innerText = `${photographer.city}, ${photographer.country}`;
+    tagline.innerText = photographer.tagline;
+    price.innerText = `${photographer.price}€/jour`;
+
+    link.setAttribute("href", "photographer-page.html?id="+photographer.id);
+    photo.setAttribute("class","photographer");
+    tagline.setAttribute("class","citation");
+    price.setAttribute("class","priceperday");
   });
-  list.innerHTML = html;
 }
 
 renderPhotographers();
 
+
+
 let idPhotographer = "";
+
 
 /* récupération du tableau de tags
 let tags = document.querySelectorAll("li");
