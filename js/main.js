@@ -123,13 +123,45 @@ image.setAttribute("class","image");
 
 async function photographerMedias(){
   idPhotographer = location.search.substring(4);
-  console.log(typeof idPhotographer); // string
+  //console.log(typeof idPhotographer); // string
 
   // Conversion string en number
   let id = parseInt(idPhotographer);
-  console.log(id);
+  //console.log(id);
 
   const data = await getPhotographers();
+
+  // Récupération du nom du photographe
+  const photographer = data.photographers;
+  //console.log(photographer);
+
+  // Récupérer l'index grâce à la paire clé valeur id : idPhotographer 
+  function functiontofindIndexByKeyValue(photographer, key, valuetosearch) {
+    for (let i = 0; i < photographer.length; i++) {
+      if (photographer[i][key] == valuetosearch) {
+      return i;
+    }
+  }
+return null;
+}
+
+// Appel de la fonction avec les paramètres
+let index = functiontofindIndexByKeyValue(photographer, "id", idPhotographer);
+//console.log(index);
+
+// Récupérer les informations du photographe grâce à son index dans le array photographers
+const humain = data.photographers[index];
+
+// Récupération prenom + nom
+const nom = humain.name;
+
+// Tableau avec prenom + nom
+const fullname = nom.split(' ');
+
+// Récupération du prenom
+const prenom = fullname[0];
+console.log(prenom);
+
   const medias = data.media;
   console.log(typeof medias);
 
@@ -139,9 +171,17 @@ async function photographerMedias(){
 
   results.forEach(result => {
     let media = document.querySelector("#photographer-medias");
-    let date = document.createElement("p");
-    media.appendChild(date);
-    date.innerText = result.date;
+    let item = document.createElement("article");
+
+
+    let date = document.createElement("img");
+
+    media.appendChild(item);
+    item.appendChild(date);
+
+    item.setAttribute("class","photoItem");
+    date.src = `../assets/Sample Photos/${prenom}/${result.image}`;
+    date.setAttribute("class","image");
   });
 
 }
