@@ -1,0 +1,97 @@
+body{
+font-family: 'DM Sans', sans-serif;
+color: #901c1c;
+}
+
+header{
+display: flex;
+}
+
+img.logo{
+width: 250px;
+}
+
+@media screen and (max-width:560px){
+    img.logo {
+        width: 200px;
+    }
+    h1{
+        font-size: 1.1em;
+        top: 2% !important;
+    }
+}
+
+#photographer-profile{
+background-color: #fafafa;
+width: 85%;
+margin: auto;
+padding: 2%;
+border-radius: 5px;
+display: flex;
+justify-content: space-between;
+}
+
+h1{
+color: #d3573c;
+font-size: 2.5em;
+margin-bottom: -3%;
+}
+
+p{
+    font-size: 125%;
+}
+
+p.citation{
+color: black;
+font-size: 90%;
+line-height: 0.3;
+margin-bottom: 10%;
+}
+
+article.contact{
+margin: 3.5% 25% 0 0;
+}
+
+article.image{
+margin-right: 2%;
+margin-top: 3%;
+}
+
+span{
+margin-right: 5px;
+padding: 0 1.5% 0 1.5%;
+border: 1px solid #ccc;
+border-radius: 20px;
+}
+
+span:hover, span:focus{
+background-color: #901c1c;
+color: white;
+}
+
+button{
+font-family: 'DM Sans';
+font-size: 100%;
+font-weight: bold;
+background-color: #901C1C;
+color: white;
+border: 1px solid #901C1C;
+border-radius: 5px;
+padding: 10%;
+width: 150px;
+}
+
+button:hover, button:focus{
+background-color: #d3573c;
+border: 1px solid #d3573c;
+color: black;
+}
+
+img.photographer{
+width: 200px;
+height: 200px;
+border-radius: 50%;
+-webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+-moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
