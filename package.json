@@ -1,0 +1,22 @@
+{
+  "name": "fisheye",
+  "version": "1.0.0",
+  "description": "![logo](https://user-images.githubusercontent.com/50677355/115770542-2330c300-a3ad-11eb-8d8c-59a49ba5e1c7.png) # Créez un site accessible pour une plateforme de photographes ## Projet 6 du parcours Développeur Front-End",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cnahornyj/ClaraNahornyj_6_20042021.git"
+  },
+  "author": "Clara Nahornyj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cnahornyj/ClaraNahornyj_6_20042021/issues"
+  },
+  "homepage": "https://github.com/cnahornyj/ClaraNahornyj_6_20042021#readme",
+  "devDependencies": {
+    "eslint": "^7.25.0"
+  }
+}
