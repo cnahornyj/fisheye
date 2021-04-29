@@ -131,7 +131,7 @@ async function photographerMedias(){
 
   const data = await getPhotographers();
 
-  // Récupération du nom du photographe
+  // Récupération du prénom du photographe pour src des images
   const photographer = data.photographers;
   //console.log(photographer);
 
@@ -150,40 +150,67 @@ let index = functiontofindIndexByKeyValue(photographer, "id", idPhotographer);
 //console.log(index);
 
 // Récupérer les informations du photographe grâce à son index dans le array photographers
-const humain = data.photographers[index];
+const artiste = data.photographers[index];
 
-// Récupération prenom + nom
-const nom = humain.name;
+// Récupération prénom + nom
+const fullname = artiste.name;
+//console.log(fullname);
 
-// Tableau avec prenom + nom
-const fullname = nom.split(' ');
+// Tableau avec prénom + nom
+const array = fullname.split(' ');
 
-// Récupération du prenom
-const prenom = fullname[0];
-console.log(prenom);
+// Récupération du prénom
+const firstname = array[0];
+// console.log(firstname);
 
-  const medias = data.media;
-  console.log(typeof medias);
+// Retirer le tiret si le prénom est composé
+const firstnameOfPhotographer = firstname.replace('-', ' ');
+// console.log(firstnameOfPhotographer);
 
-  // Récupérer un tableau avec les images/vidéos du photographe
-  const results = medias.filter(media => media.photographerId === id);
-  console.log(results);
+const medias = data.media;
+//console.log(typeof medias);
 
+// Récupérer un tableau avec les images/vidéos du photographe
+const results = medias.filter(media => media.photographerId === id);
+//console.log(results);
+
+// Pour chaque image/vidéo créée un article avec l'image + les informations de l'image
   results.forEach(result => {
     let media = document.querySelector("#photographer-medias");
     let item = document.createElement("article");
-
-
     let date = document.createElement("img");
+    let legendOfImage = document.createElement("p");
+    let likes = document.createElement("p");
+    let heart = document.createElement("button");
+
+    // Récupération du titre de l'image
+    // Création d'une fonction pour la récupération du titre ?
+    let title = result.image;
+    const legend = title.replace('_', ' ');
+    const titleOfImage = legend.replace('.jpg',' ');
+    //console.log(titleOfImage);
 
     media.appendChild(item);
     item.appendChild(date);
+    item.appendChild(legendOfImage);
+    item.appendChild(likes);
+    item.appendChild(heart);
+    heart.setAttribute("class","fa fa-heart");
+    heart.setAttribute("id","like");
 
     item.setAttribute("class","photoItem");
-    date.src = `../assets/Sample Photos/${prenom}/${result.image}`;
+    date.src = `../assets/Sample Photos/${firstnameOfPhotographer}/${result.image}`;
     date.setAttribute("class","image");
-  });
+    legendOfImage.innerText = titleOfImage;
+    likes.innerHTML = `${result.likes}`;
 
+    let count = result.likes;
+    function increment(){
+      likes.innerText = count++;
+    }
+    heart.addEventListener("click", increment);
+    // Pb à chaque clic incrémentation alors que reclique devrait retirer le like non ?
+  });
 }
 
 
