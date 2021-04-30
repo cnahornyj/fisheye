@@ -76,11 +76,7 @@ async function photographerDetails() {
   const photographers = data.photographers;
 
   // Appel de la fonction avec les paramètres
-  let index = findIndexByKeyValue(
-    photographers,
-    "id",
-    idPhotographer
-  );
+  let index = findIndexByKeyValue(photographers, "id", idPhotographer);
   // console.log(index);
 
   // Récupérer les informations du photographe grâce à son index dans le array photographers
@@ -148,7 +144,7 @@ async function photographerMedias() {
   const artiste = data.photographers[index];
 
   // Fonction pour récupérer UNIQUEMENT le prénom du photographe pour src des images/vidéos
-  function replaceFullnameByFirstname(string){
+  function replaceFullnameByFirstname(string) {
     let array = string.split(" ");
     let firstname = array[0];
     // Si prénom composé retiré le tiret
@@ -161,21 +157,38 @@ async function photographerMedias() {
 
   // Récupérer le prénom du photographe
   let firstname = replaceFullnameByFirstname(fullname);
-  console.log(firstname);
-
 
   const medias = data.media;
-  //console.log(typeof medias);
 
   // Récupérer un tableau avec les images/vidéos du photographe
   const results = medias.filter((media) => media.photographerId === id);
-  //console.log(results);
+  console.log(results);
 
-  function createLegendForMedia(string){
-    let removeCharacter = string.replaceAll("_"," ").replace(".jpg"," ");
+  function createLegendForMedia(string) {
+    let removeCharacter = string.replaceAll("_", " ").replace(".jpg", " ");
     console.log(removeCharacter);
     return removeCharacter;
   }
+
+
+
+  //
+  let essai = document.querySelector("#try");
+  let totalOfLikes = document.createElement("h3");
+
+  essai.appendChild(totalOfLikes);
+
+  let total = 0;
+  for (let i = 0; i < results.length; i++) {
+    total += results[i].likes;
+    console.log(total);
+  }
+
+  totalOfLikes.innerText = `${total} ${artiste.price}€/jour`;
+
+  //
+
+
 
   // Pour chaque image/vidéo créée un article avec l'image + les informations de l'image
   results.forEach((result) => {
@@ -196,21 +209,24 @@ async function photographerMedias() {
     item.appendChild(legendOfImage);
     item.appendChild(likes);
     item.appendChild(heart);
-    heart.setAttribute("class", "fa fa-heart");
-    heart.setAttribute("id", "like");
 
     item.setAttribute("class", "photoItem");
     date.src = `../assets/Sample Photos/${firstname}/${result.image}`;
     date.setAttribute("class", "image");
     legendOfImage.innerText = legend;
     likes.innerHTML = `${result.likes}`;
+    heart.setAttribute("class", "fa fa-heart");
+    heart.setAttribute("id", "like");
 
     let count = result.likes;
+
     function increment() {
       likes.innerText = count++;
+      total++;
+      totalOfLikes.innerText = `${total} ${artiste.price}€/jour`;
     }
+  
     heart.addEventListener("click", increment);
-    // Pb à chaque clic incrémentation alors que reclique devrait retirer le like non ?
   });
 }
 
