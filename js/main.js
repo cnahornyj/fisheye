@@ -12,13 +12,12 @@ async function getPhotographers() {
 
 // Fonction pour afficher la liste des photographes
 async function renderPhotographers() {
-  // https://etienner.github.io/les-filtres-en-java-script/
-  // https://gist.github.com/EtienneR/92726bcd596ff5265b625f8865f8bb13
   // Récupération de la data
   let data = await getPhotographers();
   let photographers = data.photographers;
   let list = document.querySelector("#list-photographers");
   //console.log(photographers);
+  // Parcourir le tableau d'objets et pour chaque objet
   // Pour chaque photographe dans le tableau de photographes création des éléments DOM
   photographers.forEach((photographer) => {
     // Création des balises HTML
@@ -57,13 +56,13 @@ async function renderPhotographers() {
     photo.setAttribute("class", "photographer");
     tagline.setAttribute("class", "citation");
     price.setAttribute("class", "priceperday");
-  });
+  }
+  );
 
-  // Cette fonction doit appliquer un filtre sur le tableau d'origine des photographes
-  function applyFilter(find){
+  function applyFilter(value){
     let photographers = data.photographers;
     // Modification pour comparaison avec string dans le json
-    let category = find.replace("#","").toLowerCase();
+    let category = value.replace("#","").toLowerCase();
     //console.log(category);
     list.innerHTML="";
     for(let i = 0; i < photographers.length; i++){
@@ -72,29 +71,62 @@ async function renderPhotographers() {
         if(photographers[i].tags[j] === category){
           // Affiche le nombre de photographes qui ont cette catégorie
           console.log("COUCOU");
+
+          let item = document.createElement("article");
+          let link = document.createElement("a");
+          let photo = document.createElement("img");
           let name = document.createElement("h2");
-          list.appendChild(name);
+          let location = document.createElement("p");
+          let tagline = document.createElement("p");
+          let price = document.createElement("p");
+
+          list.appendChild(item);
+          item.appendChild(link);
+          link.appendChild(photo);
+          link.appendChild(name);
+          item.appendChild(location);
+          item.appendChild(tagline);
+          item.appendChild(price);
+
+          for (let i = 0; i < photographers[i].tags.length; i++) {
+            let tag = document.createElement("span");
+            tag.innerText = `#${photographers[i].tags[j]}`;
+            tag.setAttribute("class", "type");
+            item.appendChild(tag);
+          }
+
+          photo.src =
+            "../assets/Sample Photos/Photographers ID Photos/" +
+            photographers[i].portrait;
           name.innerText = photographers[i].name;
+          location.innerText = `${photographers[i].city}, ${photographers[i].country}`;
+          tagline.innerText = photographers[i].tagline;
+          price.innerText = `${photographers[i].price}€/jour`;
+
+          link.setAttribute("href", "photographer-page.html?id=" + photographers[i].id);
+          photo.setAttribute("class", "photographer");
+          tagline.setAttribute("class", "citation");
+          price.setAttribute("class", "priceperday");
         }
       }
     }
   }
 
   // Fonction pour récupérer la valeur de l'élément cliqué puis application du filtre
-  function displayFilters() {
+  function findValueOfFilter() {
     let type = document.querySelectorAll("li");
     let filters = [];
     for (let i = 0; i < type.length; i++) {
       filters.push(type[i].innerText);
       type[i].addEventListener('click', function(){
-        let find = type[i].innerText;
-        applyFilter(find);
+        let value = type[i].innerText;
+        applyFilter(value);
       });
     }
     // Afficher en console le tableau contenant les catégories
     console.log(filters);
   }
-  displayFilters();
+  findValueOfFilter();
 }
 
 renderPhotographers();
