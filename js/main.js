@@ -12,10 +12,15 @@ async function getPhotographers() {
 
 // Fonction pour afficher la liste des photographes
 async function renderPhotographers() {
+  // https://etienner.github.io/les-filtres-en-java-script/
+  // https://gist.github.com/EtienneR/92726bcd596ff5265b625f8865f8bb13
   // Récupération de la data
   let data = await getPhotographers();
+  let photographers = data.photographers;
   let list = document.querySelector("#list-photographers");
-  data.photographers.forEach((photographer) => {
+  //console.log(photographers);
+  // Pour chaque photographe dans le tableau de photographes création des éléments DOM
+  photographers.forEach((photographer) => {
     // Création des balises HTML
     let item = document.createElement("article");
     let link = document.createElement("a");
@@ -36,6 +41,7 @@ async function renderPhotographers() {
     for (let i = 0; i < photographer.tags.length; i++) {
       let tag = document.createElement("span");
       tag.innerText = `#${photographer.tags[i]}`;
+      tag.setAttribute("class", "type");
       item.appendChild(tag);
     }
 
@@ -52,6 +58,43 @@ async function renderPhotographers() {
     tagline.setAttribute("class", "citation");
     price.setAttribute("class", "priceperday");
   });
+
+  // Cette fonction doit appliquer un filtre sur le tableau d'origine des photographes
+  function applyFilter(find){
+    let photographers = data.photographers;
+    // Modification pour comparaison avec string dans le json
+    let category = find.replace("#","").toLowerCase();
+    //console.log(category);
+    list.innerHTML="";
+    for(let i = 0; i < photographers.length; i++){
+      for(let j = 0; j < photographers[i].tags.length; j++){
+        // Si l'un des tags d'un photographe === category cliqué alors affichage du nom du photographe
+        if(photographers[i].tags[j] === category){
+          // Affiche le nombre de photographes qui ont cette catégorie
+          console.log("COUCOU");
+          let name = document.createElement("h2");
+          list.appendChild(name);
+          name.innerText = photographers[i].name;
+        }
+      }
+    }
+  }
+
+  // Fonction pour récupérer la valeur de l'élément cliqué puis application du filtre
+  function displayFilters() {
+    let type = document.querySelectorAll("li");
+    let filters = [];
+    for (let i = 0; i < type.length; i++) {
+      filters.push(type[i].innerText);
+      type[i].addEventListener('click', function(){
+        let find = type[i].innerText;
+        applyFilter(find);
+      });
+    }
+    // Afficher en console le tableau contenant les catégories
+    console.log(filters);
+  }
+  displayFilters();
 }
 
 renderPhotographers();
@@ -67,6 +110,9 @@ function findIndexByKeyValue(photographer, key, valuetosearch) {
   }
   return null;
 }
+
+// async function photographerDetails() et async function photographerMedias()
+// possible en une seule fonction ?
 
 async function photographerDetails() {
   // Collecter l'URL après le ?id= pour le récupérer uniquement sur le fichier json
@@ -170,8 +216,6 @@ async function photographerMedias() {
     return removeCharacter;
   }
 
-
-
   //
   let essai = document.querySelector("#try");
   let totalOfLikes = document.createElement("h3");
@@ -187,8 +231,6 @@ async function photographerMedias() {
   totalOfLikes.innerText = `${total} ${artiste.price}€/jour`;
 
   //
-
-
 
   // Pour chaque image/vidéo créée un article avec l'image + les informations de l'image
   results.forEach((result) => {
@@ -223,22 +265,9 @@ async function photographerMedias() {
     function increment() {
       likes.innerText = count++;
       total++;
-      totalOfLikes.innerText = `${total} ${artiste.price}€/jour`;
+      totalOfLikes.innerHTML = `${total} ${artiste.price}€/jour`;
     }
-  
+
     heart.addEventListener("click", increment);
   });
 }
-
-/* récupération du tableau de tags
-let tags = document.querySelectorAll("li");
-console.log(tags);
-
-for(let i = 0; i < tags.length; i++){
-  console.log(tags[i].textContent);
-}
-*/
-
-/* au clic sur un tag appliquer un filter avec le textContent de l'élément
-li cliqué
-*/
