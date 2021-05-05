@@ -95,6 +95,18 @@ padding: 0;
 width: 0;
 }
 
+/*
+Section likes
+position: fixed;
+bottom: 0;
+right: 100px;
+background-color: #d3573c;
+width: 200px;
+color: black;
+border-top-right-radius: 5px;
+border-top-left-radius: 5px;
+*/
+
 img.photographer{
 width: 200px;
 height: 200px;
