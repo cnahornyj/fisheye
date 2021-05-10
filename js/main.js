@@ -280,7 +280,7 @@ async function photographerMedias() {
   }
 
   //
-  let essai = document.querySelector("#try");
+  let essai = document.querySelector("#total-likes");
   let totalOfLikes = document.createElement("h3");
 
   essai.appendChild(totalOfLikes);
@@ -291,7 +291,7 @@ async function photographerMedias() {
     console.log(total);
   }
 
-  totalOfLikes.innerText = `${total} ${artiste.price}€/jour`;
+  totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
 
   //
 
@@ -333,7 +333,7 @@ async function photographerMedias() {
     function increment() {
       likes.innerText = count++;
       total++;
-      totalOfLikes.innerHTML = `${total} ${artiste.price}€/jour`;
+      totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
     }
 
     heart.addEventListener("click", increment);

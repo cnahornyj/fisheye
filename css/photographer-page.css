@@ -96,17 +96,28 @@ width: 0;
 margin-left: 5px;
 }
 
-/*
-Section likes
+#total-likes{
 position: fixed;
 bottom: 0;
 right: 100px;
-background-color: #d3573c;
-width: 200px;
+background-color: #db8877;
+width: 280px;
+height: 50px;
 color: black;
 border-top-right-radius: 5px;
 border-top-left-radius: 5px;
-*/
+}
+
+h3{
+display: flex;
+justify-content: space-around;
+align-items: baseline;
+margin-top: 15px;
+}
+
+.icon{
+margin-left: -55px !important;
+}
 
 img.photographer{
 width: 200px;
@@ -145,7 +156,7 @@ justify-content: space-between;
 }
 
 aside.details-likes{
-margin-right: 20px;
+margin-right: 18px;
 }
 
 
