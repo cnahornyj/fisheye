@@ -68,12 +68,12 @@ right: 2%;
 section{
 display: flex;
 flex-wrap: wrap;
-margin: 5%;
+justify-content: center;
 }
 
 article{
+width: 400px;
 text-align: center;
-width: 33%;
 margin: 5% 0 5% 0;
 }
 
