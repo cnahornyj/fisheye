@@ -143,6 +143,9 @@ function findIndexByKeyValue(photographer, key, valuetosearch) {
   return null;
 }
 
+const profilePhotographer = document.getElementById("photographer-profile");
+const medias = document.getElementById("photographer-medias");
+const totalLikes = document.getElementById("total-likes");
 const modal = document.getElementById("form-modal");
 const btnCloseModal = document.getElementById("close-modal");
 modal.style.display = "none";
@@ -217,6 +220,11 @@ async function photographerDetails() {
 
   function openFormModal(){
     modal.style.display = "block";
+    modal.setAttribute("aria-hidden","true");
+    btnCloseModal.focus();
+    profilePhotographer.setAttribute("aria-hidden","false");
+    medias.setAttribute("aria-hidden","false");
+    totalLikes.setAttribute("aria-hidden","false");
   }
 
   // Passer la fonction à l'évènement click
@@ -227,6 +235,10 @@ async function photographerDetails() {
   */
  function closeFormModal(){
   modal.style.display = "none";
+  modal.setAttribute("aria-hidden","false");
+  profilePhotographer.setAttribute("aria-hidden","true");
+  medias.setAttribute("aria-hidden","true");
+  totalLikes.setAttribute("aria-hidden","true");
  }
 
  btnCloseModal.addEventListener('click', closeFormModal);
