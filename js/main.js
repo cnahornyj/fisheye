@@ -15,9 +15,11 @@ async function renderPhotographers() {
   // Récupération de la data
   let data = await getPhotographers();
   let photographers = data.photographers;
+
   let list = document.querySelector("#list-photographers");
   //console.log(photographers);
-  // Parcourir le tableau d'objets et pour chaque objet
+
+
   // Pour chaque photographe dans le tableau de photographes création des éléments DOM
   photographers.forEach((photographer) => {
     // Création des balises HTML
@@ -56,19 +58,18 @@ async function renderPhotographers() {
     photo.setAttribute("class", "photographer");
     tagline.setAttribute("class", "citation");
     price.setAttribute("class", "priceperday");
-  }
-  );
+  });
 
-  function applyFilter(value){
+  function applyFilter(value) {
     let photographers = data.photographers;
     // Modification pour comparaison avec string dans le json
-    let category = value.replace("#","").toLowerCase();
+    let category = value.replace("#", "").toLowerCase();
     //console.log(category);
-    list.innerHTML="";
-    for(let i = 0; i < photographers.length; i++){
-      for(let j = 0; j < photographers[i].tags.length; j++){
+    list.innerHTML = "";
+    for (let i = 0; i < photographers.length; i++) {
+      for (let j = 0; j < photographers[i].tags.length; j++) {
         // Si l'un des tags d'un photographe === category cliqué alors affichage du nom du photographe
-        if(photographers[i].tags[j] === category){
+        if (photographers[i].tags[j] === category) {
           // Affiche le nombre de photographes qui ont cette catégorie
           console.log("COUCOU");
 
@@ -103,7 +104,10 @@ async function renderPhotographers() {
           tagline.innerText = photographers[i].tagline;
           price.innerText = `${photographers[i].price}€/jour`;
 
-          link.setAttribute("href", "photographer-page.html?id=" + photographers[i].id);
+          link.setAttribute(
+            "href",
+            "photographer-page.html?id=" + photographers[i].id
+          );
           photo.setAttribute("class", "photographer");
           tagline.setAttribute("class", "citation");
           price.setAttribute("class", "priceperday");
@@ -118,7 +122,7 @@ async function renderPhotographers() {
     let filters = [];
     for (let i = 0; i < type.length; i++) {
       filters.push(type[i].innerText);
-      type[i].addEventListener('click', function(){
+      type[i].addEventListener("click", function () {
         let value = type[i].innerText;
         applyFilter(value);
       });
@@ -150,7 +154,6 @@ const modal = document.getElementById("form-modal");
 const btnCloseModal = document.getElementById("close-modal");
 modal.style.display = "none";
 
-
 // async function photographerDetails() et async function photographerMedias()
 // possible en une seule fonction ?
 
@@ -163,7 +166,7 @@ async function photographerDetails() {
 
   // Appel de la fonction avec les paramètres
   let index = findIndexByKeyValue(photographers, "id", idPhotographer);
-  // console.log(index);
+  //console.log(index);
 
   // Récupérer les informations du photographe grâce à son index dans le array photographers
   const photographer = data.photographers[index];
@@ -171,26 +174,28 @@ async function photographerDetails() {
 
   let profile = document.querySelector("#photographer-profile");
 
-  // Création des balises HTML
+  // Création des éléments
   let name = document.createElement("h1");
   let localisation = document.createElement("p");
   let quote = document.createElement("p");
-  let button = document.createElement("button");
+  let btnOpenModal = document.createElement("button");
+  let btnOpenModalResp = document.getElementById("open-form-responsive");
   let photo = document.createElement("img");
   let presentation = document.createElement("article");
   let contact = document.createElement("article");
   let image = document.createElement("article");
 
-  // Hiérarchisation des balises
+  // Hiérarchisation des éléments
   profile.appendChild(presentation);
   profile.appendChild(contact);
   profile.appendChild(image);
   presentation.appendChild(name);
   presentation.appendChild(localisation);
   presentation.appendChild(quote);
-  contact.appendChild(button);
+  contact.appendChild(btnOpenModal);
   image.appendChild(photo);
 
+  // Attribution des class, id, src, innerText, innerHTML 
   name.innerText = photographer.name;
   localisation.innerText = `${photographer.city}, ${photographer.country}`;
   quote.innerText = photographer.tagline;
@@ -201,7 +206,7 @@ async function photographerDetails() {
     presentation.appendChild(tag);
   }
 
-  button.innerText = "Contactez-moi";
+  btnOpenModal.innerText = "Contactez-moi";
   photo.src =
     "../assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
   photo.setAttribute("class", "photographer");
@@ -209,40 +214,36 @@ async function photographerDetails() {
   contact.setAttribute("class", "contact");
   image.setAttribute("class", "image");
 
-  /* Fonction pour ouvrir la modale
-  Ne vaut il mieux pas créer le formulaire directement dans le fichier HTML
-  et ne gérer dynamiquement que le nom du photographe ? faut il vérifier les champs
-  saisies par l'utilisateur ?
-  */
+  // Faut il vérifier les champs saisies par l'utilisateur ?
 
   let nameOfPhotographer = document.getElementById("name-photographer");
   nameOfPhotographer.innerHTML = `Contactez-moi <br> ${photographer.name}`;
 
-  function openFormModal(){
+  function openFormModal() {
     modal.style.display = "block";
-    modal.setAttribute("aria-hidden","true");
+    modal.setAttribute("aria-hidden", "true");
     btnCloseModal.focus();
-    profilePhotographer.setAttribute("aria-hidden","false");
-    medias.setAttribute("aria-hidden","false");
-    totalLikes.setAttribute("aria-hidden","false");
+    profilePhotographer.setAttribute("aria-hidden", "false");
+    medias.setAttribute("aria-hidden", "false");
+    totalLikes.setAttribute("aria-hidden", "false");
   }
 
   // Passer la fonction à l'évènement click
-  button.addEventListener('click', openFormModal);
+  btnOpenModal.addEventListener("click", openFormModal);
+  btnOpenModalResp.addEventListener("click", openFormModal);
 
   /* Voir si l'exécution par défaut de la soumission du formulaire doit elle se faire ?
   + ou faut il ajouter un message de réussite ?
   */
- function closeFormModal(){
-  modal.style.display = "none";
-  modal.setAttribute("aria-hidden","false");
-  profilePhotographer.setAttribute("aria-hidden","true");
-  medias.setAttribute("aria-hidden","true");
-  totalLikes.setAttribute("aria-hidden","true");
- }
+  function closeFormModal() {
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "false");
+    profilePhotographer.setAttribute("aria-hidden", "true");
+    medias.setAttribute("aria-hidden", "true");
+    totalLikes.setAttribute("aria-hidden", "true");
+  }
 
- btnCloseModal.addEventListener('click', closeFormModal);
- 
+  btnCloseModal.addEventListener("click", closeFormModal);
 }
 
 async function photographerMedias() {
@@ -276,39 +277,43 @@ async function photographerMedias() {
   // Récupérer le prénom + nom du photographe
   const fullname = artiste.name;
 
-  // Récupérer le prénom du photographe
+  /* Récupérer le prénom du photographe en faisant appel à la fonction replaceFullnameByFirstname 
+  avec le nom complet en paramètre */
   let firstname = replaceFullnameByFirstname(fullname);
 
   const medias = data.media;
 
   // Récupérer un tableau avec les images/vidéos du photographe
   const results = medias.filter((media) => media.photographerId === id);
-  console.log(results);
+  //console.log(results);
 
+  // Fonction pour créer une légende pour chaque média
   function createLegendForMedia(string) {
     let removeCharacter = string.replaceAll("_", " ").replace(".jpg", " ");
-    console.log(removeCharacter);
+    //console.log(removeCharacter);
     return removeCharacter;
   }
 
-  //
-  let essai = document.querySelector("#total-likes");
+  let sectionLikes = document.querySelector("#total-likes");
   let totalOfLikes = document.createElement("h3");
 
-  essai.appendChild(totalOfLikes);
+  sectionLikes.appendChild(totalOfLikes);
 
+  // Faire le total des likes avec le nombre de likes par média
   let total = 0;
   for (let i = 0; i < results.length; i++) {
     total += results[i].likes;
-    console.log(total);
+    //console.log(total);
   }
 
+  // Afficher le nombre total de likes par artiste + prix de sa prestation à la journée
   totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
 
   //
 
-  // Pour chaque image/vidéo créée un article avec l'image + les informations de l'image
+  // Pour chaque média créé un article avec le media + ses informations
   results.forEach((result) => {
+    // Création des éléments
     let media = document.querySelector("#photographer-medias");
     let item = document.createElement("article");
     let date = document.createElement("img");
@@ -322,6 +327,7 @@ async function photographerMedias() {
     let title = result.image;
     let legend = createLegendForMedia(title);
 
+    // Hiérarchisation des éléments
     media.appendChild(item);
     item.appendChild(date);
     item.appendChild(detailsOfImage);
@@ -330,12 +336,13 @@ async function photographerMedias() {
     details.appendChild(likes);
     details.appendChild(heart);
 
+    // Attribution des class, id, src, innerText, innerHTML 
     item.setAttribute("class", "photoItem");
     date.src = `../assets/Sample Photos/${firstname}/${result.image}`;
     date.setAttribute("class", "image");
-    detailsOfImage.setAttribute("class","details-image");
+    detailsOfImage.setAttribute("class", "details-image");
     legendOfImage.innerText = legend;
-    details.setAttribute("class","details-likes");
+    details.setAttribute("class", "details-likes");
     likes.innerHTML = `${result.likes}`;
     heart.setAttribute("class", "fa fa-heart");
     heart.setAttribute("id", "like");
@@ -349,5 +356,7 @@ async function photographerMedias() {
     }
 
     heart.addEventListener("click", incrementLikes);
+
+    // onclick sur l'image ouverture de la light-box
   });
 }
