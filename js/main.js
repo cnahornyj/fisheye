@@ -143,6 +143,11 @@ function findIndexByKeyValue(photographer, key, valuetosearch) {
   return null;
 }
 
+const modal = document.getElementById("form-modal");
+const btnCloseModal = document.getElementById("close-modal");
+modal.style.display = "none";
+
+
 // async function photographerDetails() et async function photographerMedias()
 // possible en une seule fonction ?
 
@@ -200,6 +205,32 @@ async function photographerDetails() {
   quote.setAttribute("class", "citation");
   contact.setAttribute("class", "contact");
   image.setAttribute("class", "image");
+
+  /* Fonction pour ouvrir la modale
+  Ne vaut il mieux pas créer le formulaire directement dans le fichier HTML
+  et ne gérer dynamiquement que le nom du photographe ? faut il vérifier les champs
+  saisies par l'utilisateur ?
+  */
+
+  let nameOfPhotographer = document.getElementById("name-photographer");
+  nameOfPhotographer.innerHTML = `Contactez-moi <br> ${photographer.name}`;
+
+  function openFormModal(){
+    modal.style.display = "block";
+  }
+
+  // Passer la fonction à l'évènement click
+  button.addEventListener('click', openFormModal);
+
+  /* Voir si l'exécution par défaut de la soumission du formulaire doit elle se faire ?
+  + ou faut il ajouter un message de réussite ?
+  */
+ function closeFormModal(){
+  modal.style.display = "none";
+ }
+
+ btnCloseModal.addEventListener('click', closeFormModal);
+ 
 }
 
 async function photographerMedias() {

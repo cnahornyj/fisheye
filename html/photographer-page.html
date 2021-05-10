@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="/css/photographer-page.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
 </head>
 <body>
     <header role="banner">
@@ -22,6 +25,29 @@
         <section id="photographer-medias" aria-label="Section médias du photographe">
         </section>
         <section id="try"></section>
+        <section id="form-modal">
+            <button id="close-modal"><i class="fa fa-times fa-3x"></i></button>
+            <h1 id="name-photographer"></h1>
+            <form
+            id="contact"
+            action="photographer-page.html"
+            method="get">
+                <label for="firstname">Prénom</label><br>
+                <input type="text" id="firstname"
+                name="firstname" aria-required=true/><br>
+                <label for="name">Nom</label><br>
+                <input type="text" id="name"
+                name="name" aria-required=true/><br>
+                <label for="email">Email</label><br>
+                <input type="email" id="email"
+                name="email" aria-required=true/><br>
+                <label for="message">Message</label><br>
+                <textarea id="message" name="message"
+                rows="5" cols="33" aria-required=true>
+                </textarea><br>
+                <input class="btn-submit" type="submit" value="Envoyer" />
+            </form>
+        </section>
     </main>
     <script src="../photographers.json"></script>
     <script src="../js/main.js"></script>
