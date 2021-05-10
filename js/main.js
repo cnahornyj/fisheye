@@ -300,8 +300,9 @@ async function photographerMedias() {
     let media = document.querySelector("#photographer-medias");
     let item = document.createElement("article");
     let date = document.createElement("img");
-
+    let detailsOfImage = document.createElement("aside");
     let legendOfImage = document.createElement("p");
+    let details = document.createElement("aside");
     let likes = document.createElement("p");
     let heart = document.createElement("button");
 
@@ -311,14 +312,18 @@ async function photographerMedias() {
 
     media.appendChild(item);
     item.appendChild(date);
-    item.appendChild(legendOfImage);
-    item.appendChild(likes);
-    item.appendChild(heart);
+    item.appendChild(detailsOfImage);
+    detailsOfImage.appendChild(legendOfImage);
+    detailsOfImage.appendChild(details);
+    details.appendChild(likes);
+    details.appendChild(heart);
 
     item.setAttribute("class", "photoItem");
     date.src = `../assets/Sample Photos/${firstname}/${result.image}`;
     date.setAttribute("class", "image");
+    detailsOfImage.setAttribute("class","details-image");
     legendOfImage.innerText = legend;
+    details.setAttribute("class","details-likes");
     likes.innerHTML = `${result.likes}`;
     heart.setAttribute("class", "fa fa-heart");
     heart.setAttribute("id", "like");

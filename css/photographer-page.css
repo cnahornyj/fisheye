@@ -93,6 +93,7 @@ background: none;
 border: none;
 padding: 0;
 width: 0;
+margin-left: 5px;
 }
 
 /*
@@ -131,9 +132,22 @@ margin: 2%;
 
 img.image{
 width: 313px;
-height: 268px;
+height: 280px;
 border-radius: 5px;
 }
+
+aside.details-image, aside.details-likes{
+display: flex;
+}
+
+aside.details-image{
+justify-content: space-between;    
+}
+
+aside.details-likes{
+margin-right: 20px;
+}
+
 
 #form-modal{
 position: fixed;
