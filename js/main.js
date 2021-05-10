@@ -342,12 +342,12 @@ async function photographerMedias() {
 
     let count = result.likes;
 
-    function increment() {
+    function incrementLikes() {
       likes.innerText = count++;
       total++;
       totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
     }
 
-    heart.addEventListener("click", increment);
+    heart.addEventListener("click", incrementLikes);
   });
 }
