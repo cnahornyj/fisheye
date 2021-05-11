@@ -69,38 +69,41 @@ async function renderPhotographers() {
   let selectedFilter = [];
   let arrayFiltered = [];
 
-  // Fonction pour récupérer la valeur de l'élément cliqué puis application du filtre
+  // Fonction pour récupérer la valeur de l'élément cliqué puis application du filtre (pas tout à fait)
   function applyFilter() {
     let type = document.querySelectorAll("input[type=checkbox]");
+    /*let span = document.querySelectorAll("span.filter");
+    console.log(span);*/
     for (let i = 0; i < type.length; i++) {
       type[i].addEventListener("change", function () {
         if (this.checked) {
-          console.log(`${type[i].value} is checked..`);
+          //console.log(`${type[i].value} is checked..`);
           selectedFilter.push(type[i].value);
           let filter = type[i].value;
           for (let j = 0; j < photographers.length; j++) {
             for (let h = 0; h < photographers[j].tags.length; h++) {
               if (photographers[j].tags[h] === filter) {
-                 arrayFiltered.push(photographers[j]);
-                 list.innerHTML= "";
-                 createElements(arrayFiltered);
+                arrayFiltered.push(photographers[j]);
               }
             }
           }
-          console.log(selectedFilter);
+          list.innerHTML = "";
+          createElements(arrayFiltered);
+          /*console.log(arrayFiltered);
+          console.log(selectedFilter);*/
         } else {
-          list.innerHTML= "";
           console.log(`${type[i].value} is not anymore checked..`);
+          arrayFiltered = [];
+          list.innerHTML = "";
           selectedFilter.shift();
-          console.log(selectedFilter);
           createElements(photographers);
-          console.log(photographers);
+          /*console.log(selectedFilter);
+          console.log(arrayFiltered);*/
         }
       });
     }
   }
   applyFilter();
-
 }
 
 renderPhotographers();
