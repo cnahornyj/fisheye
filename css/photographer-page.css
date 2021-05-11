@@ -24,7 +24,7 @@ button#open-form-responsive{
 
 
 @media screen and (max-width:780px){
-    button{
+    button#btn-open-modal{
         display:none;
         visibility: hidden;
     }

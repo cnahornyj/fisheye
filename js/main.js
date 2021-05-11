@@ -207,6 +207,7 @@ async function photographerDetails() {
   }
 
   btnOpenModal.innerText = "Contactez-moi";
+  btnOpenModal.setAttribute("id","btn-open-modal");
   photo.src =
     "../assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
   photo.setAttribute("class", "photographer");
