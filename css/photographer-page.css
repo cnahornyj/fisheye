@@ -43,9 +43,21 @@ button#open-form-responsive{
         display:none;
         visibility: hidden;
     }
+    section#photographer-profile {
+        background-color: transparent !important;
+    }
     img.image{
         width: 100% !important;
         height: 85% !important;
+    }
+    article.image{
+        position: absolute;
+        right: 45px;
+        top: 120px;
+    }
+    img.photographer{
+        width: 150px !important;
+        height: 150px !important;
     }
 }
 
@@ -56,6 +68,13 @@ button#open-form-responsive{
     h1{
         font-size: 1.1em;
         top: 2% !important;
+    }
+    article.image{
+        margin-top: 0 !important;
+    }
+    img.photographer {
+        width: 125px !important;
+        height: 125px !important;
     }
 }
 
