@@ -22,7 +22,6 @@ button#open-form-responsive{
     }
 }
 
-
 @media screen and (max-width:780px){
     button#btn-open-modal{
         display:none;
@@ -46,7 +45,7 @@ button#open-form-responsive{
     section#photographer-profile {
         background-color: transparent !important;
     }
-    img.image{
+    img.image, video{
         width: 100% !important;
         height: 85% !important;
     }
@@ -195,6 +194,12 @@ margin-top: 4%;
 }
 
 .photoItem{
+margin: 2%;
+}
+
+.photoVideo{
+width: 313px;
+height: 351px;
 margin: 2%;
 }
 

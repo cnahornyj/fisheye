@@ -174,9 +174,15 @@ async function photographerMedias() {
   //console.log(results);
 
   // Fonction pour créer une légende pour chaque média
-  function createLegendForMedia(string) {
+  function createLegendForPhotography(string) {
     let removeCharacter = string.replaceAll("_", " ").replace(".jpg", " ");
-    //console.log(removeCharacter);
+    console.log(removeCharacter);
+    return removeCharacter;
+  }
+
+  function createLegendForVideo(string) {
+    let removeCharacter = string.replaceAll("_", " ").replace(".mp4", " ");
+    console.log(removeCharacter);
     return removeCharacter;
   }
 
@@ -200,34 +206,74 @@ async function photographerMedias() {
   // Pour chaque média créé un article avec le media + ses informations
   results.forEach((result) => {
     // Création des éléments
+    console.log(result);
+
     let media = document.querySelector("#photographer-medias");
-    let item = document.createElement("article");
-    let date = document.createElement("img");
-    let detailsOfImage = document.createElement("aside");
-    let legendOfImage = document.createElement("p");
     let details = document.createElement("aside");
     let likes = document.createElement("p");
     let heart = document.createElement("button");
 
-    // Récupération du titre de l'image
-    let title = result.image;
-    let legend = createLegendForMedia(title);
+    // Si le media a une clé image création, hiérarchisation des éléments suivants
+    if(result.hasOwnProperty('image')){
 
-    // Hiérarchisation des éléments
-    media.appendChild(item);
-    item.appendChild(date);
-    item.appendChild(detailsOfImage);
-    detailsOfImage.appendChild(legendOfImage);
-    detailsOfImage.appendChild(details);
-    details.appendChild(likes);
-    details.appendChild(heart);
+      // Création des éléments
+      let item = document.createElement("article");
+      media.appendChild(item);
+      let photography = document.createElement("img");
+      let detailsOfPhotography = document.createElement("aside");
+      let legendOfPhotography = document.createElement("p");
+      let title = result.image;
+      let legend = createLegendForPhotography(title);
 
-    // Attribution des class, id, src, innerText, innerHTML
-    item.setAttribute("class", "photoItem");
-    date.src = `../assets/Sample Photos/${firstname}/${result.image}`;
-    date.setAttribute("class", "image");
-    detailsOfImage.setAttribute("class", "details-image");
-    legendOfImage.innerText = legend;
+      // Hiérarchisation des éléments
+      item.appendChild(photography);
+      item.appendChild(detailsOfPhotography);
+      detailsOfPhotography.appendChild(legendOfPhotography);
+      detailsOfPhotography.appendChild(details);
+      details.appendChild(likes);
+      details.appendChild(heart);
+
+      // Attribution des class, id, src etc
+      item.setAttribute("class", "photoItem");
+      photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
+      photography.setAttribute("class", "image");
+      detailsOfPhotography.setAttribute("class", "details-image");
+      legendOfPhotography.innerText = legend;
+
+    // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
+    } else if (result.hasOwnProperty('video')){
+
+      // Création des éléments
+      let item = document.createElement("article");
+      media.appendChild(item);
+      let video = document.createElement("video");
+      let source = document.createElement("source");
+      let detailsOfVideo = document.createElement("aside");
+      let legendOfVideo = document.createElement("p");
+      let title = result.video;
+      let legend = createLegendForVideo(title);
+
+      // Hiérarchisation des éléments
+      item.appendChild(video);
+      video.appendChild(source);
+      item.appendChild(detailsOfVideo);
+      detailsOfVideo.appendChild(legendOfVideo);
+      detailsOfVideo.appendChild(details);
+      details.appendChild(likes);
+      details.appendChild(heart);
+
+      // Attribution des class, id src etc
+      item.setAttribute("class", "photoVideo");
+      legendOfVideo.innerText = legend;
+      video.setAttribute("width", "313px");
+      video.setAttribute("height","280px");
+      video.setAttribute("controls","");
+      detailsOfVideo.setAttribute("class", "details-image");
+      source.src = `../assets/Sample Photos/${firstname}/${result.video}`;
+      source.setAttribute("type","video/mp4");
+    }
+
+    // Partie likes
     details.setAttribute("class", "details-likes");
     likes.innerHTML = `${result.likes}`;
     heart.setAttribute("class", "fa fa-heart");
