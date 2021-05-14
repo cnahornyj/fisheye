@@ -17,7 +17,6 @@ async function renderPhotographers() {
   let photographers = data.photographers;
 
   let list = document.querySelector("#list-photographers");
-  //console.log(photographers);
 
   // Pour chaque photographe dans le tableau de photographes création des éléments DOM
   photographers.forEach((photographer) => {
@@ -59,13 +58,9 @@ async function renderPhotographers() {
     price.setAttribute("class", "priceperday");
   });
 
-  function applyFilter(value) {
+  function applyFilter(category) {
     // Récupérer la liste de tous les photographes
     let photographers = data.photographers;
-
-    // Modification pour comparaison avec string dans le json
-    let category = value.replace("#", "").toLowerCase();
-    //console.log(category);
 
     list.innerHTML = "";
 
@@ -73,10 +68,10 @@ async function renderPhotographers() {
     for (let i = 0; i < photographers.length; i++) {
       // Parcourir chaque tag dans le tableau de tags de chaque photographe
       for (let j = 0; j < photographers[i].tags.length; j++) {
-        // Si l'un des tags d'un photographe === category cliqué alors affichage du nom du photographe
+        // Si l'un des tags d'un photographe === category cliqué alors affichage du photographe
         if (photographers[i].tags[j] === category) {
-          // Affiche le nombre de photographes qui ont cette catégorie
-          console.log(photographers[i].tags);
+
+          //console.log(photographers[i]);
 
           let item = document.createElement("article");
           let link = document.createElement("a");
@@ -94,6 +89,7 @@ async function renderPhotographers() {
           item.appendChild(tagline);
           item.appendChild(price);
 
+          // Pour chaque photographe dont l'un des tags === category affichage de tous ses tags
           for(let h = 0; h < photographers[i].tags.length; h++){
             console.log(photographers[i].tags[h]);
             let tag = document.createElement("span");
@@ -101,7 +97,6 @@ async function renderPhotographers() {
             tag.setAttribute("class", "type");
             item.appendChild(tag);
           }
-
 
           photo.src =
             "../assets/Sample Photos/Photographers ID Photos/" +
@@ -126,16 +121,15 @@ async function renderPhotographers() {
   // Fonction pour récupérer la valeur de l'élément cliqué puis application du filtre
   function findValueOfFilter() {
     let type = document.querySelectorAll("li");
-    let filters = [];
     for (let i = 0; i < type.length; i++) {
-      filters.push(type[i].innerText);
       type[i].addEventListener("click", function () {
         let value = type[i].innerText;
-        applyFilter(value);
+        // Modification pour comparaison avec string dans le json
+        let category = value.replace("#", "").toLowerCase();
+        //console.log(`Filtre sélectionné : ${category}`);
+        applyFilter(category);
       });
     }
-    // Afficher en console le tableau contenant les catégories
-    console.log(filters);
   }
   findValueOfFilter();
 }
