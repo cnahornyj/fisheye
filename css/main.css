@@ -15,6 +15,11 @@ nav{
 align-self: center;
 }
 
+ul{
+display: flex;
+list-style-type: none;
+}
+
 /* Responsive header, nav + h1 */
 
 @media screen and (max-width:1339px){
