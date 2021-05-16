@@ -1,58 +1,99 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page photographe - Fisheye</title>
-    <link rel="stylesheet" href="/css/photographer-page.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/photographer-page.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-  />
-</head>
-<body>
+      href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
     <header role="banner">
-        <a href="index.html">
-            <img src="../assets/logo.png" class="logo" alt="Fish eye home page">
-        </a>
+      <a href="index.html">
+        <img src="../assets/logo.png" class="logo" alt="Fish eye home page" />
+      </a>
     </header>
     <main>
-        <section id="photographer-profile" aria-label="Section profil du photographe" aria-hidden="true">
-        </section>
-        <section id="photographer-medias" aria-label="Section médias du photographe" aria-hidden="true">
-        </section>
-        <section id="total-likes" aria-hidden="true"></section>
-        <section id="form-modal" aria-hidden="false" role="dialog">
-            <button id="close-modal"><i class="fa fa-times fa-3x"></i></button>
-            <h1 id="name-photographer"></h1>
-            <form
-            id="contact"
-            action="photographer-page.html"
-            method="get">
-                <label for="firstname">Prénom</label><br>
-                <input type="text" id="firstname"
-                name="firstname" aria-required=true/><br>
-                <label for="name">Nom</label><br>
-                <input type="text" id="name"
-                name="name" aria-required=true/><br>
-                <label for="email">Email</label><br>
-                <input type="email" id="email"
-                name="email" aria-required=true/><br>
-                <label for="message">Message</label><br>
-                <textarea id="message" name="message"
-                rows="5" cols="33" aria-required=true>
-                </textarea><br>
-                <input class="btn-submit" type="submit" value="Envoyer" />
-            </form>
-        </section>
-        <button id="open-form-responsive">Contactez-moi</button>
+      <section
+        id="photographer-profile"
+        aria-label="Section profil du photographe"
+    
+      ></section>
+      <section
+        id="photographer-medias"
+        aria-label="Section médias du photographe"
+    
+      ></section>
+      <section id="total-likes"></section>
     </main>
+    <section
+      id="form-modal"
+      aria-hidden="false"
+      role="dialog"
+      aria-describedby="modal contact photographe"
+    >
+      <button id="close-modal"><i class="fa fa-times fa-3x"></i></button>
+      <h1 id="name-photographer"></h1>
+      <form id="contact" action="photographer-page.html" method="get">
+        <label for="firstname">Prénom</label><br />
+        <input
+          type="text"
+          id="firstname"
+          name="firstname"
+          aria-labelledby="firstname"
+          aria-required="true"
+        /><br />
+        <label for="name">Nom</label><br />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          aria-labelledby="name"
+          aria-required="true"
+        /><br />
+        <label for="email">Email</label><br />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          aria-labelledby="email"
+          aria-required="true"
+        /><br />
+        <label for="message">Message</label><br />
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          cols="33"
+          aria-required="true"
+        >
+        </textarea
+        ><br />
+        <input
+          class="btn-submit"
+          aria-labelledby="message"
+          type="submit"
+          value="Envoyer"
+        />
+      </form>
+    </section>
+    <button id="open-form-responsive">Contactez-moi</button>
     <script src="../photographers.json"></script>
     <script src="../js/photographer-page.js"></script>
-    <script>photographerDetails()</script>
-    <script>photographerMedias()</script>
-</body>
+    <script>
+      photographerDetails();
+    </script>
+    <script>
+      photographerMedias();
+    </script>
+  </body>
 </html>

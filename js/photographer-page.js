@@ -20,12 +20,17 @@ function findIndexByKeyValue(photographer, key, valuetosearch) {
   return null;
 }
 
-const profilePhotographer = document.getElementById("photographer-profile");
-const medias = document.getElementById("photographer-medias");
-const totalLikes = document.getElementById("total-likes");
+const header = document.querySelector("header");
+const main = document.querySelector("main");
 const modal = document.getElementById("form-modal");
+const focusableElements =
+    'button, input, textarea, [tabindex]:not([tabindex="-1"])';
+const firstFocusableElement = modal.querySelectorAll(focusableElements)[0];
+const focusableContent = modal.querySelectorAll(focusableElements);
+const lastFocusableElement = focusableContent[focusableContent.length - 1];
 const btnCloseModal = document.getElementById("close-modal");
 const form = document.querySelector("form");
+
 modal.style.display = "none";
 
 // async function photographerDetails() et async function photographerMedias()
@@ -95,12 +100,32 @@ async function photographerDetails() {
   nameOfPhotographer.innerHTML = `Contactez-moi <br> ${photographer.name}`;
 
   function openFormModal() {
+    header.setAttribute("aria-hidden", "true");
+    main.setAttribute("aria-hidden", "true");
     modal.style.display = "block";
-    modal.setAttribute("aria-hidden", "true");
-    btnCloseModal.focus();
-    profilePhotographer.setAttribute("aria-hidden", "false");
-    medias.setAttribute("aria-hidden", "false");
-    totalLikes.setAttribute("aria-hidden", "false");
+    modal.setAttribute("aria-hidden", "false");
+    // Focus dans la modale formulaire
+    modal.addEventListener('keydown', function(e) {
+      let isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+
+      if (!isTabPressed) {
+        console.log("Je suis en train d'écrire");
+        return;
+      }
+      // Si les touches shift + tab sont pressées
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusableElement) {
+          lastFocusableElement.focus();
+          e.preventDefault();
+        }
+      } else { // Si la touche tabulation est pressée
+        if (document.activeElement === lastFocusableElement) { // 
+          firstFocusableElement.focus();
+          e.preventDefault();
+        }
+      }
+    });
+    firstFocusableElement.focus();
   }
 
   // Passer la fonction à l'évènement click
@@ -111,11 +136,10 @@ async function photographerDetails() {
   + ou faut il ajouter un message de réussite ?
   */
   function closeFormModal() {
+    header.setAttribute("aria-hidden", "false");
+    main.setAttribute("aria-hidden", "false");
     modal.style.display = "none";
-    modal.setAttribute("aria-hidden", "false");
-    profilePhotographer.setAttribute("aria-hidden", "true");
-    medias.setAttribute("aria-hidden", "true");
-    totalLikes.setAttribute("aria-hidden", "true");
+    modal.setAttribute("aria-hidden", "true");
   }
 
   btnCloseModal.addEventListener("click", closeFormModal);
@@ -176,12 +200,10 @@ async function photographerMedias() {
   // Fonctions pour créer une légende pour chaque média
   function createLegendForPhotography(string) {
     let removeCharacter = string.replaceAll("_", " ").replace(".jpg", " ");
-    console.log(removeCharacter);
     return removeCharacter;
   }
   function createLegendForVideo(string) {
     let removeCharacter = string.replaceAll("_", " ").replace(".mp4", " ");
-    console.log(removeCharacter);
     return removeCharacter;
   }
 
@@ -203,9 +225,8 @@ async function photographerMedias() {
 
   // Pour chaque média créé un article avec le media + ses informations
   results.forEach((result) => {
+    
     // Création des éléments
-    console.log(result);
-
     let media = document.querySelector("#photographer-medias");
     let details = document.createElement("aside");
     let likes = document.createElement("p");
