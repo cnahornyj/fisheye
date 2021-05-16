@@ -102,6 +102,8 @@ async function photographerDetails() {
   function openFormModal() {
     header.setAttribute("aria-hidden", "true");
     main.setAttribute("aria-hidden", "true");
+    header.style.opacity = "0.5";
+    main.style.opacity = "0.5";
     modal.style.display = "block";
     modal.setAttribute("aria-hidden", "false");
     // Focus dans la modale formulaire
@@ -138,6 +140,8 @@ async function photographerDetails() {
   function closeFormModal() {
     header.setAttribute("aria-hidden", "false");
     main.setAttribute("aria-hidden", "false");
+    header.style.opacity = "1";
+    main.style.opacity = "1";
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
   }
