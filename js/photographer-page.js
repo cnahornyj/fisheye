@@ -173,13 +173,12 @@ async function photographerMedias() {
   const results = medias.filter((media) => media.photographerId === id);
   //console.log(results);
 
-  // Fonction pour créer une légende pour chaque média
+  // Fonctions pour créer une légende pour chaque média
   function createLegendForPhotography(string) {
     let removeCharacter = string.replaceAll("_", " ").replace(".jpg", " ");
     console.log(removeCharacter);
     return removeCharacter;
   }
-
   function createLegendForVideo(string) {
     let removeCharacter = string.replaceAll("_", " ").replace(".mp4", " ");
     console.log(removeCharacter);
@@ -195,7 +194,6 @@ async function photographerMedias() {
   let total = 0;
   for (let i = 0; i < results.length; i++) {
     total += results[i].likes;
-    //console.log(total);
   }
 
   // Afficher le nombre total de likes par artiste + prix de sa prestation à la journée
@@ -237,6 +235,7 @@ async function photographerMedias() {
       item.setAttribute("class", "photoItem");
       photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
       photography.setAttribute("class", "image");
+      photography.setAttribute("alt", result.description);
       detailsOfPhotography.setAttribute("class", "details-image");
       legendOfPhotography.innerText = legend;
 
