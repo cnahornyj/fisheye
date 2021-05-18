@@ -5,6 +5,8 @@ color: #901c1c;
 
 header{
 display: flex;
+margin: auto;
+width: 90%;
 }
 
 img.logo{
@@ -14,67 +16,6 @@ width: 250px;
 button#open-form-responsive{
     display: none;
     visibility: hidden;
-}
-
-@media screen and (max-width:1050px){
-    article.contact {
-        margin: 3.5% 0 0 0 !important;
-    }
-}
-
-@media screen and (max-width:780px){
-    button#btn-open-modal{
-        display:none;
-        visibility: hidden;
-    }
-    button#open-form-responsive{
-        display: block;
-        visibility: visible;
-        width: max-content;
-        padding: 1% 3% 1% 3%;
-        position: sticky;
-        bottom: 30px;
-        left: 35%;
-        font-size: 150%;
-        letter-spacing: 1.02px;
-    }
-    #total-likes{
-        display:none;
-        visibility: hidden;
-    }
-    section#photographer-profile {
-        background-color: transparent !important;
-    }
-    img.image, video{
-        width: 100% !important;
-        height: 85% !important;
-    }
-    article.image{
-        position: absolute;
-        right: 45px;
-        top: 120px;
-    }
-    img.photographer{
-        width: 150px !important;
-        height: 150px !important;
-    }
-}
-
-@media screen and (max-width:560px){
-    img.logo {
-        width: 200px;
-    }
-    h1{
-        font-size: 1.1em;
-        top: 2% !important;
-    }
-    article.image{
-        margin-top: 0 !important;
-    }
-    img.photographer {
-        width: 125px !important;
-        height: 125px !important;
-    }
 }
 
 section#photographer-profile{
@@ -222,17 +163,12 @@ margin-right: 18px;
 }
 
 #form-modal{
-position: fixed;
-z-index: 1;
-left: 32.75%;
-top: 0;
-width: 30.5%;
+position: absolute;
+top: 50%; 
+left: 50%;
+transform: translate(-50%, -50%);
+width: 33.3%;
 overflow: auto;
-background-color: rgba(26, 39, 156, 0.4);
-margin: 5% auto;
-animation-name: modalopen;
-animation-duration: var(--modal-duration);
-background: #232323;
 border-radius: 10px;
 background-color: #db8877;
 color: #312e2e;
@@ -241,24 +177,26 @@ padding: 0 2% 0 2%;
 box-shadow: 0px 0px 9px -2px #ccc;
 }
 
-#close-modal{
+button#close-modal{
 border: none;
 background-color: transparent;
 padding: 0;
 width: 0;
 display: block;
 position: absolute;
-top: 30px;
+top: 15px;
 right: 60px;
 }
 
-#close-modal:focus,#close-modal:hover{
+button#close-modal:focus,button#close-modal:hover{
 transform: scale(1.05);
 }
 
 #form-modal > h1{
 font-weight: 300;
 color: black;
+margin-block-start: 15px;
+margin-block-end: 0;
 }
 
 form{
@@ -295,4 +233,93 @@ padding: 2% !important;
 input.btn-submit:focus, input.btn-submit:hover{
 transform: scale(1.05);
 background-color: #751f17;
+}
+
+/* Partie responsive */
+
+@media screen and (max-width:1050px){
+    article.contact {
+        margin: 3.5% 0 0 0 !important;
+    }
+    #form-modal{
+        width: 50%;
+    }
+}
+
+@media screen and (max-width:780px){
+    button#btn-open-modal{
+        display:none;
+        visibility: hidden;
+    }
+    button#open-form-responsive{
+        display: block;
+        visibility: visible;
+        width: max-content;
+        padding: 1% 3% 1% 3%;
+        position: sticky;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        bottom: 30px;
+        font-size: 150%;
+        letter-spacing: 1.02px;
+    }
+    #form-modal{
+        width: 70%;
+        padding: 2%;
+    }
+    #form-modal > h1{
+        font-size: 2em;
+    }
+    section#photographer-profile {
+        background-color: transparent !important;
+    }
+    img.image, video{
+        width: 100% !important;
+        height: 85% !important;
+    }
+    article.image{
+        position: absolute;
+        right: 45px;
+        top: 120px;
+    }
+    img.photographer{
+        width: 150px !important;
+        height: 150px !important;
+    }
+    #total-likes{
+        display:none;
+        visibility: hidden;
+    }
+}
+
+@media screen and (max-width:560px){
+    img.logo {
+        width: 200px;
+    }
+    h1{
+        font-size: 1.1em;
+        top: 2% !important;
+    }
+    #form-modal > h1{
+        font-size: 1.75em;
+    }
+    article.image{
+        margin-top: 0 !important;
+    }
+    img.photographer {
+        width: 125px !important;
+        height: 125px !important;
+    }
+}
+
+@media screen and (max-width:450px){
+    #form-modal > h1{
+        font-size: 1.5em;
+    }
+    button#open-form-responsive{
+        font-size: 125%;
+    }
+    button#close-modal{
+        right: 45px;
+    }
 }
