@@ -20,6 +20,7 @@ function findIndexByKeyValue(photographer, key, valuetosearch) {
   return null;
 }
 
+const body = document.querySelector("body");
 const header = document.querySelector("header");
 const main = document.querySelector("main");
 const modal = document.getElementById("form-modal");
@@ -100,6 +101,8 @@ async function photographerDetails() {
   nameOfPhotographer.innerHTML = `Contactez-moi <br> ${photographer.name}`;
 
   function openFormModal() {
+    body.style.overflow = "hidden";
+    btnOpenModalResp.style.display = "none";
     header.setAttribute("aria-hidden", "true");
     main.setAttribute("aria-hidden", "true");
     header.style.opacity = "0.5";
@@ -138,6 +141,8 @@ async function photographerDetails() {
   + ou faut il ajouter un message de réussite ?
   */
   function closeFormModal() {
+    body.style.overflow = "visible";
+    btnOpenModalResp.style.display = "block";
     header.setAttribute("aria-hidden", "false");
     main.setAttribute("aria-hidden", "false");
     header.style.opacity = "1";
