@@ -270,6 +270,11 @@ background-color: #751f17;
     #form-modal > h1{
         font-size: 2em;
     }
+    input.btn-submit{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
     section#photographer-profile {
         background-color: transparent !important;
     }
