@@ -27,15 +27,21 @@ section#photographer-profile {
   display: flex;
   justify-content: space-between;
 }
-/*
+
 #filters {
   display: flex;
   width: 88%;
   align-items: center;
   padding-top: 1%;
   margin: auto;
+  color: black;
 }
-*/
+
+#filters > p{
+  margin-right: 10px;
+  font-size: 100%;
+  font-weight: bold;
+}
 
 .dropdown {
   list-style: none;
@@ -47,7 +53,6 @@ section#photographer-profile {
   width: 250px;
   height: 41px;
   cursor: pointer;
-  margin: 100px;
   padding: 0;
 }
 .dropdown__arrow {
@@ -225,8 +230,6 @@ img.photographer {
   margin: auto;
   flex-wrap: wrap;
   justify-content: space-around;
-  width: 94%;
-  margin-top: 4%;
 }
 
 .photoItem {
