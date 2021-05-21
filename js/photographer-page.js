@@ -1,12 +1,12 @@
 async function getPhotographers() {
-    let url = "../photographers.json";
-    try {
-      let res = await fetch(url);
-      return await res.json();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  let url = "../photographers.json";
+  try {
+    let res = await fetch(url);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 let idPhotographer = "";
 
@@ -25,7 +25,7 @@ const header = document.querySelector("header");
 const main = document.querySelector("main");
 const modal = document.getElementById("form-modal");
 const focusableElements =
-    'button, input, textarea, [tabindex]:not([tabindex="-1"])';
+  'button, input, textarea, [tabindex]:not([tabindex="-1"])';
 const firstFocusableElement = modal.querySelectorAll(focusableElements)[0];
 const focusableContent = modal.querySelectorAll(focusableElements);
 const lastFocusableElement = focusableContent[focusableContent.length - 1];
@@ -110,8 +110,8 @@ async function photographerDetails() {
     modal.style.display = "block";
     modal.setAttribute("aria-hidden", "false");
     // Focus dans la modale formulaire
-    modal.addEventListener('keydown', function(e) {
-      let isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+    modal.addEventListener("keydown", function (e) {
+      let isTabPressed = e.key === "Tab" || e.keyCode === 9;
 
       if (!isTabPressed) {
         console.log("Je suis en train d'écrire");
@@ -123,8 +123,10 @@ async function photographerDetails() {
           lastFocusableElement.focus();
           e.preventDefault();
         }
-      } else { // Si la touche tabulation est pressée
-        if (document.activeElement === lastFocusableElement) { // 
+      } else {
+        // Si la touche tabulation est pressée
+        if (document.activeElement === lastFocusableElement) {
+          //
           firstFocusableElement.focus();
           e.preventDefault();
         }
@@ -234,7 +236,6 @@ async function photographerMedias() {
 
   // Pour chaque média créé un article avec le media + ses informations
   results.forEach((result) => {
-    
     // Création des éléments
     let media = document.querySelector("#photographer-medias");
     let details = document.createElement("aside");
@@ -242,8 +243,7 @@ async function photographerMedias() {
     let heart = document.createElement("button");
 
     // Si le media a une clé image création, hiérarchisation des éléments suivants
-    if(result.hasOwnProperty('image')){
-
+    if (result.hasOwnProperty("image")) {
       // Création des éléments
       let item = document.createElement("article");
       media.appendChild(item);
@@ -269,9 +269,8 @@ async function photographerMedias() {
       detailsOfPhotography.setAttribute("class", "details-image");
       legendOfPhotography.innerText = legend;
 
-    // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
-    } else if (result.hasOwnProperty('video')){
-
+      // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
+    } else if (result.hasOwnProperty("video")) {
       // Création des éléments
       let item = document.createElement("article");
       media.appendChild(item);
@@ -295,11 +294,11 @@ async function photographerMedias() {
       item.setAttribute("class", "photoVideo");
       legendOfVideo.innerText = legend;
       video.setAttribute("width", "313px");
-      video.setAttribute("height","280px");
-      video.setAttribute("controls","");
+      video.setAttribute("height", "280px");
+      video.setAttribute("controls", "");
       detailsOfVideo.setAttribute("class", "details-image");
       source.src = `../assets/Sample Photos/${firstname}/${result.video}`;
-      source.setAttribute("type","video/mp4");
+      source.setAttribute("type", "video/mp4");
     }
 
     // Partie likes
@@ -322,19 +321,7 @@ async function photographerMedias() {
   });
 }
 
-/*
-var elt = document.querySelector('select');
-console.log(elt);
-console.log(elt.options);
-		elt.addEventListener('change', function () {
-			console.log('value => '+this.value);
-		})
-for(let i = 0; i < elt.options.length; i++){
-  elt.options[i].classList.remove("pud");
-  elt.options[i].classList.add("green");
-}
-*/
-
+// Gestion de la liste déroulante pour les filtres sur les médias
 
 const SPACEBAR_KEY_CODE = [0, 32];
 const ENTER_KEY_CODE = 13;
@@ -346,27 +333,23 @@ const list = document.querySelector(".dropdown__list");
 const listContainer = document.querySelector(".dropdown__list-container");
 const dropdownArrow = document.querySelector(".dropdown__arrow");
 const listItems = document.querySelectorAll(".dropdown__list-item");
-const dropdownSelectedNode = document.querySelector(
-  "#dropdown__selected"
-);
+const dropdownSelectedNode = document.querySelector("#dropdown__selected");
 const listItemIds = [];
 
-dropdownSelectedNode.addEventListener("click", e =>
-                                      toggleListVisibility(e)
-                                     );
-dropdownSelectedNode.addEventListener("keydown", e =>
-                                      toggleListVisibility(e)
-                                     );
+dropdownSelectedNode.addEventListener("click", (e) => toggleListVisibility(e));
+dropdownSelectedNode.addEventListener("keydown", (e) =>
+  toggleListVisibility(e)
+);
 
-listItems.forEach(item => listItemIds.push(item.id));
+listItems.forEach((item) => listItemIds.push(item.id));
 
-listItems.forEach(item => {
-  item.addEventListener("click", e => {
+listItems.forEach((item) => {
+  item.addEventListener("click", (e) => {
     setSelectedListItem(e);
     closeList();
   });
 
-  item.addEventListener("keydown", e => {
+  item.addEventListener("keydown", (e) => {
     switch (e.keyCode) {
       case ENTER_KEY_CODE:
         setSelectedListItem(e);
@@ -395,6 +378,10 @@ function setSelectedListItem(e) {
   let selectedTextToAppend = document.createTextNode(e.target.innerText);
   dropdownSelectedNode.innerHTML = null;
   dropdownSelectedNode.appendChild(selectedTextToAppend);
+  console.log(dropdownSelectedNode.textContent);
+  /* Mettre en place l'appel aux différentes fonctions de tri avec un switch case
+  selon le textContent filteredByPopularity(), filteredByDate(), filteredByTitle()
+  */
 }
 
 function closeList() {
@@ -405,7 +392,7 @@ function closeList() {
 
 function toggleListVisibility(e) {
   let openDropDown =
-      SPACEBAR_KEY_CODE.includes(e.keyCode) || e.keyCode === ENTER_KEY_CODE;
+    SPACEBAR_KEY_CODE.includes(e.keyCode) || e.keyCode === ENTER_KEY_CODE;
 
   if (e.keyCode === ESCAPE_KEY_CODE) {
     closeList();
@@ -434,23 +421,38 @@ function focusNextListItem(direction) {
   if (activeElementId === "dropdown__selected") {
     document.querySelector(`#${listItemIds[0]}`).focus();
   } else {
-    const currentActiveElementIndex = listItemIds.indexOf(
-      activeElementId
-    );
+    const currentActiveElementIndex = listItemIds.indexOf(activeElementId);
     if (direction === DOWN_ARROW_KEY_CODE) {
       const currentActiveElementIsNotLastItem =
-            currentActiveElementIndex < listItemIds.length - 1;
+        currentActiveElementIndex < listItemIds.length - 1;
       if (currentActiveElementIsNotLastItem) {
         const nextListItemId = listItemIds[currentActiveElementIndex + 1];
         document.querySelector(`#${nextListItemId}`).focus();
       }
     } else if (direction === UP_ARROW_KEY_CODE) {
-      const currentActiveElementIsNotFirstItem =
-            currentActiveElementIndex > 0;
+      const currentActiveElementIsNotFirstItem = currentActiveElementIndex > 0;
       if (currentActiveElementIsNotFirstItem) {
         const nextListItemId = listItemIds[currentActiveElementIndex - 1];
         document.querySelector(`#${nextListItemId}`).focus();
       }
     }
   }
+}
+
+function filteredByPopularity(){
+/*
+Récupérer chaque nombre de like par média
+puis affichage du (-) liké au (+) liké
+*/
+}
+
+function filteredByDate(){
+/*
+Récupérer la date de chaque média
+puis getTime() sur chacune et affichage du plus grand nombre au plus petit
+*/  
+}
+
+function filteredByTitle(){
+/* */  
 }
