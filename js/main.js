@@ -118,10 +118,22 @@ async function renderPhotographers() {
     }
   }
 
+  const ENTER_KEY_CODE = 13;
+
   // Fonction pour récupérer la valeur de l'élément cliqué puis application du filtre
   function findValueOfFilter() {
     let type = document.querySelectorAll("li");
     for (let i = 0; i < type.length; i++) {
+      type[i].setAttribute("tabindex",0);
+      type[i].addEventListener("keydown", (e) => {
+        if (e.keyCode === ENTER_KEY_CODE){
+        let value = type[i].innerText;
+        // Modification pour comparaison avec string dans le json
+        let category = value.replace("#", "").toLowerCase();
+        console.log(`Filtre sélectionné : ${category}`);
+        applyFilter(category);
+        } 
+      });
       type[i].addEventListener("click", function () {
         let value = type[i].innerText;
         // Modification pour comparaison avec string dans le json
