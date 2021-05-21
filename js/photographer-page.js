@@ -322,6 +322,9 @@ async function photographerMedias() {
 
   createView(results);
 
+  // Fonctions de filtre pour les médias
+
+  
   function filteredByTitle() {
     /* Fonctionne mais ne met pas à jour la vue
     (+) le tri se fait uniquement sur le nom des PHOTOS et pas des vidéos */
@@ -486,4 +489,115 @@ async function photographerMedias() {
       }
     }
   }
+
+  function applyFilter(category) {
+    // Récupérer la liste de tous les photographes
+
+    media.innerHTML = "";
+
+    // Parcourir chaque photographe dans le tableau de photographes
+    for (let i = 0; i < results.length; i++) {
+      // Parcourir chaque tag dans le tableau de tags de chaque photographe
+      for (let j = 0; j < results[i].tags.length; j++) {
+        // Si l'un des tags d'un photographe === category cliqué alors affichage du photographe
+        if (results[i].tags[j] === category) {
+
+            let details = document.createElement("aside");
+            let likes = document.createElement("p");
+            let heart = document.createElement("button");
+        
+            // Si le media a une clé image création, hiérarchisation des éléments suivants
+            if (results[i].hasOwnProperty("image")) {
+              // Création des éléments
+              let item = document.createElement("article");
+              media.appendChild(item);
+              let photography = document.createElement("img");
+              let detailsOfPhotography = document.createElement("aside");
+              let legendOfPhotography = document.createElement("p");
+              let title = results[i].image;
+              let legend = createLegendForPhotography(title);
+        
+              // Hiérarchisation des éléments
+              item.appendChild(photography);
+              item.appendChild(detailsOfPhotography);
+              detailsOfPhotography.appendChild(legendOfPhotography);
+              detailsOfPhotography.appendChild(details);
+              details.appendChild(likes);
+              details.appendChild(heart);
+        
+              // Attribution des class, id, src etc
+              item.setAttribute("class", "photoItem");
+              photography.src = `../assets/Sample Photos/${firstname}/${results[i].image}`;
+              photography.setAttribute("class", "image");
+              photography.setAttribute("alt", results[i].description);
+              detailsOfPhotography.setAttribute("class", "details-image");
+              legendOfPhotography.innerText = legend;
+        
+              // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
+            } else if (results[i].hasOwnProperty("video")) {
+              // Création des éléments
+              let item = document.createElement("article");
+              media.appendChild(item);
+              let video = document.createElement("video");
+              let source = document.createElement("source");
+              let detailsOfVideo = document.createElement("aside");
+              let legendOfVideo = document.createElement("p");
+              let title = results[i].video;
+              let legend = createLegendForVideo(title);
+        
+              // Hiérarchisation des éléments
+              item.appendChild(video);
+              video.appendChild(source);
+              item.appendChild(detailsOfVideo);
+              detailsOfVideo.appendChild(legendOfVideo);
+              detailsOfVideo.appendChild(details);
+              details.appendChild(likes);
+              details.appendChild(heart);
+        
+              // Attribution des class, id src etc
+              item.setAttribute("class", "photoVideo");
+              legendOfVideo.innerText = legend;
+              video.setAttribute("width", "313px");
+              video.setAttribute("height", "280px");
+              video.setAttribute("controls", "");
+              detailsOfVideo.setAttribute("class", "details-image");
+              source.src = `../assets/Sample Photos/${firstname}/${results[i].video}`;
+              source.setAttribute("type", "video/mp4");
+            }
+        
+            // Partie likes
+            details.setAttribute("class", "details-likes");
+            likes.innerHTML = `${results[i].likes}`;
+            heart.setAttribute("class", "fa fa-heart");
+            heart.setAttribute("id", "like");
+        
+            let count = results[i].likes;
+        
+            function incrementLikes() {
+              likes.innerText = count++;
+              total++;
+              totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
+            }
+        
+            heart.addEventListener("click", incrementLikes);
+        
+            // onclick sur l'image ouverture de la light-box
+        }
+      }
+    }
+  }
+
+  function findValueOfFilter() {
+    let type = document.querySelectorAll("article > span");
+    for (let i = 0; i < type.length; i++) {
+      type[i].addEventListener("click", function () {
+        let value = type[i].innerText;
+        // Modification pour comparaison avec string dans le json
+        let category = value.replace("#", "").toLowerCase();
+        console.log(`Filtre sélectionné : ${category}`);
+        applyFilter(category);
+      });
+    }
+  }
+  findValueOfFilter();
 }
