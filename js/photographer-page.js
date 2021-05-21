@@ -205,8 +205,7 @@ async function photographerMedias() {
   const medias = data.media;
 
   // Récupérer un tableau avec les images/vidéos du photographe
-  const results = medias.filter((media) => media.photographerId === id);
-  //console.log(results);
+  let results = medias.filter((media) => media.photographerId === id);
 
   // Fonctions pour créer une légende pour chaque média
   function createLegendForPhotography(string) {
@@ -232,227 +231,259 @@ async function photographerMedias() {
   // Afficher le nombre total de likes par artiste + prix de sa prestation à la journée
   totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
 
-  //
+  let media = document.querySelector("#photographer-medias");
 
-  // Pour chaque média créé un article avec le media + ses informations
-  results.forEach((result) => {
-    // Création des éléments
-    let media = document.querySelector("#photographer-medias");
-    let details = document.createElement("aside");
-    let likes = document.createElement("p");
-    let heart = document.createElement("button");
-
-    // Si le media a une clé image création, hiérarchisation des éléments suivants
-    if (result.hasOwnProperty("image")) {
+  function createView(object){
+    // Pour chaque média créé un article avec le média + ses informations
+    object.forEach((result) => {
       // Création des éléments
-      let item = document.createElement("article");
-      media.appendChild(item);
-      let photography = document.createElement("img");
-      let detailsOfPhotography = document.createElement("aside");
-      let legendOfPhotography = document.createElement("p");
-      let title = result.image;
-      let legend = createLegendForPhotography(title);
-
-      // Hiérarchisation des éléments
-      item.appendChild(photography);
-      item.appendChild(detailsOfPhotography);
-      detailsOfPhotography.appendChild(legendOfPhotography);
-      detailsOfPhotography.appendChild(details);
-      details.appendChild(likes);
-      details.appendChild(heart);
-
-      // Attribution des class, id, src etc
-      item.setAttribute("class", "photoItem");
-      photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
-      photography.setAttribute("class", "image");
-      photography.setAttribute("alt", result.description);
-      detailsOfPhotography.setAttribute("class", "details-image");
-      legendOfPhotography.innerText = legend;
-
-      // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
-    } else if (result.hasOwnProperty("video")) {
-      // Création des éléments
-      let item = document.createElement("article");
-      media.appendChild(item);
-      let video = document.createElement("video");
-      let source = document.createElement("source");
-      let detailsOfVideo = document.createElement("aside");
-      let legendOfVideo = document.createElement("p");
-      let title = result.video;
-      let legend = createLegendForVideo(title);
-
-      // Hiérarchisation des éléments
-      item.appendChild(video);
-      video.appendChild(source);
-      item.appendChild(detailsOfVideo);
-      detailsOfVideo.appendChild(legendOfVideo);
-      detailsOfVideo.appendChild(details);
-      details.appendChild(likes);
-      details.appendChild(heart);
-
-      // Attribution des class, id src etc
-      item.setAttribute("class", "photoVideo");
-      legendOfVideo.innerText = legend;
-      video.setAttribute("width", "313px");
-      video.setAttribute("height", "280px");
-      video.setAttribute("controls", "");
-      detailsOfVideo.setAttribute("class", "details-image");
-      source.src = `../assets/Sample Photos/${firstname}/${result.video}`;
-      source.setAttribute("type", "video/mp4");
-    }
-
-    // Partie likes
-    details.setAttribute("class", "details-likes");
-    likes.innerHTML = `${result.likes}`;
-    heart.setAttribute("class", "fa fa-heart");
-    heart.setAttribute("id", "like");
-
-    let count = result.likes;
-
-    function incrementLikes() {
-      likes.innerText = count++;
-      total++;
-      totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
-    }
-
-    heart.addEventListener("click", incrementLikes);
-
-    // onclick sur l'image ouverture de la light-box
-  });
-}
-
-// Gestion de la liste déroulante pour les filtres sur les médias
-
-const SPACEBAR_KEY_CODE = [0, 32];
-const ENTER_KEY_CODE = 13;
-const DOWN_ARROW_KEY_CODE = 40;
-const UP_ARROW_KEY_CODE = 38;
-const ESCAPE_KEY_CODE = 27;
-
-const list = document.querySelector(".dropdown__list");
-const listContainer = document.querySelector(".dropdown__list-container");
-const dropdownArrow = document.querySelector(".dropdown__arrow");
-const listItems = document.querySelectorAll(".dropdown__list-item");
-const dropdownSelectedNode = document.querySelector("#dropdown__selected");
-const listItemIds = [];
-
-dropdownSelectedNode.addEventListener("click", (e) => toggleListVisibility(e));
-dropdownSelectedNode.addEventListener("keydown", (e) =>
-  toggleListVisibility(e)
-);
-
-listItems.forEach((item) => listItemIds.push(item.id));
-
-listItems.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    setSelectedListItem(e);
-    closeList();
-  });
-
-  item.addEventListener("keydown", (e) => {
-    switch (e.keyCode) {
-      case ENTER_KEY_CODE:
-        setSelectedListItem(e);
-        closeList();
-        return;
-
-      case DOWN_ARROW_KEY_CODE:
-        focusNextListItem(DOWN_ARROW_KEY_CODE);
-        return;
-
-      case UP_ARROW_KEY_CODE:
-        focusNextListItem(UP_ARROW_KEY_CODE);
-        return;
-
-      case ESCAPE_KEY_CODE:
-        closeList();
-        return;
-
-      default:
-        return;
-    }
-  });
-});
-
-function setSelectedListItem(e) {
-  let selectedTextToAppend = document.createTextNode(e.target.innerText);
-  dropdownSelectedNode.innerHTML = null;
-  dropdownSelectedNode.appendChild(selectedTextToAppend);
-  console.log(dropdownSelectedNode.textContent);
-  /* Mettre en place l'appel aux différentes fonctions de tri avec un switch case
-  selon le textContent filteredByPopularity(), filteredByDate(), filteredByTitle()
-  */
-}
-
-function closeList() {
-  list.classList.remove("open");
-  dropdownArrow.classList.remove("expanded");
-  listContainer.setAttribute("aria-expanded", false);
-}
-
-function toggleListVisibility(e) {
-  let openDropDown =
-    SPACEBAR_KEY_CODE.includes(e.keyCode) || e.keyCode === ENTER_KEY_CODE;
-
-  if (e.keyCode === ESCAPE_KEY_CODE) {
-    closeList();
-  }
-
-  if (e.type === "click" || openDropDown) {
-    list.classList.toggle("open");
-    dropdownArrow.classList.toggle("expanded");
-    listContainer.setAttribute(
-      "aria-expanded",
-      list.classList.contains("open")
-    );
-  }
-
-  if (e.keyCode === DOWN_ARROW_KEY_CODE) {
-    focusNextListItem(DOWN_ARROW_KEY_CODE);
-  }
-
-  if (e.keyCode === UP_ARROW_KEY_CODE) {
-    focusNextListItem(UP_ARROW_KEY_CODE);
-  }
-}
-
-function focusNextListItem(direction) {
-  const activeElementId = document.activeElement.id;
-  if (activeElementId === "dropdown__selected") {
-    document.querySelector(`#${listItemIds[0]}`).focus();
-  } else {
-    const currentActiveElementIndex = listItemIds.indexOf(activeElementId);
-    if (direction === DOWN_ARROW_KEY_CODE) {
-      const currentActiveElementIsNotLastItem =
-        currentActiveElementIndex < listItemIds.length - 1;
-      if (currentActiveElementIsNotLastItem) {
-        const nextListItemId = listItemIds[currentActiveElementIndex + 1];
-        document.querySelector(`#${nextListItemId}`).focus();
+      let details = document.createElement("aside");
+      let likes = document.createElement("p");
+      let heart = document.createElement("button");
+  
+      // Si le media a une clé image création, hiérarchisation des éléments suivants
+      if (result.hasOwnProperty("image")) {
+        // Création des éléments
+        let item = document.createElement("article");
+        media.appendChild(item);
+        let photography = document.createElement("img");
+        let detailsOfPhotography = document.createElement("aside");
+        let legendOfPhotography = document.createElement("p");
+        let title = result.image;
+        let legend = createLegendForPhotography(title);
+  
+        // Hiérarchisation des éléments
+        item.appendChild(photography);
+        item.appendChild(detailsOfPhotography);
+        detailsOfPhotography.appendChild(legendOfPhotography);
+        detailsOfPhotography.appendChild(details);
+        details.appendChild(likes);
+        details.appendChild(heart);
+  
+        // Attribution des class, id, src etc
+        item.setAttribute("class", "photoItem");
+        photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
+        photography.setAttribute("class", "image");
+        photography.setAttribute("alt", result.description);
+        detailsOfPhotography.setAttribute("class", "details-image");
+        legendOfPhotography.innerText = legend;
+  
+        // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
+      } else if (result.hasOwnProperty("video")) {
+        // Création des éléments
+        let item = document.createElement("article");
+        media.appendChild(item);
+        let video = document.createElement("video");
+        let source = document.createElement("source");
+        let detailsOfVideo = document.createElement("aside");
+        let legendOfVideo = document.createElement("p");
+        let title = result.video;
+        let legend = createLegendForVideo(title);
+  
+        // Hiérarchisation des éléments
+        item.appendChild(video);
+        video.appendChild(source);
+        item.appendChild(detailsOfVideo);
+        detailsOfVideo.appendChild(legendOfVideo);
+        detailsOfVideo.appendChild(details);
+        details.appendChild(likes);
+        details.appendChild(heart);
+  
+        // Attribution des class, id src etc
+        item.setAttribute("class", "photoVideo");
+        legendOfVideo.innerText = legend;
+        video.setAttribute("width", "313px");
+        video.setAttribute("height", "280px");
+        video.setAttribute("controls", "");
+        detailsOfVideo.setAttribute("class", "details-image");
+        source.src = `../assets/Sample Photos/${firstname}/${result.video}`;
+        source.setAttribute("type", "video/mp4");
       }
-    } else if (direction === UP_ARROW_KEY_CODE) {
-      const currentActiveElementIsNotFirstItem = currentActiveElementIndex > 0;
-      if (currentActiveElementIsNotFirstItem) {
-        const nextListItemId = listItemIds[currentActiveElementIndex - 1];
-        document.querySelector(`#${nextListItemId}`).focus();
+  
+      // Partie likes
+      details.setAttribute("class", "details-likes");
+      likes.innerHTML = `${result.likes}`;
+      heart.setAttribute("class", "fa fa-heart");
+      heart.setAttribute("id", "like");
+  
+      let count = result.likes;
+  
+      function incrementLikes() {
+        likes.innerText = count++;
+        total++;
+        totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
+      }
+  
+      heart.addEventListener("click", incrementLikes);
+  
+      // onclick sur l'image ouverture de la light-box
+    });
+  }
+
+  createView(results);
+
+  function filteredByTitle() {
+    /* Fonctionne mais ne met pas à jour la vue
+    (+) le tri se fait uniquement sur le nom des PHOTOS et pas des vidéos */
+    results = results.sort(function compare(a, b) {
+      if (a.image < b.image) return -1;
+      if (a.image > b.image) return 1;
+      return 0;
+    });
+    media.innerHTML = "";
+    createView(results);
+  }
+
+  function filteredByPopularity() {
+    results = results.sort(function compare(a, b) {
+      if (a.likes > b.likes) return -1;
+      if (a.likes < b.likes) return 1;
+      return 0;
+    });
+    media.innerHTML = "";
+    createView(results);
+  }
+
+  function filteredByDate() {
+    results = results.sort(function compare(a, b) {
+      if (a.date > b.date) return -1;
+      if (a.date < b.date) return 1;
+      return 0;
+    });
+    media.innerHTML = "";
+    createView(results);
+  }
+
+  // Gestion de la liste déroulante pour les filtres sur les médias
+
+  const SPACEBAR_KEY_CODE = [0, 32];
+  const ENTER_KEY_CODE = 13;
+  const DOWN_ARROW_KEY_CODE = 40;
+  const UP_ARROW_KEY_CODE = 38;
+  const ESCAPE_KEY_CODE = 27;
+
+  const list = document.querySelector(".dropdown__list");
+  const listContainer = document.querySelector(".dropdown__list-container");
+  const dropdownArrow = document.querySelector(".dropdown__arrow");
+  const listItems = document.querySelectorAll(".dropdown__list-item");
+  const dropdownSelectedNode = document.querySelector("#dropdown__selected");
+  const listItemIds = [];
+
+  dropdownSelectedNode.addEventListener("click", (e) =>
+    toggleListVisibility(e)
+  );
+  dropdownSelectedNode.addEventListener("keydown", (e) =>
+    toggleListVisibility(e)
+  );
+
+  listItems.forEach((item) => listItemIds.push(item.id));
+
+  listItems.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      setSelectedListItem(e);
+      closeList();
+    });
+
+    item.addEventListener("keydown", (e) => {
+      switch (e.keyCode) {
+        case ENTER_KEY_CODE:
+          setSelectedListItem(e);
+          closeList();
+          return;
+
+        case DOWN_ARROW_KEY_CODE:
+          focusNextListItem(DOWN_ARROW_KEY_CODE);
+          return;
+
+        case UP_ARROW_KEY_CODE:
+          focusNextListItem(UP_ARROW_KEY_CODE);
+          return;
+
+        case ESCAPE_KEY_CODE:
+          closeList();
+          return;
+
+        default:
+          return;
+      }
+    });
+  });
+
+  function setSelectedListItem(e) {
+    let selectedTextToAppend = document.createTextNode(e.target.innerText);
+    dropdownSelectedNode.innerHTML = null;
+    dropdownSelectedNode.appendChild(selectedTextToAppend);
+    console.log(dropdownSelectedNode.textContent);
+    let filter = dropdownSelectedNode.textContent;
+    switch (filter) {
+      case "Popularité":
+        console.log("Filtre par popularité sur les médias");
+        filteredByPopularity();
+        break;
+      case "Date":
+        console.log("Filtre par date sur les médias");
+        filteredByDate();
+        break;
+      case "Titre":
+        console.log("Filtre par titre dans l'ordre alphabétique sur les médias");
+        filteredByTitle();
+        break;
+    }
+  }
+
+  function closeList() {
+    list.classList.remove("open");
+    dropdownArrow.classList.remove("expanded");
+    listContainer.setAttribute("aria-expanded", false);
+  }
+
+  function toggleListVisibility(e) {
+    let openDropDown =
+      SPACEBAR_KEY_CODE.includes(e.keyCode) || e.keyCode === ENTER_KEY_CODE;
+
+    if (e.keyCode === ESCAPE_KEY_CODE) {
+      closeList();
+    }
+
+    if (e.type === "click" || openDropDown) {
+      list.classList.toggle("open");
+      dropdownArrow.classList.toggle("expanded");
+      listContainer.setAttribute(
+        "aria-expanded",
+        list.classList.contains("open")
+      );
+    }
+
+    if (e.keyCode === DOWN_ARROW_KEY_CODE) {
+      focusNextListItem(DOWN_ARROW_KEY_CODE);
+    }
+
+    if (e.keyCode === UP_ARROW_KEY_CODE) {
+      focusNextListItem(UP_ARROW_KEY_CODE);
+    }
+  }
+
+  function focusNextListItem(direction) {
+    const activeElementId = document.activeElement.id;
+    if (activeElementId === "dropdown__selected") {
+      document.querySelector(`#${listItemIds[0]}`).focus();
+    } else {
+      const currentActiveElementIndex = listItemIds.indexOf(activeElementId);
+      if (direction === DOWN_ARROW_KEY_CODE) {
+        const currentActiveElementIsNotLastItem =
+          currentActiveElementIndex < listItemIds.length - 1;
+        if (currentActiveElementIsNotLastItem) {
+          const nextListItemId = listItemIds[currentActiveElementIndex + 1];
+          document.querySelector(`#${nextListItemId}`).focus();
+        }
+      } else if (direction === UP_ARROW_KEY_CODE) {
+        const currentActiveElementIsNotFirstItem =
+          currentActiveElementIndex > 0;
+        if (currentActiveElementIsNotFirstItem) {
+          const nextListItemId = listItemIds[currentActiveElementIndex - 1];
+          document.querySelector(`#${nextListItemId}`).focus();
+        }
       }
     }
   }
-}
-
-function filteredByPopularity(){
-/*
-Récupérer chaque nombre de like par média
-puis affichage du (-) liké au (+) liké
-*/
-}
-
-function filteredByDate(){
-/*
-Récupérer la date de chaque média
-puis getTime() sur chacune et affichage du plus grand nombre au plus petit
-*/  
-}
-
-function filteredByTitle(){
-/* */  
 }
