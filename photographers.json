@@ -316,7 +316,7 @@
       "photographerId": 527,
       "image": "Portrait_Shaw.jpg",
       "description": "Le portrait d'un homme",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 52,
       "date": "2017-04-21",
       "price": 45
@@ -326,7 +326,7 @@
       "photographerId": 527,
       "image": "Portrait_Alexandra.jpg",
       "description": "Le portrait d'une femme",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 95,
       "date": "2018-11-02",
       "price": 45
@@ -336,7 +336,7 @@
       "photographerId": 527,
       "image": "Portrait_AfternoonBreak.jpg",
       "description": "Le portrait d'un homme",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 25,
       "date": "2019-01-02",
       "price": 45
@@ -367,7 +367,7 @@
       "photographerId": 243,
       "image": "Portrait_Wednesday.jpg",
       "description": "Un portrait d'une petite fille",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 34,
       "date": "2019-04-07",
       "price": 45
@@ -377,7 +377,7 @@
       "photographerId": 243,
       "image": "Portrait_Nora.jpg",
       "description": "Un portrait d'une femme",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 63,
       "date": "2019-04-07",
       "price": 45
@@ -387,7 +387,7 @@
       "photographerId": 243,
       "image": "Portrait_Background.jpg",
       "description": "Un portrait d'une femme",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 55,
       "date": "2019-06-20",
       "price": 45
