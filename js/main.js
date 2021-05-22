@@ -54,6 +54,7 @@ async function renderPhotographers() {
 
     link.setAttribute("href", "photographer-page.html?id=" + photographer.id);
     photo.setAttribute("class", "photographer");
+    photo.setAttribute("alt","");
     tagline.setAttribute("class", "citation");
     price.setAttribute("class", "priceperday");
   });

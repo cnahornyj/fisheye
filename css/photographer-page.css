@@ -184,7 +184,7 @@ button:focus {
   color: black;
 }
 
-#like {
+.like {
   color: #901c1c;
   background: none;
   border: none;
