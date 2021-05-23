@@ -179,8 +179,8 @@ input.btn-submit {
 
 button:hover,
 button:focus {
-  background-color: #d3573c;
-  border: 1px solid #d3573c;
+  background-color: #db8877;
+  border: 1px solid #db8877;
   color: black;
 }
 
@@ -191,6 +191,13 @@ button:focus {
   padding: 0;
   width: 0;
   margin-left: 5px;
+}
+
+.like:hover, .like:focus {
+  transform: scale(1.01);
+  background-color: none;
+  border: none;
+  color: #6b1515;
 }
 
 #total-likes {

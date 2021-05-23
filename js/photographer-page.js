@@ -303,8 +303,7 @@ async function photographerMedias() {
       // Partie likes
       details.setAttribute("class", "details-likes");
       likes.innerHTML = `${result.likes}`;
-      heart.setAttribute("class", "fa fa-heart");
-      heart.setAttribute("class", "like");
+      heart.setAttribute("class", "fa fa-heart like");
 
       let count = result.likes;
 
