@@ -117,7 +117,6 @@ async function photographerDetails() {
       let isTabPressed = e.key === "Tab" || e.keyCode === 9;
 
       if (!isTabPressed) {
-        console.log("Je suis en train d'écrire");
         return;
       }
       // Si les touches shift + tab sont pressées
@@ -146,6 +145,7 @@ async function photographerDetails() {
   + ou faut il ajouter un message de réussite ?
   */
   function closeFormModal() {
+    let success = document.getElementById("msg-success");
     body.style.overflow = "visible";
     btnOpenModalResp.style.display = "block";
     header.setAttribute("aria-hidden", "false");
@@ -154,19 +154,24 @@ async function photographerDetails() {
     main.style.opacity = "1";
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
+    success.textContent = "";
+    success.style.display = "none";
   }
 
   btnCloseModal.addEventListener("click", closeFormModal);
 
   // Afficher les champs saisis par l'utilisateur dans le formulaire de contact sur la page d'un photographe
   form.addEventListener("submit", function (e) {
+    let success = document.getElementById("msg-success");
     e.preventDefault();
     let prenom = form.elements["firstname"].value;
     let nom = form.elements["name"].value;
     let email = form.elements["email"].value;
     let message = form.elements["message"].value;
     console.log(prenom, nom, email, message);
-    closeFormModal();
+    form.reset();
+    success.textContent = "Message envoyé";
+    success.style.display = "block";
   });
 }
 

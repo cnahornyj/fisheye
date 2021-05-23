@@ -344,6 +344,13 @@ input.btn-submit:hover {
   background-color: #751f17;
 }
 
+#msg-success{
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+}
+
 /* Partie responsive */
 
 @media screen and (max-width: 1050px) {
@@ -383,6 +390,10 @@ input.btn-submit:hover {
     display: block;
     margin-left: auto;
     margin-right: auto;
+  }
+  #msg-success{
+    left: 35%;
+    bottom: -10px;
   }
   section#photographer-profile {
     background-color: transparent !important;
