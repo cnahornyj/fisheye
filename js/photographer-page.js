@@ -52,6 +52,7 @@ async function photographerDetails() {
   const photographer = data.photographers[index];
   //console.log(photographer.name);
 
+  let pageOf = document.querySelector("title");
   let profile = document.querySelector("#photographer-profile");
 
   // Création des éléments
@@ -76,6 +77,8 @@ async function photographerDetails() {
   image.appendChild(photo);
 
   // Attribution des class, id, src, innerText, innerHTML
+
+  pageOf.textContent = `${photographer.name} - Photographe - Fisheye`;
   name.innerText = photographer.name;
   localisation.innerText = `${photographer.city}, ${photographer.country}`;
   quote.innerText = photographer.tagline;
