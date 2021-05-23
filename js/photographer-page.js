@@ -32,13 +32,11 @@ const lastFocusableElement = focusableContent[focusableContent.length - 1];
 const btnCloseModal = document.getElementById("close-modal");
 const form = document.querySelector("form");
 
-modal.style.display = "none";
-
 // async function photographerDetails() et async function photographerMedias()
 // possible en une seule fonction ?
 
 async function photographerDetails() {
-  // Collecter l'URL après le ?id= pour le récupérer uniquement sur le fichier json
+  // Collecter l'id dans l'URL pour le récupérer sur le fichier json
   idPhotographer = location.search.substring(4);
 
   const data = await getPhotographers();
@@ -46,11 +44,9 @@ async function photographerDetails() {
 
   // Appel de la fonction avec les paramètres
   let index = findIndexByKeyValue(photographers, "id", idPhotographer);
-  //console.log(index);
 
   // Récupérer les informations du photographe grâce à son index dans le array photographers
   const photographer = data.photographers[index];
-  //console.log(photographer.name);
 
   let pageOf = document.querySelector("title");
   let profile = document.querySelector("#photographer-profile");
@@ -104,6 +100,7 @@ async function photographerDetails() {
   nameOfPhotographer.innerHTML = `Contactez-moi <br> ${photographer.name}`;
 
   function openFormModal() {
+    // Mise en retrait de l'ensemble du contenu du document, en dehors de la modale
     body.style.overflow = "hidden";
     btnOpenModalResp.style.display = "none";
     header.setAttribute("aria-hidden", "true");
@@ -112,7 +109,8 @@ async function photographerDetails() {
     main.style.opacity = "0.5";
     modal.style.display = "block";
     modal.setAttribute("aria-hidden", "false");
-    // Focus dans la modale formulaire
+
+    // Gestion du focus uniquement dans la modale formulaire
     modal.addEventListener("keydown", function (e) {
       let isTabPressed = e.key === "Tab" || e.keyCode === 9;
 
@@ -137,15 +135,12 @@ async function photographerDetails() {
     firstFocusableElement.focus();
   }
 
-  // Passer la fonction à l'évènement click
+  // Passer la fonction à l'évènement click sur les deux boutons d'ouverture de la form modale
   btnOpenModal.addEventListener("click", openFormModal);
   btnOpenModalResp.addEventListener("click", openFormModal);
 
-  /* Voir si l'exécution par défaut de la soumission du formulaire doit elle se faire ?
-  + ou faut il ajouter un message de réussite ?
-  */
   function closeFormModal() {
-    let success = document.getElementById("msg-success");
+    // Mise en retrait de la modale à la fermeture de celle-ci + message de réussite
     body.style.overflow = "visible";
     btnOpenModalResp.style.display = "block";
     header.setAttribute("aria-hidden", "false");
@@ -154,26 +149,32 @@ async function photographerDetails() {
     main.style.opacity = "1";
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
+    let success = document.getElementById("msg-success");
     success.textContent = "";
     success.style.display = "none";
   }
 
+  // Passer la fonction à l'évènement click sur le bouton de fermeture de la form modale
   btnCloseModal.addEventListener("click", closeFormModal);
 
   // Afficher les champs saisis par l'utilisateur dans le formulaire de contact sur la page d'un photographe
   form.addEventListener("submit", function (e) {
-    let success = document.getElementById("msg-success");
     e.preventDefault();
     let prenom = form.elements["firstname"].value;
     let nom = form.elements["name"].value;
     let email = form.elements["email"].value;
     let message = form.elements["message"].value;
+    // Affichage des champs saisis par l'utilisateur en console
     console.log(prenom, nom, email, message);
     form.reset();
+    // Affichage d'un message de réussite d'envoi à l'utilisateur
+    let success = document.getElementById("msg-success");
     success.textContent = "Message envoyé";
     success.style.display = "block";
   });
 }
+
+photographerDetails();
 
 async function photographerMedias() {
   idPhotographer = location.search.substring(4);
@@ -250,7 +251,7 @@ async function photographerMedias() {
       let heart = document.createElement("button");
 
       // Si le media a une clé image création, hiérarchisation des éléments suivants
-      if (result.hasOwnProperty("image")) {
+      if (Object.prototype.hasOwnProperty.call(result, "image")) {
         // Création des éléments
         let item = document.createElement("article");
         media.appendChild(item);
@@ -277,7 +278,7 @@ async function photographerMedias() {
         legendOfPhotography.innerText = legend;
 
         // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
-      } else if (result.hasOwnProperty("video")) {
+      } else if (Object.prototype.hasOwnProperty.call(result, "video")) {
         // Création des éléments
         let item = document.createElement("article");
         media.appendChild(item);
@@ -315,30 +316,29 @@ async function photographerMedias() {
 
       let count = result.likes;
 
-      function incrementLikes() {
-        likes.innerText = count++;
+      heart.addEventListener("click", function () {
+        count++;
+        likes.innerText = count;
         total++;
         totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
-      }
-
-      heart.addEventListener("click", incrementLikes);
+      });
 
       // onclick sur l'image ouverture de la light-box
     });
   }
 
+  // Appel de la fonction à l'ouverture de la page
   createView(results);
 
   // Fonctions de filtre pour les médias
 
   function filteredByTitle() {
-    /* Fonctionne mais ne met pas à jour la vue
-    (+) le tri se fait uniquement sur le nom des PHOTOS et pas des vidéos */
     results = results.sort(function compare(a, b) {
       if (a.image < b.image) return -1;
       if (a.image > b.image) return 1;
       return 0;
     });
+    // Mise à jour de la vue de la liste des médias
     media.innerHTML = "";
     createView(results);
   }
@@ -349,6 +349,7 @@ async function photographerMedias() {
       if (a.likes < b.likes) return 1;
       return 0;
     });
+    // Mise à jour de la vue de la liste des médias
     media.innerHTML = "";
     createView(results);
   }
@@ -359,6 +360,7 @@ async function photographerMedias() {
       if (a.date < b.date) return 1;
       return 0;
     });
+    // Mise à jour de la vue de la liste des médias
     media.innerHTML = "";
     createView(results);
   }
@@ -422,21 +424,18 @@ async function photographerMedias() {
     let selectedTextToAppend = document.createTextNode(e.target.innerText);
     dropdownSelectedNode.innerHTML = null;
     dropdownSelectedNode.appendChild(selectedTextToAppend);
-    console.log(dropdownSelectedNode.textContent);
     let filter = dropdownSelectedNode.textContent;
     switch (filter) {
       case "Popularité":
-        console.log("Filtre par popularité sur les médias");
+        console.log("Filtre sélectionné : popularité");
         filteredByPopularity();
         break;
       case "Date":
-        console.log("Filtre par date sur les médias");
+        console.log("Filtre sélectionné : date");
         filteredByDate();
         break;
       case "Titre":
-        console.log(
-          "Filtre par titre dans l'ordre alphabétique sur les médias"
-        );
+        console.log("Filtre sélectionné : titre");
         filteredByTitle();
         break;
     }
@@ -499,8 +498,7 @@ async function photographerMedias() {
   }
 
   function applyFilter(category) {
-    // Récupérer la liste de tous les photographes
-
+    // Mise à jour de la vue de la liste des médias selon le tag cliqué
     media.innerHTML = "";
 
     // Parcourir chaque photographe dans le tableau de photographes
@@ -514,7 +512,7 @@ async function photographerMedias() {
           let heart = document.createElement("button");
 
           // Si le media a une clé image création, hiérarchisation des éléments suivants
-          if (results[i].hasOwnProperty("image")) {
+          if (Object.prototype.hasOwnProperty.call(results[i], "image")) {
             // Création des éléments
             let item = document.createElement("article");
             media.appendChild(item);
@@ -541,7 +539,9 @@ async function photographerMedias() {
             legendOfPhotography.innerText = legend;
 
             // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
-          } else if (results[i].hasOwnProperty("video")) {
+          } else if (
+            Object.prototype.hasOwnProperty.call(results[i], "video")
+          ) {
             // Création des éléments
             let item = document.createElement("article");
             media.appendChild(item);
@@ -575,18 +575,16 @@ async function photographerMedias() {
           // Partie likes
           details.setAttribute("class", "details-likes");
           likes.innerHTML = `${results[i].likes}`;
-          heart.setAttribute("class", "fa fa-heart");
-          heart.setAttribute("id", "like");
+          heart.setAttribute("class", "fa fa-heart like");
 
           let count = results[i].likes;
 
-          function incrementLikes() {
-            likes.innerText = count++;
+          heart.addEventListener("click", function () {
+            count++;
+            likes.innerText = count;
             total++;
             totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
-          }
-
-          heart.addEventListener("click", incrementLikes);
+          });
 
           // onclick sur l'image ouverture de la light-box
         }
@@ -597,15 +595,15 @@ async function photographerMedias() {
   function findValueOfFilter() {
     let type = document.querySelectorAll("article > span");
     for (let i = 0; i < type.length; i++) {
-      type[i].setAttribute("tabindex",0);
+      type[i].setAttribute("tabindex", 0);
       type[i].addEventListener("keydown", (e) => {
-        if (e.keyCode === ENTER_KEY_CODE){
-        let value = type[i].innerText;
-        // Modification pour comparaison avec string dans le json
-        let category = value.replace("#", "").toLowerCase();
-        console.log(`Filtre sélectionné : ${category}`);
-        applyFilter(category);
-        } 
+        if (e.keyCode === ENTER_KEY_CODE) {
+          let value = type[i].innerText;
+          // Modification pour comparaison avec string dans le json
+          let category = value.replace("#", "").toLowerCase();
+          console.log(`Filtre sélectionné : ${category}`);
+          applyFilter(category);
+        }
       });
       type[i].addEventListener("click", function () {
         let value = type[i].innerText;
@@ -618,3 +616,5 @@ async function photographerMedias() {
   }
   findValueOfFilter();
 }
+
+photographerMedias();
