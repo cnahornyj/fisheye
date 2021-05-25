@@ -352,6 +352,108 @@ input.btn-submit:hover {
   bottom: 5%;
 }
 
+/* Lightbox */
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF;
+  padding: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9ca2b0;
+  border-radius: 4px;
+}
+
+.lightbox::-webkit-scrollbar-track {
+  background: black;
+}
+
+.lightbox::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, .3);
+}
+
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .9);
+  z-index: 10;
+  overflow: auto;
+  animation: lightboxIn .5s;
+  transition: opacity .3s;
+}
+.lightbox.fadeOut {
+  opacity: 0;
+}
+.lightbox__next,
+.lightbox__prev {
+  border: none;
+  background: url(../assets/arrow.svg) center center / 16px 28px no-repeat;
+  width: 50px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin-top: -14px;
+  z-index: 11;
+}
+.lightbox__prev {
+  right: auto;
+  left: 0;
+  transform: rotate(180deg);
+}
+.lightbox__close {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 2.64275L13.3573 0.5L8 5.85725L2.64275 0.5L0.5 2.64275L5.85725 8L0.5 13.3573L2.64275 15.5L8 10.1427L13.3573 15.5L15.5 13.3573L10.1427 8L15.5 2.64275Z" fill="white"/></svg>') center center / 100% 100% no-repeat transparent;
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  z-index: 12;
+}
+.lightbox button {
+  opacity: .5;
+  cursor: pointer;
+  transition: opacity .3s;
+  text-indent: -3000px;
+}
+.lightbox button:hover {
+  background-color: none;
+  opacity: 1;
+}
+.lightbox__container img {
+  width: 30%;
+  height: auto;
+  animation: lightboxIn .5s;
+}
+.lightbox__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 50px;
+  margin-right: 50px;
+  min-height: 100vh;
+}
+.lightbox__loader {
+  width: 38px;
+  height: 38px;
+  opacity: .5;
+  background: url(../assets/loader.svg) center center no-repeat;
+}
+
+@keyframes lightboxIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
 /* Partie responsive */
 
 @media screen and (max-width: 1050px) {

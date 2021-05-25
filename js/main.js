@@ -1,6 +1,6 @@
 // Ouvrir index.html avec liveServer pour récupération de la data
 // Fonction pour récupérer la data dans le fichier json
-async function getPhotographers() {
+async function getData() {
   let url = "../photographers.json";
   try {
     let res = await fetch(url);
@@ -13,12 +13,12 @@ async function getPhotographers() {
 // Fonction pour afficher la liste des photographes
 async function renderPhotographers() {
   // Récupération de la data
-  let data = await getPhotographers();
+  let data = await getData();
   let photographers = data.photographers;
 
   let list = document.querySelector("#list-photographers");
 
-  // Pour chaque photographe dans le tableau de photographes création des éléments DOM
+  // Pour chaque photographe création des éléments DOM
   photographers.forEach((photographer) => {
     // Création des balises HTML
     let item = document.createElement("article");
@@ -54,24 +54,28 @@ async function renderPhotographers() {
 
     link.setAttribute("href", "photographer-page.html?id=" + photographer.id);
     photo.setAttribute("class", "photographer");
-    photo.setAttribute("alt","");
+    photo.setAttribute("alt", "");
     tagline.setAttribute("class", "citation");
     price.setAttribute("class", "priceperday");
   });
 
+  // CRÉER UNE FONCTION POUR GERER LA VUE SELON RESULT
+
   function applyFilter(category) {
-    // Récupérer la liste de tous les photographes
-    let photographers = data.photographers;
-
     list.innerHTML = "";
+    console.log(photographers);
+    photographersFiltered = Object.filter(photographers, function(photographer){
+      return photographer.name = "Mimi Keel";
+    })
 
-    // Parcourir chaque photographe dans le tableau de photographes
+    console.log(photographersFiltered);
+
+    /* Parcourir chaque photographe dans le tableau de photographes
     for (let i = 0; i < photographers.length; i++) {
       // Parcourir chaque tag dans le tableau de tags de chaque photographe
       for (let j = 0; j < photographers[i].tags.length; j++) {
         // Si l'un des tags d'un photographe === category cliqué alors affichage du photographe
         if (photographers[i].tags[j] === category) {
-
           //console.log(photographers[i]);
 
           let item = document.createElement("article");
@@ -91,8 +95,8 @@ async function renderPhotographers() {
           item.appendChild(price);
 
           // Pour chaque photographe dont l'un des tags === category affichage de tous ses tags
-          for(let h = 0; h < photographers[i].tags.length; h++){
-            console.log(photographers[i].tags[h]);
+          for (let h = 0; h < photographers[i].tags.length; h++) {
+            //console.log(photographers[i].tags[h]);
             let tag = document.createElement("span");
             tag.innerText = `#${photographers[i].tags[h]}`;
             tag.setAttribute("class", "type");
@@ -117,34 +121,34 @@ async function renderPhotographers() {
         }
       }
     }
+    */
   }
 
   const ENTER_KEY_CODE = 13;
 
-  // Fonction pour récupérer la valeur de l'élément cliqué puis application du filtre
-  function findValueOfFilter() {
-    let type = document.querySelectorAll("li");
-    for (let i = 0; i < type.length; i++) {
-      type[i].setAttribute("tabindex",0);
-      type[i].addEventListener("keydown", (e) => {
-        if (e.keyCode === ENTER_KEY_CODE){
+  // Récupérer la valeur du tag cliqué puis application du filtre
+  // Il y a peut être possibilité de passer deux types d'event en une seule fois ?
+
+  let type = document.querySelectorAll("li");
+  for (let i = 0; i < type.length; i++) {
+    type[i].setAttribute("tabindex", 0);
+    type[i].addEventListener("keydown", (e) => {
+      if (e.keyCode === ENTER_KEY_CODE) {
         let value = type[i].innerText;
         // Modification pour comparaison avec string dans le json
         let category = value.replace("#", "").toLowerCase();
         console.log(`Filtre sélectionné : ${category}`);
         applyFilter(category);
-        } 
-      });
-      type[i].addEventListener("click", function () {
-        let value = type[i].innerText;
-        // Modification pour comparaison avec string dans le json
-        let category = value.replace("#", "").toLowerCase();
-        //console.log(`Filtre sélectionné : ${category}`);
-        applyFilter(category);
-      });
-    }
+      }
+    });
+    type[i].addEventListener("click", function () {
+      let value = type[i].innerText;
+      // Modification pour comparaison avec string dans le json
+      let category = value.replace("#", "").toLowerCase();
+      //console.log(`Filtre sélectionné : ${category}`);
+      applyFilter(category);
+    });
   }
-  findValueOfFilter();
 }
 
 renderPhotographers();

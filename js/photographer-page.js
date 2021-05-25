@@ -1,4 +1,4 @@
-async function getPhotographers() {
+async function getData() {
   let url = "../photographers.json";
   try {
     let res = await fetch(url);
@@ -10,7 +10,7 @@ async function getPhotographers() {
 
 let idPhotographer = "";
 
-// Récupérer l'index grâce à la paire clé valeur id : idPhotographer
+// Fonction pour récupérer l'index grâce à la paire clé valeur id : idPhotographer
 function findIndexByKeyValue(photographer, key, valuetosearch) {
   for (let i = 0; i < photographer.length; i++) {
     if (photographer[i][key] == valuetosearch) {
@@ -39,7 +39,7 @@ async function photographerDetails() {
   // Collecter l'id dans l'URL pour le récupérer sur le fichier json
   idPhotographer = location.search.substring(4);
 
-  const data = await getPhotographers();
+  const data = await getData();
   const photographers = data.photographers;
 
   // Appel de la fonction avec les paramètres
@@ -184,7 +184,7 @@ async function photographerMedias() {
   let id = parseInt(idPhotographer);
   //console.log(id);
 
-  const data = await getPhotographers();
+  const data = await getData();
 
   // Récupération des photographes
   const photographer = data.photographers;
@@ -255,6 +255,7 @@ async function photographerMedias() {
         // Création des éléments
         let item = document.createElement("article");
         media.appendChild(item);
+        let link = document.createElement("a");
         let photography = document.createElement("img");
         let detailsOfPhotography = document.createElement("aside");
         let legendOfPhotography = document.createElement("p");
@@ -262,7 +263,8 @@ async function photographerMedias() {
         let legend = createLegendForPhotography(title);
 
         // Hiérarchisation des éléments
-        item.appendChild(photography);
+        item.appendChild(link);
+        link.appendChild(photography);
         item.appendChild(detailsOfPhotography);
         detailsOfPhotography.appendChild(legendOfPhotography);
         detailsOfPhotography.appendChild(details);
@@ -282,6 +284,7 @@ async function photographerMedias() {
         // Création des éléments
         let item = document.createElement("article");
         media.appendChild(item);
+        let link = document.createElement("a");
         let video = document.createElement("video");
         let source = document.createElement("source");
         let detailsOfVideo = document.createElement("aside");
@@ -290,7 +293,8 @@ async function photographerMedias() {
         let legend = createLegendForVideo(title);
 
         // Hiérarchisation des éléments
-        item.appendChild(video);
+        item.appendChild(link);
+        link.appendChild(video);
         video.appendChild(source);
         item.appendChild(detailsOfVideo);
         detailsOfVideo.appendChild(legendOfVideo);
@@ -307,6 +311,7 @@ async function photographerMedias() {
         detailsOfVideo.setAttribute("class", "details-image");
         source.src = `../assets/Sample Photos/${firstname}/${result.video}`;
         source.setAttribute("type", "video/mp4");
+        source.textContent = "La vidéo ne peut pas être lue";
       }
 
       // Partie likes
@@ -322,9 +327,134 @@ async function photographerMedias() {
         total++;
         totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
       });
-
-      // onclick sur l'image ouverture de la light-box
     });
+
+    /**
+     * @property {HTMLElement} element
+     * @property {string[]} images Chemins des images de la lightbox
+     * @property {string} url Image actuellement affichée
+     **/
+    class Lightbox {
+      static init() {
+        const links = Array.from(
+          document.querySelectorAll('img[src$=".jpg"],source[src$=".mp4"]')
+        );
+        const gallery = links.map((link) => link.getAttribute("src"));
+        links.forEach((link) =>
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            new Lightbox(e.currentTarget.getAttribute("src"), gallery);
+          })
+        );
+      }
+
+      /**
+       * @param {string} url URL de l'image
+       * @param {string[]} images Chemins des images de la lightbox
+       */
+      constructor(url, images) {
+        this.element = this.buildDOM(url);
+        this.images = images;
+        this.loadImage(url);
+        this.onKeyUp = this.onKeyUp.bind(this);
+        document.body.appendChild(this.element);
+        document.addEventListener("keyup", this.onKeyUp);
+      }
+
+      /**
+       * @param {string} url URL de l'image
+       */
+      loadImage(url) {
+        this.url = null;
+        const image = new Image();
+        const container = this.element.querySelector(".lightbox__container");
+        const loader = document.createElement("div");
+        loader.classList.add("lightbox__loader");
+        container.innerHTML = "";
+        container.appendChild(loader);
+        image.onload = () => {
+          container.removeChild(loader);
+          container.appendChild(image);
+          this.url = url;
+        };
+        image.src = url;
+      }
+
+      /**
+       * @param {KeyboardEvent} e
+       */
+      onKeyUp(e) {
+        if (e.key === "Escape") {
+          this.close(e);
+        } else if (e.key === "ArrowLeft") {
+          this.prev(e);
+        } else if (e.key === "ArrowRight") {
+          this.next(e);
+        }
+      }
+
+      /**
+       * Ferme la ligthbox
+       * @param {MouseEvent|KeyboardEvent} e
+       */
+      close(e) {
+        e.preventDefault();
+        this.element.classList.add("fadeOut");
+        window.setTimeout(() => {
+          this.element.parentElement.removeChild(this.element);
+        }, 500);
+        document.removeEventListener("keyup", this.onKeyUp);
+      }
+
+      /**
+       * @param {MouseEvent|KeyboardEvent} e
+       */
+      next(e) {
+        e.preventDefault();
+        let i = this.images.findIndex((image) => image === this.url);
+        if (i === this.images.length - 1) {
+          i = -1;
+        }
+        this.loadImage(this.images[i + 1]);
+      }
+
+      /**
+       * @param {MouseEvent|KeyboardEvent} e
+       */
+      prev(e) {
+        e.preventDefault();
+        let i = this.images.findIndex((image) => image === this.url);
+        if (i === 0) {
+          i = this.images.length;
+        }
+        this.loadImage(this.images[i - 1]);
+      }
+
+      /**
+       * @param {string} url URL de l'image
+       * @return {HTMLElement}
+       */
+      buildDOM(url) {
+        const dom = document.createElement("div");
+        dom.classList.add("lightbox");
+        dom.innerHTML = `<button class="lightbox__close">Fermer</button>
+        <button class="lightbox__next">Suivant</button>
+        <button class="lightbox__prev">Précédent</button>
+        <div class="lightbox__container"></div>`;
+        dom
+          .querySelector(".lightbox__close")
+          .addEventListener("click", this.close.bind(this));
+        dom
+          .querySelector(".lightbox__next")
+          .addEventListener("click", this.next.bind(this));
+        dom
+          .querySelector(".lightbox__prev")
+          .addEventListener("click", this.prev.bind(this));
+        return dom;
+      }
+    }
+
+    Lightbox.init();
   }
 
   // Appel de la fonction à l'ouverture de la page
@@ -590,6 +720,131 @@ async function photographerMedias() {
         }
       }
     }
+
+        /**
+     * @property {HTMLElement} element
+     * @property {string[]} images Chemins des images de la lightbox
+     * @property {string} url Image actuellement affichée
+     **/
+         class Lightbox {
+          static init() {
+            const links = Array.from(
+              document.querySelectorAll('img[src$=".jpg"],source[src$=".mp4"]')
+            );
+            const gallery = links.map((link) => link.getAttribute("src"));
+            links.forEach((link) =>
+              link.addEventListener("click", (e) => {
+                e.preventDefault();
+                new Lightbox(e.currentTarget.getAttribute("src"), gallery);
+              })
+            );
+          }
+    
+          /**
+           * @param {string} url URL de l'image
+           * @param {string[]} images Chemins des images de la lightbox
+           */
+          constructor(url, images) {
+            this.element = this.buildDOM(url);
+            this.images = images;
+            this.loadImage(url);
+            this.onKeyUp = this.onKeyUp.bind(this);
+            document.body.appendChild(this.element);
+            document.addEventListener("keyup", this.onKeyUp);
+          }
+    
+          /**
+           * @param {string} url URL de l'image
+           */
+          loadImage(url) {
+            this.url = null;
+            const image = new Image();
+            const container = this.element.querySelector(".lightbox__container");
+            const loader = document.createElement("div");
+            loader.classList.add("lightbox__loader");
+            container.innerHTML = "";
+            container.appendChild(loader);
+            image.onload = () => {
+              container.removeChild(loader);
+              container.appendChild(image);
+              this.url = url;
+            };
+            image.src = url;
+          }
+    
+          /**
+           * @param {KeyboardEvent} e
+           */
+          onKeyUp(e) {
+            if (e.key === "Escape") {
+              this.close(e);
+            } else if (e.key === "ArrowLeft") {
+              this.prev(e);
+            } else if (e.key === "ArrowRight") {
+              this.next(e);
+            }
+          }
+    
+          /**
+           * Ferme la ligthbox
+           * @param {MouseEvent|KeyboardEvent} e
+           */
+          close(e) {
+            e.preventDefault();
+            this.element.classList.add("fadeOut");
+            window.setTimeout(() => {
+              this.element.parentElement.removeChild(this.element);
+            }, 500);
+            document.removeEventListener("keyup", this.onKeyUp);
+          }
+    
+          /**
+           * @param {MouseEvent|KeyboardEvent} e
+           */
+          next(e) {
+            e.preventDefault();
+            let i = this.images.findIndex((image) => image === this.url);
+            if (i === this.images.length - 1) {
+              i = -1;
+            }
+            this.loadImage(this.images[i + 1]);
+          }
+    
+          /**
+           * @param {MouseEvent|KeyboardEvent} e
+           */
+          prev(e) {
+            e.preventDefault();
+            let i = this.images.findIndex((image) => image === this.url);
+            if (i === 0) {
+              i = this.images.length;
+            }
+            this.loadImage(this.images[i - 1]);
+          }
+    
+          /**
+           * @param {string} url URL de l'image
+           * @return {HTMLElement}
+           */
+          buildDOM(url) {
+            const dom = document.createElement("div");
+            dom.classList.add("lightbox");
+            dom.innerHTML = `<button class="lightbox__close">Fermer</button>
+            <button class="lightbox__next">Suivant</button>
+            <button class="lightbox__prev">Précédent</button>
+            <div class="lightbox__container"></div>`;
+            dom
+              .querySelector(".lightbox__close")
+              .addEventListener("click", this.close.bind(this));
+            dom
+              .querySelector(".lightbox__next")
+              .addEventListener("click", this.next.bind(this));
+            dom
+              .querySelector(".lightbox__prev")
+              .addEventListener("click", this.prev.bind(this));
+            return dom;
+          }
+        }
   }
 
   function findValueOfFilter() {
