@@ -164,7 +164,7 @@ span:focus {
   color: white;
 }
 
-button,
+#btn-open-modal,
 input.btn-submit {
   font-family: "DM Sans";
   font-size: 100%;
@@ -177,8 +177,8 @@ input.btn-submit {
   width: 150px;
 }
 
-button:hover,
-button:focus {
+#btn-open-modal:hover,
+#btn-open-modal:focus {
   background-color: #db8877;
   border: 1px solid #db8877;
   color: black;
@@ -239,14 +239,13 @@ img.photographer {
   justify-content: space-around;
 }
 
-.photoItem {
+.photoItem, .photoVideo {
   margin: 2%;
 }
 
 .photoVideo {
   width: 313px;
   height: 351px;
-  margin: 2%;
 }
 
 img.image {
