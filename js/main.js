@@ -63,14 +63,7 @@ async function renderPhotographers() {
 
   function applyFilter(category) {
     list.innerHTML = "";
-    console.log(photographers);
-    photographersFiltered = Object.filter(photographers, function(photographer){
-      return photographer.name = "Mimi Keel";
-    })
-
-    console.log(photographersFiltered);
-
-    /* Parcourir chaque photographe dans le tableau de photographes
+    // Parcourir chaque photographe dans le tableau de photographes
     for (let i = 0; i < photographers.length; i++) {
       // Parcourir chaque tag dans le tableau de tags de chaque photographe
       for (let j = 0; j < photographers[i].tags.length; j++) {
@@ -121,7 +114,6 @@ async function renderPhotographers() {
         }
       }
     }
-    */
   }
 
   const ENTER_KEY_CODE = 13;
@@ -130,6 +122,7 @@ async function renderPhotographers() {
   // Il y a peut être possibilité de passer deux types d'event en une seule fois ?
 
   let type = document.querySelectorAll("li");
+
   for (let i = 0; i < type.length; i++) {
     type[i].setAttribute("tabindex", 0);
     type[i].addEventListener("keydown", (e) => {
