@@ -30,7 +30,7 @@ const firstFocusableElement = modal.querySelectorAll(focusableElements)[0];
 const focusableContent = modal.querySelectorAll(focusableElements);
 const lastFocusableElement = focusableContent[focusableContent.length - 1];
 const btnCloseModal = document.getElementById("close-modal");
-const form = document.querySelector("form");
+const form = document.forms["contact"];
 
 // async function photographerDetails() et async function photographerMedias()
 // possible en une seule fonction ?
@@ -156,14 +156,49 @@ async function photographerDetails() {
 
   // Passer la fonction à l'évènement click sur le bouton de fermeture de la form modale
   btnCloseModal.addEventListener("click", closeFormModal);
+}
 
-  // Afficher les champs saisis par l'utilisateur dans le formulaire de contact sur la page d'un photographe
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    let prenom = form.elements["firstname"].value;
-    let nom = form.elements["name"].value;
-    let email = form.elements["email"].value;
-    let message = form.elements["message"].value;
+function validateForm(event) {
+  // REGEX
+  let checkString = /^[a-zA-Z]{2}/;
+  let checkMail =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  let prenom = form.elements["firstname"].value;
+  let nom = form.elements["name"].value;
+  let email = form.elements["email"].value;
+  let message = form.elements["message"].value;
+
+  if (!checkString.test(prenom) || prenom === "") {
+    let errorFirstname = document.getElementById("error-firstname");
+    errorFirstname.classList.add("input-error");
+    errorFirstname.innerText =
+      "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du prénom";
+    return false;
+  } else if (!checkString.test(nom) || nom === "") {
+    let errorLastname = document.getElementById("error-lastname");
+    errorLastname.classList.add("input-error");
+    errorLastname.innerText =
+      "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du prénom";
+    return false;
+  } else if (!checkMail.test(email) || email === "") {
+    let errorEmail = document.getElementById("error-mail");
+    errorEmail.classList.add("input-error");
+    errorEmail.innerText =
+      "Email incorrect";
+    return false;
+  } else if (!checkString.test(message) || message === "") {
+    let errorMessage = document.getElementById("error-textarea");
+    errorMessage.classList.add("input-error");
+    errorMessage.innerText =
+      "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du message";
+    return false;
+  } else {
+    event.preventDefault();
+    let spansError = document.querySelectorAll("span.input-error");
+    for (let i = 0; i < spansError.length; i++) {
+      spansError[i].innerText = "";
+    }
     // Affichage des champs saisis par l'utilisateur en console
     console.log(prenom, nom, email, message);
     form.reset();
@@ -171,7 +206,13 @@ async function photographerDetails() {
     let success = document.getElementById("msg-success");
     success.textContent = "Message envoyé";
     success.style.display = "block";
-  });
+    let champsSaisies = document.querySelectorAll(
+      "input[type=text],input[type=email],textarea"
+    );
+    for (let i = 0; i < champsSaisies.length; i++) {
+      champsSaisies[i].classList.remove("input-error");
+    }
+  }
 }
 
 photographerDetails();
@@ -312,9 +353,9 @@ async function photographerMedias() {
         video.setAttribute("height", "280px");
         video.setAttribute("controls", "");
         detailsOfVideo.setAttribute("class", "details-image");
-       video.src = `../assets/Sample Photos/${firstname}/${result.video}`;
-       video.setAttribute("type", "video/mp4");
-       video.textContent = "La vidéo ne peut pas être lue";
+        video.src = `../assets/Sample Photos/${firstname}/${result.video}`;
+        video.setAttribute("type", "video/mp4");
+        video.textContent = "La vidéo ne peut pas être lue";
       }
 
       // Partie likes
@@ -347,12 +388,12 @@ async function photographerMedias() {
         links.shift();
         console.log(typeof links);
         console.log(links);
-       
+
         const gallery = links.map((link) => link.getAttribute("src"));
         links.forEach((link) =>
           link.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log(link); 
+            console.log(link);
             // <video width="313px" height="280px" controls="" src="../assets/Sample Photos/Mimi/Animals_Wild_Horses_in_the_mountains.mp4" type="video/mp4">La vidéo ne peut pas être lue</video>
             new Lightbox(e.currentTarget.getAttribute("src"), gallery);
           })

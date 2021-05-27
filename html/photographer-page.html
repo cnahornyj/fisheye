@@ -80,7 +80,7 @@
     >
       <button id="close-modal"><i class="fa fa-times fa-3x"></i></button>
       <h1 id="name-photographer"></h1>
-      <form id="contact" action="photographer-page.html" method="get">
+      <form id="contact" action="photographer-page.html" method="get" onsubmit="return validateForm(event);">
         <label for="firstname">Prénom</label><br />
         <input
           type="text"
@@ -89,6 +89,7 @@
           aria-labelledby="firstname"
           aria-required="true"
         /><br />
+        <span id="error-firstname" class="message-error"></span><br />
         <label for="name">Nom</label><br />
         <input
           type="text"
@@ -97,6 +98,7 @@
           aria-labelledby="name"
           aria-required="true"
         /><br />
+        <span id="error-lastname" class="message-error"></span><br />
         <label for="email">Email</label><br />
         <input
           type="email"
@@ -105,6 +107,7 @@
           aria-labelledby="email"
           aria-required="true"
         /><br />
+        <span id="error-mail" class="message-error"></span><br />
         <label for="message">Message</label><br />
         <textarea
           id="message"
@@ -115,6 +118,7 @@
         >
         </textarea
         ><br />
+        <span id="error-textarea" class="message-error"></span><br />
         <input
           class="btn-submit"
           aria-labelledby="message"

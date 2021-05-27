@@ -344,6 +344,22 @@ input.btn-submit:hover {
   background-color: #751f17;
 }
 
+/* Classes pour gestion des erreurs/validation des entrées dans le formulaire */
+
+.message-error {
+  margin-right: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: #ccc;
+}
+
+.message-error:hover,
+:focus {
+  background-color: none;
+  color: none;
+}
+
 #msg-success{
   display: none;
   position: absolute;
