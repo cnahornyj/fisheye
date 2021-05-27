@@ -329,7 +329,7 @@ async function photographerMedias() {
         media.appendChild(item);
         let link = document.createElement("a");
         let video = document.createElement("video");
-        let source = document.createElement("source");
+        let subtitles = document.createElement("track");
         let detailsOfVideo = document.createElement("aside");
         let legendOfVideo = document.createElement("p");
         let title = result.video;
@@ -338,7 +338,7 @@ async function photographerMedias() {
         // Hiérarchisation des éléments
         item.appendChild(link);
         link.appendChild(video);
-        video.appendChild(source);
+        video.appendChild(subtitles);
         item.appendChild(detailsOfVideo);
         detailsOfVideo.appendChild(legendOfVideo);
         detailsOfVideo.appendChild(details);
@@ -355,7 +355,10 @@ async function photographerMedias() {
         detailsOfVideo.setAttribute("class", "details-image");
         video.src = `../assets/Sample Photos/${firstname}/${result.video}`;
         video.setAttribute("type", "video/mp4");
-        video.textContent = "La vidéo ne peut pas être lue";
+        //video.textContent = "La vidéo ne peut pas être lue";
+        subtitles.setAttribute("kind","subtitles");
+        subtitles.setAttribute("srclang","fr");
+        subtitles.src = `../tracks/${result.description}`;
       }
 
       // Partie likes
@@ -473,6 +476,7 @@ async function photographerMedias() {
       next(e) {
         e.preventDefault();
         let i = this.images.findIndex((image) => image === this.url);
+        console.log(i);
         if (i === this.images.length - 1) {
           i = -1;
         }
@@ -484,6 +488,7 @@ async function photographerMedias() {
        */
       prev(e) {
         e.preventDefault();
+        console.log(i);
         let i = this.images.findIndex((image) => image === this.url);
         if (i === 0) {
           i = this.images.length;
