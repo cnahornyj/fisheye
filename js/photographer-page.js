@@ -184,8 +184,7 @@ function validateForm(event) {
   } else if (!checkMail.test(email) || email === "") {
     let errorEmail = document.getElementById("error-mail");
     errorEmail.classList.add("input-error");
-    errorEmail.innerText =
-      "Email incorrect";
+    errorEmail.innerText = "Email incorrect";
     return false;
   } else if (!checkString.test(message) || message === "") {
     let errorMessage = document.getElementById("error-textarea");
@@ -315,7 +314,10 @@ async function photographerMedias() {
 
         // Attribution des class, id, src etc
         item.setAttribute("class", "photoItem");
-        link.setAttribute("href", "");
+        link.setAttribute(
+          "href",
+          `../assets/Sample Photos/${firstname}/${result.image}`
+        );
         photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
         photography.setAttribute("class", "image");
         photography.setAttribute("alt", result.description);
@@ -347,7 +349,10 @@ async function photographerMedias() {
 
         // Attribution des class, id src etc
         item.setAttribute("class", "photoVideo");
-        link.setAttribute("href", "");
+        link.setAttribute(
+          "href",
+          `../assets/Sample Photos/${firstname}/${result.video}`
+        );
         legendOfVideo.innerText = legend;
         video.setAttribute("width", "313px");
         video.setAttribute("height", "280px");
@@ -356,8 +361,8 @@ async function photographerMedias() {
         video.src = `../assets/Sample Photos/${firstname}/${result.video}`;
         video.setAttribute("type", "video/mp4");
         //video.textContent = "La vidéo ne peut pas être lue";
-        subtitles.setAttribute("kind","subtitles");
-        subtitles.setAttribute("srclang","fr");
+        subtitles.setAttribute("kind", "subtitles");
+        subtitles.setAttribute("srclang", "fr");
         subtitles.src = `../tracks/${result.description}`;
       }
 
@@ -378,27 +383,24 @@ async function photographerMedias() {
 
     /**
      * @property {HTMLElement} element
-     * @property {string[]} images Chemins des images de la lightbox
+     * @property {string[]} images Chemins des images/vidéos de la lightbox
      * @property {string} url Image actuellement affichée
      **/
     class Lightbox {
       static init() {
         const links = Array.from(
-          document.querySelectorAll('img[src$=".jpg"],video[src$=".mp4"]')
+          document.querySelectorAll('a[href$=".jpg"],a[href$=".mp4"]')
         );
 
-        // Retirer le premier élément (photo de profil du photographe)
-        links.shift();
-        console.log(typeof links);
-        console.log(links);
+        //console.log(links);
 
-        const gallery = links.map((link) => link.getAttribute("src"));
+        const gallery = links.map((link) => link.getAttribute("href"));
+
+        //console.log(gallery);
         links.forEach((link) =>
           link.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log(link);
-            // <video width="313px" height="280px" controls="" src="../assets/Sample Photos/Mimi/Animals_Wild_Horses_in_the_mountains.mp4" type="video/mp4">La vidéo ne peut pas être lue</video>
-            new Lightbox(e.currentTarget.getAttribute("src"), gallery);
+            new Lightbox(e.currentTarget.getAttribute("href"), e.currentTarget, gallery);
           })
         );
 
@@ -408,10 +410,11 @@ async function photographerMedias() {
 
       /**
        * @param {string} url URL de l'image
-       * @param {string[]} images Chemins des images de la lightbox
+       * @param {string[]} images Chemins des images/vidéos de la lightbox
        */
-      constructor(url, images) {
+      constructor(url, reference, images) {
         this.element = this.buildDOM(url);
+        this.reference = reference;
         this.images = images;
         this.loadImage(url);
         this.onKeyUp = this.onKeyUp.bind(this);
@@ -423,25 +426,30 @@ async function photographerMedias() {
        * @param {string} url URL de l'image
        */
       loadImage(url) {
-        this.url = null;
-        const image = new Image();
-        /* 
-        const video = document.createElement("video");
-        console.log(video);
-        Si l.422-424-428 image = video la balise <video src="../assets/Sample Photos/Ellie Rose/Sport_Tricks_in_the_air.mp4">
-        */
-        const container = this.element.querySelector(".lightbox__container");
-        const loader = document.createElement("div");
-        loader.classList.add("lightbox__loader");
-        container.innerHTML = "";
-        container.appendChild(loader);
-        image.onload = () => {
-          container.removeChild(loader);
+        this.url = url;
+        if (url.endsWith(".mp4")){
+          const video = document.createElement("video");
+          const subtitles = document.createElement("track");
+          const container = this.element.querySelector(".lightbox__container");
+          container.innerHTML = "";
+          container.appendChild(video);
+          video.appendChild(subtitles);
+          video.setAttribute("width", "50%");
+          video.setAttribute("height", "50%");
+          video.setAttribute("controls", "");
+          video.src = url;
+          subtitles.setAttribute("kind", "subtitles");
+          subtitles.setAttribute("srclang", "fr");
+          subtitles.setAttribute("src", this.reference.children[0].children[0].src);
+          // Intégrer la gestion des eventsKeyUpOnBoard ici ?
+        } else {
+          const image = new Image();
+          const container = this.element.querySelector(".lightbox__container");
+          container.innerHTML = "";
           container.appendChild(image);
-          this.url = url;
-          console.log(this.url); // Dans le cas d'une vidéo la ligne n'est pas "parcourue" ???
-        };
-        image.src = url;
+          image.src = url;
+          image.setAttribute("alt", this.reference.children[0].alt);
+        }
       }
 
       /**
@@ -488,8 +496,8 @@ async function photographerMedias() {
        */
       prev(e) {
         e.preventDefault();
-        console.log(i);
         let i = this.images.findIndex((image) => image === this.url);
+        console.log(i);
         if (i === 0) {
           i = this.images.length;
         }
