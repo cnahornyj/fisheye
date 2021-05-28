@@ -391,21 +391,18 @@ async function photographerMedias() {
         const links = Array.from(
           document.querySelectorAll('a[href$=".jpg"],a[href$=".mp4"]')
         );
-
-        //console.log(links);
-
         const gallery = links.map((link) => link.getAttribute("href"));
 
-        //console.log(gallery);
         links.forEach((link) =>
           link.addEventListener("click", (e) => {
             e.preventDefault();
-            new Lightbox(e.currentTarget.getAttribute("href"), e.currentTarget, gallery);
+            new Lightbox(
+              e.currentTarget.getAttribute("href"),
+              e.currentTarget,
+              gallery
+            );
           })
         );
-
-        /* TO DO : Gérer le focus sur chaque média et ouvrir la lightbox si touche enter appuyé
-        Problème avec comportement par défaut car c'est la balise href qui est focus ET PAS le média */
       }
 
       /**
@@ -427,7 +424,7 @@ async function photographerMedias() {
        */
       loadImage(url) {
         this.url = url;
-        if (url.endsWith(".mp4")){
+        if (url.endsWith(".mp4")) {
           const video = document.createElement("video");
           const subtitles = document.createElement("track");
           const container = this.element.querySelector(".lightbox__container");
@@ -440,8 +437,10 @@ async function photographerMedias() {
           video.src = url;
           subtitles.setAttribute("kind", "subtitles");
           subtitles.setAttribute("srclang", "fr");
-          subtitles.setAttribute("src", this.reference.children[0].children[0].src);
-          // Intégrer la gestion des eventsKeyUpOnBoard ici ?
+          subtitles.setAttribute(
+            "src",
+            this.reference.children[0].children[0].src
+          );
         } else {
           const image = new Image();
           const container = this.element.querySelector(".lightbox__container");
@@ -456,13 +455,32 @@ async function photographerMedias() {
        * @param {KeyboardEvent} e
        */
       onKeyUp(e) {
+        const lightbox = this.element;
+        const focusableElements = "button";
+        const firstFocusableElement =
+          lightbox.querySelectorAll(focusableElements)[0];
+        const focusableContent = lightbox.querySelectorAll(focusableElements);
+        const lastFocusableElement =
+          focusableContent[focusableContent.length - 1];
+          console.log(firstFocusableElement, lastFocusableElement);
+
         if (e.key === "Escape") {
           this.close(e);
         } else if (e.key === "ArrowLeft") {
           this.prev(e);
         } else if (e.key === "ArrowRight") {
           this.next(e);
-        }
+          // Si après avoir touché Tab l'élément actif est le dernier FOCUS sur le premier élément de la lightbox
+        } /*else if (e.key === "Tab") {
+          if (document.activeElement === firstFocusableElement) {
+            focusableContent[1].focus();
+            e.preventDefault();
+          } else if (document.activeElement === lastFocusableElement){
+            firstFocusableElement.focus();
+          }
+        } else if (e.shiftKey && e.keyCode == 9){
+
+        } */
       }
 
       /**
@@ -509,7 +527,7 @@ async function photographerMedias() {
        * @return {HTMLElement}
        */
       buildDOM(url) {
-        const dom = document.createElement("div");
+        const dom = document.createElement("section");
         dom.classList.add("lightbox");
         dom.innerHTML = `<button class="lightbox__close">Fermer</button>
         <button class="lightbox__next">Suivant</button>
@@ -524,8 +542,16 @@ async function photographerMedias() {
         dom
           .querySelector(".lightbox__prev")
           .addEventListener("click", this.prev.bind(this));
+        /* Ici il faudrait récupérer un élément HTML et pas une collection /!\ 
+        Solution : attribut d'un id au bouton de fermeture de la lightbox ?
+        */
+        const btnClose = document.getElementById("open-form-responsive");
+        console.log(typeof btnClose);
+        btnClose.focus();
+        console.log(document.activeElement);
         return dom;
       }
+
     }
 
     Lightbox.init();
