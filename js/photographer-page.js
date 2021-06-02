@@ -379,11 +379,6 @@ async function photographerMedias() {
       });
     });
 
-    /**
-     * @property {HTMLElement} element
-     * @property {string[]} images Chemins des images/vidéos de la lightbox
-     * @property {string} url Image actuellement affichée
-     **/
     class Lightbox {
       static init() {
         const links = Array.from(
@@ -391,13 +386,14 @@ async function photographerMedias() {
         );
 
         const gallery = links.map((link) => link.getAttribute("href"));
+        const galleryOfReferences = links.map((link) => link.children[0].alt);
 
         links.forEach((link) =>
           link.addEventListener("click", (e) => {
             e.preventDefault();
             new Lightbox(
               e.currentTarget.getAttribute("href"),
-              e.currentTarget,
+              galleryOfReferences,
               gallery
             );
           })
@@ -406,7 +402,6 @@ async function photographerMedias() {
 
       /**
        * @param {string} url URL de l'image
-       * @param {string} reference Référence de la balise cliquée ?
        * @param {string[]} images Chemins des images/vidéos de la lightbox
        */
       constructor(url, reference, images) {
@@ -427,9 +422,11 @@ async function photographerMedias() {
         if (url.endsWith(".mp4")) {
           const video = document.createElement("video");
           const subtitles = document.createElement("track");
+          let legend = document.createElement("p");
           const container = this.element.querySelector(".lightbox__container");
           container.innerHTML = "";
           container.appendChild(video);
+          container.appendChild(legend);
           video.appendChild(subtitles);
           video.setAttribute("width", "50%");
           video.setAttribute("height", "50%");
@@ -437,17 +434,32 @@ async function photographerMedias() {
           video.src = url;
           subtitles.setAttribute("kind", "subtitles");
           subtitles.setAttribute("srclang", "fr");
-          subtitles.setAttribute(
+          /*subtitles.setAttribute(
             "src",
             this.reference.children[0].children[0].src
-          );
+          );*/
+          let realLegend = this.createLegend(this.url);
+          legend.innerText = realLegend;
         } else {
           const image = new Image();
+          let legend = document.createElement("p");
           const container = this.element.querySelector(".lightbox__container");
           container.innerHTML = "";
           container.appendChild(image);
+          container.appendChild(legend);
           image.src = url;
-          image.setAttribute("alt", this.reference.children[0].alt);
+          let realLegend = this.createLegend(this.url);
+          legend.innerText = realLegend;
+        }
+      }
+
+      createLegend(url) {
+        let array = url.split("/");
+        let realLegend = array[array.length - 1].replaceAll("_", " ");
+        if (realLegend.endsWith(".jpg")) {
+          return realLegend.replace(".jpg"," ");
+        } else {
+          return realLegend.replace(".mp4"," ");
         }
       }
 
@@ -461,7 +473,7 @@ async function photographerMedias() {
           this.prev(e);
         } else if (e.key === "ArrowRight") {
           this.next(e);
-        } else if (e.keyCode == 32){
+        } else if (e.keyCode == 32) {
           e.preventDefault();
           this.playVideo(e);
         }
@@ -506,7 +518,7 @@ async function photographerMedias() {
         this.loadImage(this.images[i - 1]);
       }
 
-      playVideo(e){
+      playVideo(e) {
         e.preventDefault();
         this.element.querySelector("video").focus();
       }
@@ -556,7 +568,7 @@ async function photographerMedias() {
         dom
           .querySelector(".lightbox__container")
           .addEventListener("mouseover", this.keepFocusInLightbox.bind(this));
-          // Eventuellement modifier le type d'event ???
+        // Eventuellement modifier le type d'event ???
         dom
           .querySelector(".lightbox__close")
           .addEventListener("click", this.close.bind(this));
@@ -611,7 +623,7 @@ async function photographerMedias() {
     createView(results);
   }
 
-    function filteredByTag(category) {
+  function filteredByTag(category) {
     media.innerHTML = "";
     let newArray = [];
     // Parcourir chaque photographe dans le tableau de photographes
@@ -626,7 +638,7 @@ async function photographerMedias() {
     }
     createView(newArray);
   }
-  
+
   // Gestion de la liste déroulante pour les filtres sur les médias
 
   const SPACEBAR_KEY_CODE = [0, 32];
