@@ -613,7 +613,6 @@ async function photographerMedias() {
   }
 
     function filteredByCategory(category) {
-    // Mise à jour de la vue de la liste des médias selon le tag cliqué
     media.innerHTML = "";
     let newArray = [];
     // Parcourir chaque photographe dans le tableau de photographes
