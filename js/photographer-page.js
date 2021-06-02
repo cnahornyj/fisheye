@@ -123,10 +123,9 @@ async function photographerDetails() {
           lastFocusableElement.focus();
           e.preventDefault();
         }
-      } else {
         // Si la touche tabulation est pressée
+      } else {
         if (document.activeElement === lastFocusableElement) {
-          //
           firstFocusableElement.focus();
           e.preventDefault();
         }
@@ -296,7 +295,6 @@ async function photographerMedias() {
         let item = document.createElement("article");
         media.appendChild(item);
         let link = document.createElement("a");
-        // Créer une balise a qui va contenir le média et qui doit être focusable au clavier
         let photography = document.createElement("img");
         let detailsOfPhotography = document.createElement("aside");
         let legendOfPhotography = document.createElement("p");
@@ -408,6 +406,7 @@ async function photographerMedias() {
 
       /**
        * @param {string} url URL de l'image
+       * @param {string} reference Référence de la balise cliquée ?
        * @param {string[]} images Chemins des images/vidéos de la lightbox
        */
       constructor(url, reference, images) {
@@ -438,10 +437,10 @@ async function photographerMedias() {
           video.src = url;
           subtitles.setAttribute("kind", "subtitles");
           subtitles.setAttribute("srclang", "fr");
-          /*subtitles.setAttribute(
+          subtitles.setAttribute(
             "src",
             this.reference.children[0].children[0].src
-          );*/
+          );
         } else {
           const image = new Image();
           const container = this.element.querySelector(".lightbox__container");
@@ -462,9 +461,9 @@ async function photographerMedias() {
           this.prev(e);
         } else if (e.key === "ArrowRight") {
           this.next(e);
-        } else if (e.key === "Tab"){
-          const activeElmt = document.activeElement;
-          console.log(activeElmt);
+        } else if (e.keyCode == 32){
+          e.preventDefault();
+          this.playVideo(e);
         }
       }
 
@@ -507,6 +506,42 @@ async function photographerMedias() {
         this.loadImage(this.images[i - 1]);
       }
 
+      playVideo(e){
+        e.preventDefault();
+        this.element.querySelector("video").focus();
+      }
+
+      keepFocusInLightbox() {
+        let lightbox = this.element;
+        let focusableElements = "button, video";
+        let focusableContent = lightbox.querySelectorAll(focusableElements);
+        let firstFocusableElement = focusableContent[0];
+        let lastFocusableElement =
+          focusableContent[focusableContent.length - 1];
+
+        lightbox.addEventListener("keydown", function (e) {
+          let isTabPressed = e.key === "Tab" || e.keyCode === 9;
+
+          if (!isTabPressed) {
+            return;
+          }
+          // Si les touches shift + tab sont pressées
+          if (e.shiftKey) {
+            if (document.activeElement === firstFocusableElement) {
+              lastFocusableElement.focus();
+              e.preventDefault();
+            }
+            // Si la touche tabulation est pressée
+          } else {
+            if (document.activeElement === lastFocusableElement) {
+              firstFocusableElement.focus();
+              e.preventDefault();
+            }
+          }
+        });
+        firstFocusableElement.focus();
+      }
+
       /**
        * @param {string} url URL de l'image
        * @return {HTMLElement}
@@ -515,9 +550,13 @@ async function photographerMedias() {
         const dom = document.createElement("section");
         dom.classList.add("lightbox");
         dom.innerHTML = `<button class="lightbox__close">Fermer</button>
-        <button class="lightbox__next">Suivant</button>
         <button class="lightbox__prev">Précédent</button>
+        <button class="lightbox__next">Suivant</button>
         <div class="lightbox__container"></div>`;
+        dom
+          .querySelector(".lightbox__container")
+          .addEventListener("mouseover", this.keepFocusInLightbox.bind(this));
+          // Eventuellement modifier le type d'event ???
         dom
           .querySelector(".lightbox__close")
           .addEventListener("click", this.close.bind(this));
