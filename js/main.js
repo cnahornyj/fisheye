@@ -18,107 +18,70 @@ async function renderPhotographers() {
 
   let list = document.querySelector("#list-photographers");
 
-  // Pour chaque photographe création des éléments DOM
-  photographers.forEach((photographer) => {
-    // Création des balises HTML
-    let item = document.createElement("article");
-    let link = document.createElement("a");
-    let photo = document.createElement("img");
-    let name = document.createElement("h2");
-    let location = document.createElement("p");
-    let tagline = document.createElement("p");
-    let price = document.createElement("p");
+  function createView(arrayOfObjects) {
+    // Pour chaque photographe création des éléments DOM
+    photographers.forEach((photographer) => {
+      // Création des balises HTML
+      let item = document.createElement("article");
+      let link = document.createElement("a");
+      let photo = document.createElement("img");
+      let name = document.createElement("h2");
+      let location = document.createElement("p");
+      let tagline = document.createElement("p");
+      let price = document.createElement("p");
 
-    list.appendChild(item);
-    item.appendChild(link);
-    link.appendChild(photo);
-    link.appendChild(name);
-    item.appendChild(location);
-    item.appendChild(tagline);
-    item.appendChild(price);
+      list.appendChild(item);
+      item.appendChild(link);
+      link.appendChild(photo);
+      link.appendChild(name);
+      item.appendChild(location);
+      item.appendChild(tagline);
+      item.appendChild(price);
 
-    for (let i = 0; i < photographer.tags.length; i++) {
-      let tag = document.createElement("span");
-      tag.innerText = `#${photographer.tags[i]}`;
-      tag.setAttribute("class", "type");
-      item.appendChild(tag);
-    }
+      for (let i = 0; i < photographer.tags.length; i++) {
+        let tag = document.createElement("span");
+        tag.innerText = `#${photographer.tags[i]}`;
+        tag.setAttribute("class", "type");
+        item.appendChild(tag);
+      }
 
-    photo.src =
-      "../assets/Sample Photos/Photographers ID Photos/" +
-      photographer.portrait;
-    name.innerText = photographer.name;
-    location.innerText = `${photographer.city}, ${photographer.country}`;
-    tagline.innerText = photographer.tagline;
-    price.innerText = `${photographer.price}€/jour`;
+      photo.src =
+        "../assets/Sample Photos/Photographers ID Photos/" +
+        photographer.portrait;
+      name.innerText = photographer.name;
+      location.innerText = `${photographer.city}, ${photographer.country}`;
+      tagline.innerText = photographer.tagline;
+      price.innerText = `${photographer.price}€/jour`;
 
-    link.setAttribute("href", "photographer-page.html?id=" + photographer.id);
-    photo.setAttribute("class", "photographer");
-    photo.setAttribute("alt", "");
-    tagline.setAttribute("class", "citation");
-    price.setAttribute("class", "priceperday");
-  });
+      link.setAttribute("href", "photographer-page.html?id=" + photographer.id);
+      photo.setAttribute("class", "photographer");
+      photo.setAttribute("alt", "");
+      tagline.setAttribute("class", "citation");
+      price.setAttribute("class", "priceperday");
+    });
+  }
 
-  // CRÉER UNE FONCTION POUR GERER LA VUE SELON RESULT
+  createView(photographers);
 
-  function applyFilter(category) {
+  function filteredByCategory(category) {
     list.innerHTML = "";
+    let newArray = [];
     // Parcourir chaque photographe dans le tableau de photographes
     for (let i = 0; i < photographers.length; i++) {
       // Parcourir chaque tag dans le tableau de tags de chaque photographe
       for (let j = 0; j < photographers[i].tags.length; j++) {
         // Si l'un des tags d'un photographe === category cliqué alors affichage du photographe
         if (photographers[i].tags[j] === category) {
-          //console.log(photographers[i]);
-
-          let item = document.createElement("article");
-          let link = document.createElement("a");
-          let photo = document.createElement("img");
-          let name = document.createElement("h2");
-          let location = document.createElement("p");
-          let tagline = document.createElement("p");
-          let price = document.createElement("p");
-
-          list.appendChild(item);
-          item.appendChild(link);
-          link.appendChild(photo);
-          link.appendChild(name);
-          item.appendChild(location);
-          item.appendChild(tagline);
-          item.appendChild(price);
-
-          // Pour chaque photographe dont l'un des tags === category affichage de tous ses tags
-          for (let h = 0; h < photographers[i].tags.length; h++) {
-            //console.log(photographers[i].tags[h]);
-            let tag = document.createElement("span");
-            tag.innerText = `#${photographers[i].tags[h]}`;
-            tag.setAttribute("class", "type");
-            item.appendChild(tag);
-          }
-
-          photo.src =
-            "../assets/Sample Photos/Photographers ID Photos/" +
-            photographers[i].portrait;
-          name.innerText = photographers[i].name;
-          location.innerText = `${photographers[i].city}, ${photographers[i].country}`;
-          tagline.innerText = photographers[i].tagline;
-          price.innerText = `${photographers[i].price}€/jour`;
-
-          link.setAttribute(
-            "href",
-            "photographer-page.html?id=" + photographers[i].id
-          );
-          photo.setAttribute("class", "photographer");
-          tagline.setAttribute("class", "citation");
-          price.setAttribute("class", "priceperday");
+          newArray.push(photographers[i]);
         }
       }
     }
+    photographers = newArray;
+    createView(photographers);
   }
 
   const ENTER_KEY_CODE = 13;
 
-  // Récupérer la valeur du tag cliqué puis application du filtre
   // Il y a peut être possibilité de passer deux types d'event en une seule fois ?
 
   let type = document.querySelectorAll("li");
@@ -131,15 +94,15 @@ async function renderPhotographers() {
         // Modification pour comparaison avec string dans le json
         let category = value.replace("#", "").toLowerCase();
         console.log(`Filtre sélectionné : ${category}`);
-        applyFilter(category);
+        filteredByCategory(category);
       }
     });
     type[i].addEventListener("click", function () {
       let value = type[i].innerText;
       // Modification pour comparaison avec string dans le json
       let category = value.replace("#", "").toLowerCase();
-      //console.log(`Filtre sélectionné : ${category}`);
-      applyFilter(category);
+      console.log(`Filtre sélectionné : ${category}`);
+      filteredByCategory(category);
     });
   }
 }
