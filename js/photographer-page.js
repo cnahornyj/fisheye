@@ -281,9 +281,9 @@ async function photographerMedias() {
 
   let media = document.querySelector("#photographer-medias");
 
-  function createView(object) {
+  function createView(arrayOfObjects) {
     // Pour chaque média créé un article avec le média + ses informations
-    object.forEach((result) => {
+    arrayOfObjects.forEach((result) => {
       // Création des éléments
       let details = document.createElement("aside");
       let likes = document.createElement("p");
@@ -606,11 +606,29 @@ async function photographerMedias() {
       if (a.date < b.date) return 1;
       return 0;
     });
+    console.log(typeof results);
     // Mise à jour de la vue de la liste des médias
     media.innerHTML = "";
     createView(results);
   }
 
+    function filteredByCategory(category) {
+    // Mise à jour de la vue de la liste des médias selon le tag cliqué
+    media.innerHTML = "";
+    let newArray = [];
+    // Parcourir chaque photographe dans le tableau de photographes
+    for (let i = 0; i < results.length; i++) {
+      // Parcourir chaque tag dans le tableau de tags de chaque photographe
+      for (let j = 0; j < results[i].tags.length; j++) {
+        // Si l'un des tags d'un photographe === category cliqué alors affichage du photographe
+        if (results[i].tags[j] === category) {
+          newArray.push(results[i]);
+        }
+      }
+    }
+    createView(newArray);
+  }
+  
   // Gestion de la liste déroulante pour les filtres sur les médias
 
   const SPACEBAR_KEY_CODE = [0, 32];
@@ -743,101 +761,6 @@ async function photographerMedias() {
     }
   }
 
-  function applyFilter(category) {
-    // Mise à jour de la vue de la liste des médias selon le tag cliqué
-    media.innerHTML = "";
-
-    // Parcourir chaque photographe dans le tableau de photographes
-    for (let i = 0; i < results.length; i++) {
-      // Parcourir chaque tag dans le tableau de tags de chaque photographe
-      for (let j = 0; j < results[i].tags.length; j++) {
-        // Si l'un des tags d'un photographe === category cliqué alors affichage du photographe
-        if (results[i].tags[j] === category) {
-          let details = document.createElement("aside");
-          let likes = document.createElement("p");
-          let heart = document.createElement("button");
-
-          // Si le media a une clé image création, hiérarchisation des éléments suivants
-          if (Object.prototype.hasOwnProperty.call(results[i], "image")) {
-            // Création des éléments
-            let item = document.createElement("article");
-            media.appendChild(item);
-            let photography = document.createElement("img");
-            let detailsOfPhotography = document.createElement("aside");
-            let legendOfPhotography = document.createElement("p");
-            let title = results[i].image;
-            let legend = createLegendForPhotography(title);
-
-            // Hiérarchisation des éléments
-            item.appendChild(photography);
-            item.appendChild(detailsOfPhotography);
-            detailsOfPhotography.appendChild(legendOfPhotography);
-            detailsOfPhotography.appendChild(details);
-            details.appendChild(likes);
-            details.appendChild(heart);
-
-            // Attribution des class, id, src etc
-            item.setAttribute("class", "photoItem");
-            photography.src = `../assets/Sample Photos/${firstname}/${results[i].image}`;
-            photography.setAttribute("class", "image");
-            photography.setAttribute("alt", results[i].description);
-            detailsOfPhotography.setAttribute("class", "details-image");
-            legendOfPhotography.innerText = legend;
-
-            // Sinon si le media a une clé video création, hiérarchisation des éléments suivants
-          } else if (
-            Object.prototype.hasOwnProperty.call(results[i], "video")
-          ) {
-            // Création des éléments
-            let item = document.createElement("article");
-            media.appendChild(item);
-            let video = document.createElement("video");
-            let source = document.createElement("source");
-            let detailsOfVideo = document.createElement("aside");
-            let legendOfVideo = document.createElement("p");
-            let title = results[i].video;
-            let legend = createLegendForVideo(title);
-
-            // Hiérarchisation des éléments
-            item.appendChild(video);
-            video.appendChild(source);
-            item.appendChild(detailsOfVideo);
-            detailsOfVideo.appendChild(legendOfVideo);
-            detailsOfVideo.appendChild(details);
-            details.appendChild(likes);
-            details.appendChild(heart);
-
-            // Attribution des class, id src etc
-            item.setAttribute("class", "photoVideo");
-            legendOfVideo.innerText = legend;
-            video.setAttribute("width", "313px");
-            video.setAttribute("height", "280px");
-            video.setAttribute("controls", "");
-            detailsOfVideo.setAttribute("class", "details-image");
-            source.src = `../assets/Sample Photos/${firstname}/${results[i].video}`;
-            source.setAttribute("type", "video/mp4");
-          }
-
-          // Partie likes
-          details.setAttribute("class", "details-likes");
-          likes.innerHTML = `${results[i].likes}`;
-          heart.setAttribute("class", "fa fa-heart like");
-
-          let count = results[i].likes;
-
-          heart.addEventListener("click", function () {
-            count++;
-            likes.innerText = count;
-            total++;
-            totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
-          });
-
-          // onclick sur l'image ouverture de la light-box
-        }
-      }
-    }
-  }
-
   function findValueOfFilter() {
     let type = document.querySelectorAll("article > span");
     for (let i = 0; i < type.length; i++) {
@@ -848,7 +771,7 @@ async function photographerMedias() {
           // Modification pour comparaison avec string dans le json
           let category = value.replace("#", "").toLowerCase();
           console.log(`Filtre sélectionné : ${category}`);
-          applyFilter(category);
+          filteredByCategory(category);
         }
       });
       type[i].addEventListener("click", function () {
@@ -856,7 +779,7 @@ async function photographerMedias() {
         // Modification pour comparaison avec string dans le json
         let category = value.replace("#", "").toLowerCase();
         console.log(`Filtre sélectionné : ${category}`);
-        applyFilter(category);
+        filteredByCategory(category);
       });
     }
   }
