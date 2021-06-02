@@ -606,13 +606,12 @@ async function photographerMedias() {
       if (a.date < b.date) return 1;
       return 0;
     });
-    console.log(typeof results);
     // Mise à jour de la vue de la liste des médias
     media.innerHTML = "";
     createView(results);
   }
 
-    function filteredByCategory(category) {
+    function filteredByTag(category) {
     media.innerHTML = "";
     let newArray = [];
     // Parcourir chaque photographe dans le tableau de photographes
@@ -770,7 +769,7 @@ async function photographerMedias() {
           // Modification pour comparaison avec string dans le json
           let category = value.replace("#", "").toLowerCase();
           console.log(`Filtre sélectionné : ${category}`);
-          filteredByCategory(category);
+          filteredByTag(category);
         }
       });
       type[i].addEventListener("click", function () {
@@ -778,7 +777,7 @@ async function photographerMedias() {
         // Modification pour comparaison avec string dans le json
         let category = value.replace("#", "").toLowerCase();
         console.log(`Filtre sélectionné : ${category}`);
-        filteredByCategory(category);
+        filteredByTag(category);
       });
     }
   }
