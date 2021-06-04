@@ -445,8 +445,7 @@ async function photographerMedias() {
           container.appendChild(video);
           container.appendChild(legend);
           video.appendChild(subtitles);
-          video.setAttribute("width", "50%");
-          video.setAttribute("height", "50%");
+          video.setAttribute("width", "40%");
           video.setAttribute("controls", "");
           video.src = url;
           subtitles.setAttribute("kind", "subtitles");
@@ -587,10 +586,13 @@ async function photographerMedias() {
       buildDOM(url) {
         const dom = document.createElement("section");
         dom.classList.add("lightbox");
-        dom.innerHTML = `<button class="lightbox__close">Fermer</button>
+        dom.innerHTML = `
+        <article class="lightbox__article">
+        <button class="lightbox__close">Fermer</button>
         <button class="lightbox__prev">Précédent</button>
+        <div class="lightbox__container"></div>
         <button class="lightbox__next">Suivant</button>
-        <div class="lightbox__container"></div>`;
+        </article>`;
         dom
           .querySelector(".lightbox__container")
           .addEventListener("mouseover", this.keepFocusInLightbox.bind(this));

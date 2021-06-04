@@ -37,7 +37,7 @@ section#photographer-profile {
   color: black;
 }
 
-#filters > p{
+#filters > p {
   margin-right: 10px;
   font-size: 100%;
   font-weight: bold;
@@ -65,7 +65,7 @@ section#photographer-profile {
 .dropdown__arrow.expanded {
   transform: rotate(-180deg);
 }
-path{
+path {
   fill: white;
 }
 .dropdown__list {
@@ -74,7 +74,8 @@ path{
   left: 0;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  transition: opacity 0.1s cubic-bezier(0, 0, 0.38, 0.9), max-height 0.5s cubic-bezier(0, 0, 0.38, 0.9);
+  transition: opacity 0.1s cubic-bezier(0, 0, 0.38, 0.9),
+    max-height 0.5s cubic-bezier(0, 0, 0.38, 0.9);
   max-height: 0;
   overflow: hidden;
   opacity: 0;
@@ -97,11 +98,12 @@ path{
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.dropdown__list-item:hover, .dropdown__list-item:focus {
+.dropdown__list-item:hover,
+.dropdown__list-item:focus {
   background-color: #db8877;
   color: black;
 }
-hr{
+hr {
   margin-block-start: 0;
   margin-block-end: 0;
   width: 90%;
@@ -193,7 +195,8 @@ input.btn-submit {
   margin-left: 5px;
 }
 
-.like:hover, .like:focus {
+.like:hover,
+.like:focus {
   transform: scale(1.01);
   background-color: none;
   border: none;
@@ -239,7 +242,8 @@ img.photographer {
   justify-content: space-around;
 }
 
-.photoItem, .photoVideo {
+.photoItem,
+.photoVideo {
   margin: 2%;
 }
 
@@ -360,7 +364,7 @@ input.btn-submit:hover {
   color: none;
 }
 
-#msg-success{
+#msg-success {
   display: none;
   position: absolute;
   left: 50%;
@@ -374,7 +378,7 @@ input.btn-submit:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: #FFF;
+  background: #ccc;
   padding: 1px;
 }
 
@@ -388,9 +392,8 @@ input.btn-submit:hover {
 }
 
 .lightbox::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, .3);
+  background: rgba(255, 255, 255, 0.3);
 }
-
 
 .lightbox {
   position: fixed;
@@ -398,11 +401,11 @@ input.btn-submit:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .9);
+  background-color: white;
   z-index: 10;
   overflow: auto;
-  animation: lightboxIn .5s;
-  transition: opacity .3s;
+  animation: lightboxIn 0.5s;
+  transition: opacity 0.3s;
 }
 .lightbox.fadeOut {
   opacity: 0;
@@ -411,7 +414,7 @@ input.btn-submit:hover {
 .lightbox__prev {
   border: none;
   background: url(../assets/arrow.svg) center center / 16px 28px no-repeat;
-  width: 50px;
+  width: 60%;
   height: 100%;
   position: fixed;
   top: 0;
@@ -428,26 +431,28 @@ input.btn-submit:hover {
   width: 30px;
   height: 30px;
   border: none;
-  background: url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 2.64275L13.3573 0.5L8 5.85725L2.64275 0.5L0.5 2.64275L5.85725 8L0.5 13.3573L2.64275 15.5L8 10.1427L13.3573 15.5L15.5 13.3573L10.1427 8L15.5 2.64275Z" fill="white"/></svg>') center center / 100% 100% no-repeat transparent;
+  background: url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 2.64275L13.3573 0.5L8 5.85725L2.64275 0.5L0.5 2.64275L5.85725 8L0.5 13.3573L2.64275 15.5L8 10.1427L13.3573 15.5L15.5 13.3573L10.1427 8L15.5 2.64275Z" fill="brown"/></svg>')
+    center center / 100% 100% no-repeat transparent;
   position: fixed;
-  top: 20px;
-  right: 10px;
+  top: 40px;
+  right: 28.5%;
   z-index: 12;
 }
 .lightbox button {
-  opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
   text-indent: -3000px;
 }
-.lightbox button:hover {
+.lightbox button:hover, .lightbox button:focus {
   background-color: none;
+  outline: none;
   opacity: 1;
 }
 .lightbox__container img {
   width: 30%;
   height: auto;
-  animation: lightboxIn .5s;
+  animation: lightboxIn 0.5s;
 }
 .lightbox__container {
   display: flex;
@@ -461,13 +466,17 @@ input.btn-submit:hover {
 .lightbox__loader {
   width: 38px;
   height: 38px;
-  opacity: .5;
+  opacity: 0.5;
   background: url(../assets/loader.svg) center center no-repeat;
 }
 
 @keyframes lightboxIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Partie responsive */
@@ -510,7 +519,7 @@ input.btn-submit:hover {
     margin-left: auto;
     margin-right: auto;
   }
-  #msg-success{
+  #msg-success {
     left: 35%;
     bottom: -10px;
   }
