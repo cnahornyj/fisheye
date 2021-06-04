@@ -386,15 +386,26 @@ async function photographerMedias() {
         );
 
         const gallery = links.map((link) => link.getAttribute("href"));
-        //const galleryOfReferences = links.map((link) => link.children[0].alt);
+        const galleryOfAlts = links.map((link) => link.children[0].alt);
+        const srcOfVideo = document.querySelector("track").src;
+
+        /* Dans le cas d'une vidéo la valeur vaudra undefined on la remplace
+        donc par l'attribut src de la vidéo dans notre cas il n'y en a qu'une seule */
+        for (let i = 0; i < galleryOfAlts.length; i++) {
+          if (galleryOfAlts[i] === undefined) {
+            galleryOfAlts[i] = srcOfVideo;
+          }
+        }
 
         links.forEach((link) =>
           link.addEventListener("click", (e) => {
             e.preventDefault();
+            //console.log(e.currentTarget);
             new Lightbox(
               e.currentTarget.getAttribute("href"),
-              /*galleryOfReferences,*/
-              gallery
+              e.currentTarget.children[0].alt,
+              gallery,
+              galleryOfAlts
             );
           })
         );
@@ -402,13 +413,16 @@ async function photographerMedias() {
 
       /**
        * @param {string} url URL de l'image
+       * @param {string[]} alt Attribut ALT de l'image
        * @param {string[]} images Chemins des images/vidéos de la lightbox
+       * @param {string[]} alts Chemins des attributs alt pour les images de la lightbox
        */
-      constructor(url,/*references,*/images) {
+      constructor(url, alt, images, alts) {
         this.element = this.buildDOM(url);
-        //this.references = references;
+        this.alt = alt;
         this.images = images;
-        this.loadImage(url,/*references*/);
+        this.alts = alts;
+        this.loadImage(url, alt);
         this.onKeyUp = this.onKeyUp.bind(this);
         document.body.appendChild(this.element);
         document.addEventListener("keyup", this.onKeyUp);
@@ -417,10 +431,12 @@ async function photographerMedias() {
       /**
        * @param {string} url URL de l'image
        */
-      loadImage(url/*, reference*/) {
-        this.url = url;
-        //this.reference = reference;
+      loadImage(url, alt) {
+        this.url = null;
+        this.alt = null;
         if (url.endsWith(".mp4")) {
+          this.url = url;
+          this.alt = alt;
           const video = document.createElement("video");
           const subtitles = document.createElement("track");
           let legend = document.createElement("p");
@@ -435,13 +451,12 @@ async function photographerMedias() {
           video.src = url;
           subtitles.setAttribute("kind", "subtitles");
           subtitles.setAttribute("srclang", "fr");
-          /*subtitles.setAttribute(
-            "src",
-            this.reference.children[0].children[0].src
-          );*/
+          subtitles.setAttribute("src", this.alt);
           let realLegend = this.createLegend(this.url);
           legend.innerText = realLegend;
         } else {
+          this.url = url;
+          this.alt = alt;
           const image = new Image();
           let legend = document.createElement("p");
           const container = this.element.querySelector(".lightbox__container");
@@ -449,6 +464,7 @@ async function photographerMedias() {
           container.appendChild(image);
           container.appendChild(legend);
           image.src = url;
+          image.setAttribute("alt", this.alt);
           let realLegend = this.createLegend(this.url);
           legend.innerText = realLegend;
         }
@@ -493,18 +509,23 @@ async function photographerMedias() {
         document.removeEventListener("keyup", this.onKeyUp);
       }
 
+      /* Problématique au niveau de la valeur undefined dans alts [{}] car 
+      balise alt inexistante pour la vidéo */
+
       /**
        * @param {MouseEvent|KeyboardEvent} e
        */
       next(e) {
         e.preventDefault();
         let i = this.images.findIndex((image) => image === this.url);
-        //let j = this.references.findIndex((reference) => reference === this.reference);
         if (i === this.images.length - 1) {
           i = -1;
         }
-        this.loadImage(this.images[i + 1]/*, this.references[j + 1]*/);
-        //console.log(this.reference);
+        let j = this.alts.findIndex((alt) => alt === this.alt);
+        if (j === this.alts.length - 1) {
+          j = -1;
+        }
+        this.loadImage(this.images[i + 1], this.alts[j + 1]);
       }
 
       /**
@@ -513,12 +534,14 @@ async function photographerMedias() {
       prev(e) {
         e.preventDefault();
         let i = this.images.findIndex((image) => image === this.url);
-        //let j = this.references.findIndex((reference) => reference === this.reference);
         if (i === 0) {
           i = this.images.length;
         }
-        this.loadImage(this.images[i - 1]/*,this.references[j - 1]*/);
-        //console.log(this.reference);
+        let j = this.alts.findIndex((alt) => alt === this.alt);
+        if (j === 0) {
+          j = this.alts.length;
+        }
+        this.loadImage(this.images[i - 1], this.alts[j - 1]);
       }
 
       playVideo(e) {
