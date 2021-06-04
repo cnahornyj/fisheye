@@ -587,12 +587,10 @@ async function photographerMedias() {
         const dom = document.createElement("section");
         dom.classList.add("lightbox");
         dom.innerHTML = `
-        <article class="lightbox__article">
         <button class="lightbox__close">Fermer</button>
         <button class="lightbox__prev">Précédent</button>
         <div class="lightbox__container"></div>
-        <button class="lightbox__next">Suivant</button>
-        </article>`;
+        <button class="lightbox__next">Suivant</button>`;
         dom
           .querySelector(".lightbox__container")
           .addEventListener("mouseover", this.keepFocusInLightbox.bind(this));
