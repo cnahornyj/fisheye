@@ -32,9 +32,6 @@ const lastFocusableElement = focusableContent[focusableContent.length - 1];
 const btnCloseModal = document.getElementById("close-modal");
 const form = document.forms["contact"];
 
-// async function photographerDetails() et async function photographerMedias()
-// possible en une seule fonction ?
-
 async function photographerDetails() {
   // Collecter l'id dans l'URL pour le récupérer sur le fichier json
   idPhotographer = location.search.substring(4);
@@ -42,8 +39,8 @@ async function photographerDetails() {
   const data = await getData();
   const photographers = data.photographers;
 
-  // Appel de la fonction avec les paramètres
-  let index = findIndexByKeyValue(photographers, "id", idPhotographer);
+  // Appel de la fonction findIndexByKeyValue() avec les paramètres
+  const index = findIndexByKeyValue(photographers, "id", idPhotographer);
 
   // Récupérer les informations du photographe grâce à son index dans le array photographers
   const photographer = data.photographers[index];
@@ -73,7 +70,6 @@ async function photographerDetails() {
   image.appendChild(photo);
 
   // Attribution des class, id, src, innerText, innerHTML
-
   pageOf.textContent = `${photographer.name} - Photographe - Fisheye`;
   name.innerText = photographer.name;
   localisation.innerText = `${photographer.city}, ${photographer.country}`;
@@ -94,8 +90,6 @@ async function photographerDetails() {
   contact.setAttribute("class", "contact");
   image.setAttribute("class", "image");
 
-  // Faut il vérifier les champs saisies par l'utilisateur ?
-
   let nameOfPhotographer = document.getElementById("name-photographer");
   nameOfPhotographer.innerHTML = `Contactez-moi <br> ${photographer.name}`;
 
@@ -109,11 +103,9 @@ async function photographerDetails() {
     main.style.opacity = "0.5";
     modal.style.display = "block";
     modal.setAttribute("aria-hidden", "false");
-
     // Gestion du focus uniquement dans la modale formulaire
     modal.addEventListener("keydown", function (e) {
       let isTabPressed = e.key === "Tab" || e.keyCode === 9;
-
       if (!isTabPressed) {
         return;
       }
@@ -133,13 +125,12 @@ async function photographerDetails() {
     });
     firstFocusableElement.focus();
   }
-
   // Passer la fonction à l'évènement click sur les deux boutons d'ouverture de la form modale
   btnOpenModal.addEventListener("click", openFormModal);
   btnOpenModalResp.addEventListener("click", openFormModal);
 
   function closeFormModal() {
-    // Mise en retrait de la modale à la fermeture de celle-ci + message de réussite
+    // Mise en retrait de la modale à la fermeture de celle-ci
     body.style.overflow = "visible";
     btnOpenModalResp.style.display = "block";
     header.setAttribute("aria-hidden", "false");
@@ -152,11 +143,11 @@ async function photographerDetails() {
     success.textContent = "";
     success.style.display = "none";
   }
-
   // Passer la fonction à l'évènement click sur le bouton de fermeture de la form modale
   btnCloseModal.addEventListener("click", closeFormModal);
 }
 
+// Vérification des champs saisies par l'utilisateur lors de la soumission du formulaire
 function validateForm(event) {
   // REGEX
   let checkString = /^[a-zA-Z]{2}/;
@@ -221,15 +212,14 @@ async function photographerMedias() {
 
   // Conversion string en number
   let id = parseInt(idPhotographer);
-  //console.log(id);
 
   const data = await getData();
 
   // Récupération des photographes
   const photographer = data.photographers;
 
-  // Appel de la fonction avec les paramètres
-  let index = findIndexByKeyValue(photographer, "id", idPhotographer);
+  // Appel de la fonction findIndexByKeyValue() avec les paramètres
+  const index = findIndexByKeyValue(photographer, "id", idPhotographer);
 
   // Récupérer les informations du photographe grâce à son index dans le array photographers
   const artiste = data.photographers[index];
@@ -255,14 +245,15 @@ async function photographerMedias() {
   // Récupérer un tableau avec les images/vidéos du photographe
   let results = medias.filter((media) => media.photographerId === id);
 
-  // Fonctions pour créer une légende pour chaque média
-  function createLegendForPhotography(string) {
-    let removeCharacter = string.replaceAll("_", " ").replace(".jpg", " ");
-    return removeCharacter;
-  }
-  function createLegendForVideo(string) {
-    let removeCharacter = string.replaceAll("_", " ").replace(".mp4", " ");
-    return removeCharacter;
+  // Fonction pour créer une légende pour chaque média
+  function createLegendForMedia(string) {
+    if (string.endsWith(".jpg")) {
+      let removeCharacter = string.replaceAll("_", " ").replace(".jpg", " ");
+      return removeCharacter;
+    } else {
+      let removeCharacter = string.replaceAll("_", " ").replace(".mp4", " ");
+      return removeCharacter;
+    }
   }
 
   let sectionLikes = document.querySelector("#total-likes");
@@ -299,7 +290,7 @@ async function photographerMedias() {
         let detailsOfPhotography = document.createElement("aside");
         let legendOfPhotography = document.createElement("p");
         let title = result.image;
-        let legend = createLegendForPhotography(title);
+        let legend = createLegendForMedia(title);
 
         // Hiérarchisation des éléments
         item.appendChild(link);
@@ -333,7 +324,7 @@ async function photographerMedias() {
         let detailsOfVideo = document.createElement("aside");
         let legendOfVideo = document.createElement("p");
         let title = result.video;
-        let legend = createLegendForVideo(title);
+        let legend = createLegendForMedia(title);
 
         // Hiérarchisation des éléments
         item.appendChild(link);
@@ -508,9 +499,6 @@ async function photographerMedias() {
         document.removeEventListener("keyup", this.onKeyUp);
       }
 
-      /* Problématique au niveau de la valeur undefined dans alts [{}] car 
-      balise alt inexistante pour la vidéo */
-
       /**
        * @param {MouseEvent|KeyboardEvent} e
        */
@@ -562,13 +550,11 @@ async function photographerMedias() {
           if (!isTabPressed) {
             return;
           }
-          // Si les touches shift + tab sont pressées
           if (e.shiftKey) {
             if (document.activeElement === firstFocusableElement) {
               lastFocusableElement.focus();
               e.preventDefault();
             }
-            // Si la touche tabulation est pressée
           } else {
             if (document.activeElement === lastFocusableElement) {
               firstFocusableElement.focus();
@@ -594,7 +580,6 @@ async function photographerMedias() {
         dom
           .querySelector(".lightbox__container")
           .addEventListener("mouseover", this.keepFocusInLightbox.bind(this));
-        // Eventuellement modifier le type d'event ???
         dom
           .querySelector(".lightbox__close")
           .addEventListener("click", this.close.bind(this));
@@ -607,7 +592,6 @@ async function photographerMedias() {
         return dom;
       }
     }
-
     Lightbox.init();
   }
 
@@ -615,7 +599,6 @@ async function photographerMedias() {
   createView(results);
 
   // Fonctions de filtre pour les médias
-
   function filteredByTitle() {
     results = results.sort(function compare(a, b) {
       if (a.image < b.image) return -1;
@@ -649,6 +632,7 @@ async function photographerMedias() {
     createView(results);
   }
 
+  // A MODIFIER
   function filteredByTag(category) {
     media.innerHTML = "";
     let newArray = [];
@@ -666,7 +650,6 @@ async function photographerMedias() {
   }
 
   // Gestion de la liste déroulante pour les filtres sur les médias
-
   const SPACEBAR_KEY_CODE = [0, 32];
   const ENTER_KEY_CODE = 13;
   const DOWN_ARROW_KEY_CODE = 40;
@@ -694,26 +677,21 @@ async function photographerMedias() {
       setSelectedListItem(e);
       closeList();
     });
-
     item.addEventListener("keydown", (e) => {
       switch (e.keyCode) {
         case ENTER_KEY_CODE:
           setSelectedListItem(e);
           closeList();
           return;
-
         case DOWN_ARROW_KEY_CODE:
           focusNextListItem(DOWN_ARROW_KEY_CODE);
           return;
-
         case UP_ARROW_KEY_CODE:
           focusNextListItem(UP_ARROW_KEY_CODE);
           return;
-
         case ESCAPE_KEY_CODE:
           closeList();
           return;
-
         default:
           return;
       }
@@ -750,11 +728,9 @@ async function photographerMedias() {
   function toggleListVisibility(e) {
     let openDropDown =
       SPACEBAR_KEY_CODE.includes(e.keyCode) || e.keyCode === ENTER_KEY_CODE;
-
     if (e.keyCode === ESCAPE_KEY_CODE) {
       closeList();
     }
-
     if (e.type === "click" || openDropDown) {
       list.classList.toggle("open");
       dropdownArrow.classList.toggle("expanded");
@@ -763,11 +739,9 @@ async function photographerMedias() {
         list.classList.contains("open")
       );
     }
-
     if (e.keyCode === DOWN_ARROW_KEY_CODE) {
       focusNextListItem(DOWN_ARROW_KEY_CODE);
     }
-
     if (e.keyCode === UP_ARROW_KEY_CODE) {
       focusNextListItem(UP_ARROW_KEY_CODE);
     }
