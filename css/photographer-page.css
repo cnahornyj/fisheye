@@ -450,7 +450,7 @@ input.btn-submit:hover {
   opacity: 1;
 }
 .lightbox__container img {
-  width: 30%;
+  width: 35%;
   height: auto;
   animation: lightboxIn 0.5s;
 }
