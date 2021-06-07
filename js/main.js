@@ -70,7 +70,7 @@ async function renderPhotographers() {
     for (let i = 0; i < photographers.length; i++) {
       // Parcourir chaque tag dans le tableau de tags de chaque photographe
       for (let j = 0; j < photographers[i].tags.length; j++) {
-        // Si l'un des tags d'un photographe === category cliqué alors affichage du photographe
+        // Si l'un des tags d'un photographe === category cliqué alors photographe ajouté à un nouveau tableau
         if (photographers[i].tags[j] === category) {
           newArray.push(photographers[i]);
         }
@@ -81,8 +81,6 @@ async function renderPhotographers() {
   }
 
   const ENTER_KEY_CODE = 13;
-
-  // Il y a peut être possibilité de passer deux types d'event en une seule fois ?
 
   let type = document.querySelectorAll("li");
 
