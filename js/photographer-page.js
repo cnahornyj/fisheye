@@ -24,6 +24,7 @@ const body = document.querySelector("body");
 const header = document.querySelector("header");
 const main = document.querySelector("main");
 const modal = document.getElementById("form-modal");
+modal.setAttribute("aria-hidden","true");
 const focusableElements =
   'button, input, textarea, [tabindex]:not([tabindex="-1"])';
 const firstFocusableElement = modal.querySelectorAll(focusableElements)[0];
@@ -426,6 +427,8 @@ async function photographerMedias() {
         this.onKeyUp = this.onKeyUp.bind(this);
         document.body.appendChild(this.element);
         document.addEventListener("keyup", this.onKeyUp);
+        const header = document.querySelector("header");
+        const main = document.querySelector("main");
       }
 
       /**
@@ -501,7 +504,10 @@ async function photographerMedias() {
        */
       close(e) {
         e.preventDefault();
+        header.setAttribute("aria-hidden","false");
+        main.setAttribute("aria-hidden","false");
         this.element.classList.add("fadeOut");
+        this.element.setAttribute("aria-hidden","true");
         window.setTimeout(() => {
           this.element.parentElement.removeChild(this.element);
         }, 500);
@@ -579,8 +585,11 @@ async function photographerMedias() {
        * @return {HTMLElement}
        */
       buildDOM(url) {
+        header.setAttribute("aria-hidden","true");
+        main.setAttribute("aria-hidden","true");
         const dom = document.createElement("section");
         dom.classList.add("lightbox");
+        dom.setAttribute("aria-hidden","false");
         dom.innerHTML = `
         <button class="lightbox__close">Fermer</button>
         <button class="lightbox__prev">Précédent</button>
