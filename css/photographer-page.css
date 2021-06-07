@@ -134,7 +134,7 @@ h1 {
 }
 
 p.citation {
-  color: #979797;
+  color: #706a6a;
   font-size: 90%;
   line-height: 0.3;
   margin-bottom: 7%;
@@ -163,7 +163,7 @@ span:focus {
 }
 
 #btn-open-modal,
-input.btn-submit,#open-form-responsive {
+input.btn-submit{
   font-family: "DM Sans";
   font-size: 100%;
   font-weight: bold;
@@ -251,20 +251,20 @@ img.image {
   border-radius: 5px;
 }
 
-aside.details-image,
-aside.details-likes {
+article.details-image,
+article.details-likes {
   display: flex;
 }
 
-aside.details-image {
+article.details-image {
   justify-content: space-between;
 }
 
-aside.details-image > p {
+article.details-image > p {
   font-size: 110%;
 }
 
-aside.details-likes {
+article.details-likes {
   margin-right: 18px;
 }
 
@@ -447,7 +447,7 @@ input.btn-submit:hover {
   opacity: 1;
 }
 .lightbox__container img {
-  width: 30%;
+  width: 35%;
   height: auto;
   animation: lightboxIn 0.5s;
 }
@@ -493,16 +493,25 @@ input.btn-submit:hover {
     visibility: hidden;
   }
   button#open-form-responsive {
-    display: block;
+    font-family: "DM Sans";
+    position: fixed;
     visibility: visible;
     width: max-content;
     padding: 1% 3% 1% 3%;
-    position: sticky;
+    bottom: 30px;
     left: 50%;
     transform: translate(-50%, -50%);
-    bottom: 30px;
-    font-size: 150%;
     letter-spacing: 1.02px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: #901c1c;
+    color: white;
+    border: 1px solid #901c1c;
+  }
+  #open-form-responsive:hover, #open-form-responsive:focus{
+  background-color: #db8877;
+  border: 1px solid #db8877;
+  color: black;
   }
   #form-modal {
     width: 70%;
@@ -541,6 +550,16 @@ input.btn-submit:hover {
     display: none;
     visibility: hidden;
   }
+  .lightbox__container img{
+    width: 70%;
+  }
+  .lightbox__next, .lightbox__prev{
+    width: 10%;
+  }
+  .lightbox__close{
+    top: 85px;
+    right: 3.5%;
+  }
 }
 
 @media screen and (max-width: 560px) {
@@ -577,6 +596,16 @@ input.btn-submit:hover {
   img.photographer {
     width: 100px !important;
     height: 100px !important;
+  }
+  .lightbox__container img{
+    width: 100%;
+  }
+  .lightbox__next, .lightbox__prev{
+    width: 10%;
+  }
+  .lightbox__close{
+    top: 85px;
+    right: 3.5%;
   }
   #form-modal > h1 {
     font-size: 1.5em;

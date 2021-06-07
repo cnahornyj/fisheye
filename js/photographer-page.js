@@ -53,7 +53,7 @@ async function photographerDetails() {
   let localisation = document.createElement("p");
   let quote = document.createElement("p");
   let btnOpenModal = document.createElement("button");
-  let btnOpenModalResp = document.getElementById("open-form-responsive");
+  let btnOpenModalResp = document.createElement("button");
   let photo = document.createElement("img");
   let presentation = document.createElement("article");
   let contact = document.createElement("article");
@@ -67,6 +67,7 @@ async function photographerDetails() {
   presentation.appendChild(localisation);
   presentation.appendChild(quote);
   contact.appendChild(btnOpenModal);
+  contact.appendChild(btnOpenModalResp);
   image.appendChild(photo);
 
   // Attribution des class, id, src, innerText, innerHTML
@@ -83,9 +84,12 @@ async function photographerDetails() {
 
   btnOpenModal.innerText = "Contactez-moi";
   btnOpenModal.setAttribute("id", "btn-open-modal");
+  btnOpenModalResp.innerText = "Contactez-moi";
+  btnOpenModalResp.setAttribute("id","open-form-responsive");
   photo.src =
     "../assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
   photo.setAttribute("class", "photographer");
+  photo.setAttribute("alt","Photo de profil du photographe");
   quote.setAttribute("class", "citation");
   contact.setAttribute("class", "contact");
   image.setAttribute("class", "image");
@@ -269,6 +273,7 @@ async function photographerMedias() {
 
   // Afficher le nombre total de likes par artiste + prix de sa prestation à la journée
   totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
+  
 
   let media = document.querySelector("#photographer-medias");
 
@@ -276,7 +281,7 @@ async function photographerMedias() {
     // Pour chaque média créé un article avec le média + ses informations
     arrayOfObjects.forEach((result) => {
       // Création des éléments
-      let details = document.createElement("aside");
+      let details = document.createElement("article");
       let likes = document.createElement("p");
       let heart = document.createElement("button");
 
@@ -287,7 +292,7 @@ async function photographerMedias() {
         media.appendChild(item);
         let link = document.createElement("a");
         let photography = document.createElement("img");
-        let detailsOfPhotography = document.createElement("aside");
+        let detailsOfPhotography = document.createElement("article");
         let legendOfPhotography = document.createElement("p");
         let title = result.image;
         let legend = createLegendForMedia(title);
@@ -307,6 +312,8 @@ async function photographerMedias() {
           "href",
           `../assets/Sample Photos/${firstname}/${result.image}`
         );
+        link.setAttribute("id",`${legend}`);
+        link.setAttribute("aria-label",`Lien vers la photo ${legend} dans la lightbox`);
         photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
         photography.setAttribute("class", "image");
         photography.setAttribute("alt", result.description);
@@ -321,7 +328,7 @@ async function photographerMedias() {
         let link = document.createElement("a");
         let video = document.createElement("video");
         let subtitles = document.createElement("track");
-        let detailsOfVideo = document.createElement("aside");
+        let detailsOfVideo = document.createElement("article");
         let legendOfVideo = document.createElement("p");
         let title = result.video;
         let legend = createLegendForMedia(title);
@@ -342,6 +349,8 @@ async function photographerMedias() {
           "href",
           `../assets/Sample Photos/${firstname}/${result.video}`
         );
+        link.setAttribute("id",`${legend}`);
+        link.setAttribute("aria-label",`Lien vers la vidéo ${legend} dans la lightbox`);
         legendOfVideo.innerText = legend;
         video.setAttribute("width", "313px");
         video.setAttribute("height", "280px");
@@ -349,7 +358,6 @@ async function photographerMedias() {
         detailsOfVideo.setAttribute("class", "details-image");
         video.src = `../assets/Sample Photos/${firstname}/${result.video}`;
         video.setAttribute("type", "video/mp4");
-        //video.textContent = "La vidéo ne peut pas être lue";
         subtitles.setAttribute("kind", "subtitles");
         subtitles.setAttribute("srclang", "fr");
         subtitles.src = `../tracks/${result.description}`;
@@ -359,6 +367,7 @@ async function photographerMedias() {
       details.setAttribute("class", "details-likes");
       likes.innerHTML = `${result.likes}`;
       heart.setAttribute("class", "fa fa-heart like");
+      heart.setAttribute("aria-label","Liker le média");
 
       let count = result.likes;
 
