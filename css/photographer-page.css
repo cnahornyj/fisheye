@@ -133,15 +133,11 @@ h1 {
   margin-bottom: -3%;
 }
 
-p {
-  font-size: 125%;
-}
-
 p.citation {
-  color: black;
+  color: #979797;
   font-size: 90%;
   line-height: 0.3;
-  margin-bottom: 10%;
+  margin-bottom: 7%;
 }
 
 article.contact {
@@ -167,7 +163,7 @@ span:focus {
 }
 
 #btn-open-modal,
-input.btn-submit {
+input.btn-submit,#open-form-responsive {
   font-family: "DM Sans";
   font-size: 100%;
   font-weight: bold;
@@ -230,9 +226,6 @@ img.photographer {
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 #photographer-medias {
@@ -265,6 +258,10 @@ aside.details-likes {
 
 aside.details-image {
   justify-content: space-between;
+}
+
+aside.details-image > p {
+  font-size: 110%;
 }
 
 aside.details-likes {
@@ -533,8 +530,8 @@ input.btn-submit:hover {
   }
   article.image {
     position: absolute;
-    right: 45px;
-    top: 120px;
+    right: 5px;
+    top: 135px;
   }
   img.photographer {
     width: 150px !important;
@@ -547,18 +544,19 @@ input.btn-submit:hover {
 }
 
 @media screen and (max-width: 560px) {
+  article.image {
+    right: 5px;
+    top: 90px;
+  }
   img.logo {
     width: 200px;
   }
   h1 {
-    font-size: 1.1em;
+    font-size: 1.5em;
     top: 2% !important;
   }
   #form-modal > h1 {
     font-size: 1.75em;
-  }
-  article.image {
-    margin-top: 0 !important;
   }
   img.photographer {
     width: 125px !important;
@@ -567,6 +565,19 @@ input.btn-submit:hover {
 }
 
 @media screen and (max-width: 450px) {
+  body{
+    margin: 0;
+  }
+  header, #photographer-profile{
+    margin: 0 !important;
+  }
+  #filters{
+    display: none;
+  }
+  img.photographer {
+    width: 100px !important;
+    height: 100px !important;
+  }
   #form-modal > h1 {
     font-size: 1.5em;
   }
