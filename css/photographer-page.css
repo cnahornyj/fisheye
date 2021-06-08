@@ -495,6 +495,7 @@ input.btn-submit:hover {
   button#open-form-responsive {
     font-family: "DM Sans";
     position: fixed;
+    display: block;
     visibility: visible;
     width: max-content;
     padding: 1% 3% 1% 3%;
@@ -503,6 +504,7 @@ input.btn-submit:hover {
     transform: translate(-50%, -50%);
     letter-spacing: 1.02px;
     border-radius: 5px;
+    font-size: 100%;
     font-weight: bold;
     background-color: #901c1c;
     color: white;
