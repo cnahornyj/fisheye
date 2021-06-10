@@ -85,10 +85,10 @@ async function photographerDetails() {
 
   btnOpenModal.innerText = "Contactez-moi";
   btnOpenModal.setAttribute("id", "btn-open-modal");
-  btnOpenModal.setAttribute("aria-label","Contact me");
+  btnOpenModal.setAttribute("aria-label", "Contact me");
   btnOpenModalResp.innerText = "Contactez-moi";
   btnOpenModalResp.setAttribute("id", "open-form-responsive");
-  btnOpenModalResp.setAttribute("aria-label","Contact me");
+  btnOpenModalResp.setAttribute("aria-label", "Contact me");
   photo.src =
     "../assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
   photo.setAttribute("class", "photographer");
@@ -177,24 +177,24 @@ function validateForm(event) {
   let errorMessage = document.getElementById("error-textarea");
 
   if (!checkString.test(prenom.value) || prenom.value === "") {
-    prenom.setAttribute("aria-invalid","true");
+    prenom.setAttribute("aria-invalid", "true");
     errorFirstname.classList.add("input-error");
     errorFirstname.innerText =
       "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du prénom";
     return false;
   } else if (!checkString.test(nom.value) || nom.value === "") {
-    nom.setAttribute("aria-invalid","true");
+    nom.setAttribute("aria-invalid", "true");
     errorLastname.classList.add("input-error");
     errorLastname.innerText =
       "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du prénom";
     return false;
   } else if (!checkMail.test(email.value) || email.value === "") {
-    email.setAttribute("aria-invalid","true");
+    email.setAttribute("aria-invalid", "true");
     errorEmail.classList.add("input-error");
     errorEmail.innerText = "Email incorrect";
     return false;
   } else if (!checkString.test(message.value) || message.value === "") {
-    message.setAttribute("aria-invalid","true");
+    message.setAttribute("aria-invalid", "true");
     errorMessage.classList.add("input-error");
     errorMessage.innerText =
       "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du message";
@@ -203,7 +203,7 @@ function validateForm(event) {
     event.preventDefault();
     let spansError = document.querySelectorAll("span.input-error");
     for (let i = 0; i < inputs.length; i++) {
-      inputs[i].setAttribute("aria-invalid","false");
+      inputs[i].setAttribute("aria-invalid", "false");
     }
     for (let i = 0; i < spansError.length; i++) {
       spansError[i].innerText = "";
@@ -328,10 +328,7 @@ async function photographerMedias() {
           `../assets/Sample Photos/${firstname}/${result.image}`
         );
         link.setAttribute("id", `${legend}`);
-        link.setAttribute(
-          "aria-label",
-          `${legend}closeup view`
-        );
+        link.setAttribute("aria-label", `${legend}closeup view`);
         photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
         photography.setAttribute("class", "image");
         photography.setAttribute("alt", result.description);
@@ -609,12 +606,13 @@ async function photographerMedias() {
         const dom = document.createElement("section");
         dom.classList.add("lightbox");
         dom.setAttribute("aria-hidden", "false");
-        dom.setAttribute("aria-label","image close up view");
+        dom.setAttribute("aria-label", "image close up view");
         dom.innerHTML = `
         <button class="lightbox__close" aria-label="Close dialog">Fermer</button>
         <button class="lightbox__prev" aria-label="Previous image">Précédent</button>
         <div class="lightbox__container"></div>
-        <button class="lightbox__next" aria-label="Next image">Suivant</button>`;
+        <button class="lightbox__next" aria-label="Next image">Suivant</button>
+        `;
         dom
           .querySelector(".lightbox__container")
           .addEventListener("mouseover", this.keepFocusInLightbox.bind(this));
@@ -831,7 +829,7 @@ async function photographerMedias() {
       });
     }
   }
-  
+
   findValueOfFilter();
 }
 
