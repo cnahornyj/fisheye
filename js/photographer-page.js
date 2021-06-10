@@ -24,7 +24,7 @@ const body = document.querySelector("body");
 const header = document.querySelector("header");
 const main = document.querySelector("main");
 const modal = document.getElementById("form-modal");
-modal.setAttribute("aria-hidden","true");
+modal.setAttribute("aria-hidden", "true");
 const focusableElements =
   'button, input, textarea, [tabindex]:not([tabindex="-1"])';
 const firstFocusableElement = modal.querySelectorAll(focusableElements)[0];
@@ -86,11 +86,11 @@ async function photographerDetails() {
   btnOpenModal.innerText = "Contactez-moi";
   btnOpenModal.setAttribute("id", "btn-open-modal");
   btnOpenModalResp.innerText = "Contactez-moi";
-  btnOpenModalResp.setAttribute("id","open-form-responsive");
+  btnOpenModalResp.setAttribute("id", "open-form-responsive");
   photo.src =
     "../assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
   photo.setAttribute("class", "photographer");
-  photo.setAttribute("alt","Photo de profil du photographe");
+  photo.setAttribute("alt", "Photo de profil du photographe");
   quote.setAttribute("class", "citation");
   contact.setAttribute("class", "contact");
   image.setAttribute("class", "image");
@@ -274,13 +274,12 @@ async function photographerMedias() {
 
   // Afficher le nombre total de likes par artiste + prix de sa prestation à la journée
   totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
-  
 
   let media = document.querySelector("#photographer-medias");
 
   function createView(arrayOfObjects) {
     // Pour chaque média créé un article avec le média + ses informations
-    arrayOfObjects.forEach((result) => {
+    for (const result of arrayOfObjects) {
       // Création des éléments
       let details = document.createElement("article");
       let likes = document.createElement("p");
@@ -313,8 +312,11 @@ async function photographerMedias() {
           "href",
           `../assets/Sample Photos/${firstname}/${result.image}`
         );
-        link.setAttribute("id",`${legend}`);
-        link.setAttribute("aria-label",`Lien vers la photo ${legend} dans la lightbox`);
+        link.setAttribute("id", `${legend}`);
+        link.setAttribute(
+          "aria-label",
+          `Lien vers la photo ${legend} dans la lightbox`
+        );
         photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
         photography.setAttribute("class", "image");
         photography.setAttribute("alt", result.description);
@@ -350,8 +352,11 @@ async function photographerMedias() {
           "href",
           `../assets/Sample Photos/${firstname}/${result.video}`
         );
-        link.setAttribute("id",`${legend}`);
-        link.setAttribute("aria-label",`Lien vers la vidéo ${legend} dans la lightbox`);
+        link.setAttribute("id", `${legend}`);
+        link.setAttribute(
+          "aria-label",
+          `Lien vers la vidéo ${legend} dans la lightbox`
+        );
         legendOfVideo.innerText = legend;
         video.setAttribute("width", "313px");
         video.setAttribute("height", "280px");
@@ -368,7 +373,7 @@ async function photographerMedias() {
       details.setAttribute("class", "details-likes");
       likes.innerHTML = `${result.likes}`;
       heart.setAttribute("class", "fa fa-heart like");
-      heart.setAttribute("aria-label","Liker le média");
+      heart.setAttribute("aria-label", "Liker le média");
 
       let count = result.likes;
 
@@ -378,8 +383,7 @@ async function photographerMedias() {
         total++;
         totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
       });
-    });
-
+    }
     class Lightbox {
       static init() {
         const links = Array.from(
@@ -504,10 +508,10 @@ async function photographerMedias() {
        */
       close(e) {
         e.preventDefault();
-        header.setAttribute("aria-hidden","false");
-        main.setAttribute("aria-hidden","false");
+        header.setAttribute("aria-hidden", "false");
+        main.setAttribute("aria-hidden", "false");
         this.element.classList.add("fadeOut");
-        this.element.setAttribute("aria-hidden","true");
+        this.element.setAttribute("aria-hidden", "true");
         window.setTimeout(() => {
           this.element.parentElement.removeChild(this.element);
         }, 500);
@@ -585,11 +589,11 @@ async function photographerMedias() {
        * @return {HTMLElement}
        */
       buildDOM(url) {
-        header.setAttribute("aria-hidden","true");
-        main.setAttribute("aria-hidden","true");
+        header.setAttribute("aria-hidden", "true");
+        main.setAttribute("aria-hidden", "true");
         const dom = document.createElement("section");
         dom.classList.add("lightbox");
-        dom.setAttribute("aria-hidden","false");
+        dom.setAttribute("aria-hidden", "false");
         dom.innerHTML = `
         <button class="lightbox__close">Fermer</button>
         <button class="lightbox__prev">Précédent</button>
@@ -613,7 +617,6 @@ async function photographerMedias() {
     Lightbox.init();
   }
 
-  // Appel de la fonction à l'ouverture de la page
   createView(results);
 
   // Fonctions de filtre pour les médias
@@ -650,7 +653,6 @@ async function photographerMedias() {
     createView(results);
   }
 
-  // A MODIFIER
   function filteredByTag(category) {
     media.innerHTML = "";
     let newArray = [];
@@ -688,9 +690,11 @@ async function photographerMedias() {
     toggleListVisibility(e)
   );
 
-  listItems.forEach((item) => listItemIds.push(item.id));
+  for (const item of listItems) {
+    listItemIds.push(item.id);
+  }
 
-  listItems.forEach((item) => {
+  for (const item of listItems) {
     item.addEventListener("click", (e) => {
       setSelectedListItem(e);
       closeList();
@@ -714,7 +718,7 @@ async function photographerMedias() {
           return;
       }
     });
-  });
+  }
 
   function setSelectedListItem(e) {
     let selectedTextToAppend = document.createTextNode(e.target.innerText);
@@ -811,6 +815,7 @@ async function photographerMedias() {
       });
     }
   }
+  
   findValueOfFilter();
 }
 

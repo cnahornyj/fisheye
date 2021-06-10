@@ -20,7 +20,7 @@ async function renderPhotographers() {
 
   function createView(arrayOfObjects) {
     // Pour chaque photographe création des éléments DOM
-    photographers.forEach((photographer) => {
+    for(const photographer of photographers){
       // Création des balises HTML
       let item = document.createElement("article");
       let link = document.createElement("a");
@@ -58,7 +58,7 @@ async function renderPhotographers() {
       photo.setAttribute("alt", "");
       tagline.setAttribute("class", "citation");
       price.setAttribute("class", "priceperday");
-    });
+    }
   }
 
   createView(photographers);
