@@ -85,18 +85,22 @@ async function photographerDetails() {
 
   btnOpenModal.innerText = "Contactez-moi";
   btnOpenModal.setAttribute("id", "btn-open-modal");
+  btnOpenModal.setAttribute("aria-label","Contact me");
   btnOpenModalResp.innerText = "Contactez-moi";
   btnOpenModalResp.setAttribute("id", "open-form-responsive");
+  btnOpenModalResp.setAttribute("aria-label","Contact me");
   photo.src =
     "../assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
   photo.setAttribute("class", "photographer");
-  photo.setAttribute("alt", "Photo de profil du photographe");
+  photo.setAttribute("alt", `${photographer.name}`);
   quote.setAttribute("class", "citation");
   contact.setAttribute("class", "contact");
   image.setAttribute("class", "image");
 
   let nameOfPhotographer = document.getElementById("name-photographer");
   nameOfPhotographer.innerHTML = `Contactez-moi <br> ${photographer.name}`;
+
+  let inputs = form.elements;
 
   function openFormModal() {
     // Mise en retrait de l'ensemble du contenu du document, en dehors de la modale
@@ -147,6 +151,9 @@ async function photographerDetails() {
     let success = document.getElementById("msg-success");
     success.textContent = "";
     success.style.display = "none";
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].removeAttribute("aria-invalid");
+    }
   }
   // Passer la fonction à l'évènement click sur le bouton de fermeture de la form modale
   btnCloseModal.addEventListener("click", closeFormModal);
@@ -159,30 +166,35 @@ function validateForm(event) {
   let checkMail =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-  let prenom = form.elements["firstname"].value;
-  let nom = form.elements["name"].value;
-  let email = form.elements["email"].value;
-  let message = form.elements["message"].value;
+  let prenom = form.elements["firstname"];
+  let nom = form.elements["name"];
+  let email = form.elements["email"];
+  let message = form.elements["message"];
+  let inputs = form.elements;
+  let errorFirstname = document.getElementById("error-firstname");
+  let errorLastname = document.getElementById("error-lastname");
+  let errorEmail = document.getElementById("error-mail");
+  let errorMessage = document.getElementById("error-textarea");
 
-  if (!checkString.test(prenom) || prenom === "") {
-    let errorFirstname = document.getElementById("error-firstname");
+  if (!checkString.test(prenom.value) || prenom.value === "") {
+    prenom.setAttribute("aria-invalid","true");
     errorFirstname.classList.add("input-error");
     errorFirstname.innerText =
       "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du prénom";
     return false;
-  } else if (!checkString.test(nom) || nom === "") {
-    let errorLastname = document.getElementById("error-lastname");
+  } else if (!checkString.test(nom.value) || nom.value === "") {
+    nom.setAttribute("aria-invalid","true");
     errorLastname.classList.add("input-error");
     errorLastname.innerText =
       "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du prénom";
     return false;
-  } else if (!checkMail.test(email) || email === "") {
-    let errorEmail = document.getElementById("error-mail");
+  } else if (!checkMail.test(email.value) || email.value === "") {
+    email.setAttribute("aria-invalid","true");
     errorEmail.classList.add("input-error");
     errorEmail.innerText = "Email incorrect";
     return false;
-  } else if (!checkString.test(message) || message === "") {
-    let errorMessage = document.getElementById("error-textarea");
+  } else if (!checkString.test(message.value) || message.value === "") {
+    message.setAttribute("aria-invalid","true");
     errorMessage.classList.add("input-error");
     errorMessage.innerText =
       "Veuillez entrer au moins 2 caractères alphabétiques pour le champ du message";
@@ -190,6 +202,9 @@ function validateForm(event) {
   } else {
     event.preventDefault();
     let spansError = document.querySelectorAll("span.input-error");
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].setAttribute("aria-invalid","false");
+    }
     for (let i = 0; i < spansError.length; i++) {
       spansError[i].innerText = "";
     }
@@ -315,7 +330,7 @@ async function photographerMedias() {
         link.setAttribute("id", `${legend}`);
         link.setAttribute(
           "aria-label",
-          `Lien vers la photo ${legend} dans la lightbox`
+          `${legend}closeup view`
         );
         photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
         photography.setAttribute("class", "image");
@@ -373,7 +388,7 @@ async function photographerMedias() {
       details.setAttribute("class", "details-likes");
       likes.innerHTML = `${result.likes}`;
       heart.setAttribute("class", "fa fa-heart like");
-      heart.setAttribute("aria-label", "Liker le média");
+      heart.setAttribute("aria-label", "likes");
 
       let count = result.likes;
 
@@ -594,11 +609,12 @@ async function photographerMedias() {
         const dom = document.createElement("section");
         dom.classList.add("lightbox");
         dom.setAttribute("aria-hidden", "false");
+        dom.setAttribute("aria-label","image close up view");
         dom.innerHTML = `
-        <button class="lightbox__close">Fermer</button>
-        <button class="lightbox__prev">Précédent</button>
+        <button class="lightbox__close" aria-label="Close dialog">Fermer</button>
+        <button class="lightbox__prev" aria-label="Previous image">Précédent</button>
         <div class="lightbox__container"></div>
-        <button class="lightbox__next">Suivant</button>`;
+        <button class="lightbox__next" aria-label="Next image">Suivant</button>`;
         dom
           .querySelector(".lightbox__container")
           .addEventListener("mouseover", this.keepFocusInLightbox.bind(this));

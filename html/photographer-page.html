@@ -22,7 +22,7 @@
         <img src="../assets/logo.png" class="logo" alt="Fish eye home page" />
       </a>
     </header>
-    <main>
+    <main role="main">
       <section
         id="photographer-profile"
         aria-label="Section profil du photographe"
@@ -78,7 +78,7 @@
       role="dialog"
       aria-describedby="modal contact photographe"
     >
-      <button id="close-modal"><i class="fa fa-times fa-3x"></i></button>
+      <button id="close-modal" aria-label="Close Contact Form"><i class="fa fa-times fa-3x"></i></button>
       <h1 id="name-photographer"></h1>
       <form id="contact" action="photographer-page.html" method="get" onsubmit="return validateForm(event);">
         <label for="firstname">Prénom</label><br />
@@ -114,6 +114,7 @@
           name="message"
           rows="5"
           cols="33"
+          aria-labelledby="Your message"
           aria-required="true"
         >
         </textarea
@@ -121,9 +122,9 @@
         <span id="error-textarea" class="message-error"></span><br />
         <input
           class="btn-submit"
-          aria-labelledby="message"
           type="submit"
           value="Envoyer"
+          aria-label="Send"
         />
       </form>
       <p id="msg-success"></p>
