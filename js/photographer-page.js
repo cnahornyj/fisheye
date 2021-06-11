@@ -209,7 +209,7 @@ function validateForm(event) {
       spansError[i].innerText = "";
     }
     // Affichage des champs saisis par l'utilisateur en console
-    console.log(prenom, nom, email, message);
+    console.log(prenom.value, nom.value, email.value, message.value);
     form.reset();
     // Affichage d'un message de réussite d'envoi à l'utilisateur
     let success = document.getElementById("msg-success");
@@ -396,6 +396,7 @@ async function photographerMedias() {
         totalOfLikes.innerHTML = `${total} <i class="fa fa-heart icon"></i> ${artiste.price}€ / jour`;
       });
     }
+
     class Lightbox {
       static init() {
         const links = Array.from(
@@ -829,7 +830,6 @@ async function photographerMedias() {
       });
     }
   }
-
   findValueOfFilter();
 }
 
