@@ -1,5 +1,5 @@
 async function getData() {
-  let url = "../photographers.json";
+  let url = "https://cnahornyj.github.io/jsonfisheyeapi/photographers.json";
   try {
     let res = await fetch(url);
     return await res.json();
