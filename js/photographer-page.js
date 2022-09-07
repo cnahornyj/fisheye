@@ -90,7 +90,7 @@ async function photographerDetails() {
   btnOpenModalResp.setAttribute("id", "open-form-responsive");
   btnOpenModalResp.setAttribute("aria-label", "Contact me");
   photo.src =
-    "../assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
+    "assets/Sample Photos/Photographers ID Photos/" + photographer.portrait;
   photo.setAttribute("class", "photographer");
   photo.setAttribute("alt", `${photographer.name}`);
   quote.setAttribute("class", "citation");
@@ -325,11 +325,11 @@ async function photographerMedias() {
         item.setAttribute("class", "photoItem");
         link.setAttribute(
           "href",
-          `../assets/Sample Photos/${firstname}/${result.image}`
+          `assets/Sample Photos/${firstname}/${result.image}`
         );
         link.setAttribute("id", `${legend}`);
         link.setAttribute("aria-label", `${legend}closeup view`);
-        photography.src = `../assets/Sample Photos/${firstname}/${result.image}`;
+        photography.src = `assets/Sample Photos/${firstname}/${result.image}`;
         photography.setAttribute("class", "image");
         photography.setAttribute("alt", result.description);
         detailsOfPhotography.setAttribute("class", "details-image");
@@ -362,7 +362,7 @@ async function photographerMedias() {
         item.setAttribute("class", "photoVideo");
         link.setAttribute(
           "href",
-          `../assets/Sample Photos/${firstname}/${result.video}`
+          `assets/Sample Photos/${firstname}/${result.video}`
         );
         link.setAttribute("id", `${legend}`);
         link.setAttribute(
@@ -374,11 +374,11 @@ async function photographerMedias() {
         video.setAttribute("height", "280px");
         video.setAttribute("controls", "");
         detailsOfVideo.setAttribute("class", "details-image");
-        video.src = `../assets/Sample Photos/${firstname}/${result.video}`;
+        video.src = `assets/Sample Photos/${firstname}/${result.video}`;
         video.setAttribute("type", "video/mp4");
         subtitles.setAttribute("kind", "subtitles");
         subtitles.setAttribute("srclang", "fr");
-        subtitles.src = `../tracks/${result.description}`;
+        subtitles.src = `tracks/${result.description}`;
       }
 
       // Partie likes

@@ -46,7 +46,7 @@ async function renderPhotographers() {
       }
 
       photo.src =
-        "../assets/Sample Photos/Photographers ID Photos/" +
+        "assets/Sample Photos/Photographers ID Photos/" +
         photographer.portrait;
       name.innerText = photographer.name;
       location.innerText = `${photographer.city}, ${photographer.country}`;
