@@ -4,7 +4,8 @@
   "description": "![logo](https://user-images.githubusercontent.com/50677355/115770542-2330c300-a3ad-11eb-8d8c-59a49ba5e1c7.png) # Créez un site accessible pour une plateforme de photographes ## Projet 6 du parcours Développeur Front-End",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -15,8 +16,9 @@
   "bugs": {
     "url": "https://github.com/cnahornyj/ClaraNahornyj_6_20042021/issues"
   },
-  "homepage": "https://github.com/cnahornyj/ClaraNahornyj_6_20042021#readme",
+  "homepage": "https://cnahornyj.github.io/fisheye/",
   "devDependencies": {
-    "eslint": "^7.25.0"
+    "eslint": "^7.25.0",
+    "gh-pages": "^4.0.0"
   }
 }
