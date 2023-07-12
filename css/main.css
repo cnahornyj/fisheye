@@ -71,6 +71,11 @@ flex-wrap: wrap;
 justify-content: center;
 }
 
+#list-photographers {
+    width: 80%;
+    margin: auto;
+}
+
 article{
 width: 400px;
 text-align: center;
